@@ -3,7 +3,7 @@
 ## Identification des micro-services
 
 ### Gestion des projets
-**Responsable :** Paul HOFFBECK  
+**Responsable : Paul HOFFBECK** 
 
 | HTTP Méthode | Action | Description | Codes |  
 |-------------|--------|-------------|---------- |
@@ -25,7 +25,7 @@
 ---
 
 ### Importation de SBOM  
-**Simon COLLET**
+**Responsable : Maxence DEBEAUVAIS**
 
 | HTTP Méthode | Action | Description | Codes |
 |-------------|--------|-------------|--------|
@@ -49,7 +49,7 @@
 ---
 
 ## Consultation de SBOM
-**Responsable :** Simon COLLET
+**Responsable : Simon COLLET**
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
@@ -59,7 +59,7 @@
 ---
 
 ## Gestion des vulnérabilités
-**Responsable : Simon COLLET**
+**Responsable : Killian CHESNOT**
 
 | API REST | Méthode | Description | Code |
 |----------|---------|-------------|-------------|
@@ -71,7 +71,7 @@
 ---
 
 ## Gestion des utilisateurs
-**Responsable :** Killian CHESSET  
+**Responsable : Malo DURANTON**  
 - Fonction pour inscrire un utilisateur  
 - Fonction pour connecter un utilisateur  
 - Fonction de déconnexion  
