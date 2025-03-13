@@ -124,7 +124,7 @@ POST /permission
     "write": false,
     "delete": false
 }
-
+```
 ---
 
 ## Conteneurisation et orchestration
