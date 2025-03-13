@@ -147,7 +147,6 @@ POST /permission
 
 ### Liens utiles
 - [Documentation](https://foad.univ-exemple.com/docs/SAE401)
-- Contact : [Simon COLLET](mailto:simon.collet@example.com), [Killian CHESSET](mailto:killian@example.com)
 
 ---
 
