@@ -6,7 +6,7 @@
 **Responsable :** Paul HOFFBECK  
 
 | HTTP Méthode | Action | Description | Codes |  
-|-------------|--------|-------------|  
+|-------------|--------|-------------|---------- |
 | `N/A` | Display | Regroupe les projets existants | N/A |
 | **POST** | `Create_Project` | Création d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
 | **PATCH** | `Update_Project` | Modification d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
