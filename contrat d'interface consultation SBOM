@@ -1,13 +1,11 @@
 openapi: 3.0.3
 info:
-  title: API de gestion de librairie
+  title: API de consultation de SBOM
   description: |-
     Gestion des clients et des livres disponibles dans la librairie
-  contact:
-    email: apiteam@iut.io
+
   version: 0.1.0
-servers:
-  - url: https://librairie.rt.lan/api/v1
+
 tags:
   - name: SBOMs
     description: Consultation  SBOMs
@@ -21,7 +19,6 @@ paths:
       parameters:
         - name: sbomID
           in: path
-          description: ID du livre à rechercher
           required: true
           schema:
             type: integer
@@ -66,7 +63,7 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Livre non trouvé
+          description: sbom non trouvé
 
 components:
   schemas:
