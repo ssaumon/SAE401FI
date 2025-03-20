@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: rapport
+  description: |-
+    Gestion des clients et des livres disponibles dans la librairie
+
+  version: 0.1.0
+
+tags:
+  - name: rapports
+    description: Consultation  SBOMs
+
+paths:
+  /pdf/{idprojet}:
+    get:
+      tags:
+        - SBOMs
+      summary: creer un pdf du rapport d'un projet
+      parameters:
+        - name: idprojet
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        '400':
+          description: Invalid status value
+
+  /template/{idprojet}:
+    get:
+      tags:
+        - rapports
+      summary: affiche sur une page web le rapport d'un projet en fonction de son ID
+
+      parameters:
+        - name: idprojet
+          in: path
+          description: ID du projet à afficher
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sbom'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/sbom'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: sbom non trouvé
+
+components:
+  schemas:
+    prjet:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        contenu:
+          type: string
+          example: contenu du fichier sbom
+        idUser:
+          type: integer
+          format: int64
+          example: 10
+        date:
+          type: string
+          format: date
+          example: 2025-03-21
