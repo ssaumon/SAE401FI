@@ -2,8 +2,21 @@ import requests
 import json
 
 url = 'http://127.0.0.1:5007/Vulnerability'
+url2 = 'http://127.0.0.1:5007/Vulnerability'
+url3 = 'http://127.0.0.1:5007/Vulnerability/7'
 
 js = [
+    {
+        "id": 1,
+        "VulnerabilityID": "CVE-2021-3156",
+        "PkgName": "sudo",
+        "InstalledVersion": "1.8.31",
+        "FixedVersion": "1.9.5p2",
+        "Severity": "CRITICAL",
+        "Title": "Sudo - Heap-based Buffer Overflow in sudoedit (CVE-2021-3156)",
+        "Description": "A heap-based buffer overflow in sudoedit in sudo before 1.9.5p2 allows privilege escalation to root via a crafted command line.",
+        "References": "https://nvd.nist.gov/vuln/detail/CVE-2021-3156"
+    },
     {
         "id": 2,
         "VulnerabilityID": "CVE-2021-4034",
@@ -72,5 +85,8 @@ js = [
     }
 ]
 
-x = requests.post(url, json=js)
-print(x)
+#x = requests.post(url, json=js)
+#print(x)
+
+y = requests.delete(url3)
+print (y)#
