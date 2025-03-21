@@ -73,12 +73,12 @@ def test_get_vulnerability_by_id(vuln_id):
     else:
         print(f"Erreur: {response.status_code}")
 
-def test_put_sbom():
-    response = requests.put(f"{BASE_URL}/Vulnerability/sbom", json=data_sbom)
+def test_post_sbom():
+    response = requests.post(f"{BASE_URL}/Vulnerability/sbom", json=data_sbom)
     if response.status_code == 200:
         print("SBOM mis à jour avec succès")
         print(json.dumps(response.json(), indent=4))
     else:
         print(f"Erreur: {response.status_code}")
 
-test_put_sbom()
+test_post_sbom()
