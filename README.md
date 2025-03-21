@@ -1,47 +1,47 @@
 # Vulnerability MicroService
 
 ## Description
-Le **Vulnerability MicroService** est une application web construite avec la librairie **Flask**, permettant de gérer et de manipuler des informations sur des vulnérabilités logicielles. Le service est découpé en plusieurs méthodes, chacune exposée via des routes dédiées sur le serveur. Ce microservice vous permet d'effectuer différentes opérations comme la création, la modification, la suppression et la consultation des vulnérabilités, le tout à travers une interface HTTP simple. Toutes les données sont stockées dans un fichier JSON nommé **Vulnerability.json**.
+The **Vulnerability MicroService** is a web application built using the **Flask** library, designed to manage and manipulate information about software vulnerabilities. The service is divided into several methods, each exposed via dedicated routes on the server. This microservice allows you to perform various operations such as creating, modifying, deleting, and retrieving vulnerabilities, all through a simple HTTP interface. All data is stored in a JSON file named **Vulnerability.json**.
 
-L'application porte le nom de **Vulnerability.py** et dispose d'un script de test en Python intitulé **test.py**. Un contrat d'interface est également fourni sous le nom de **Vulnerability.yaml**.
+The application is named **Vulnerability.py** and includes a Python test script named **test.py**. An interface contract is also provided under the name **Vulnerability.yaml**.
 
-## Routes et Méthodes
+## Routes and Methods
 
-L'application expose plusieurs routes, chacune correspondant à une fonctionnalité spécifique. Voici un aperçu des routes disponibles :
+The application exposes several routes, each corresponding to a specific functionality. Here is an overview of the available routes:
 
 ### 1. `/`
-**Méthode : GET**
+**Method: GET**
 
-- **Description** : Affiche la page de "test" pour vérifier le bon fonctionnement du microservice. Ce chemin retourne simplement le message "Microservice Vulnerability".
+- **Description**: Displays the "test" page to check if the microservice is functioning correctly. This route simply returns the message "Microservice Vulnerability".
 
 ### 2. `/Vulnerability`
-**Méthodes : GET, POST, PUT**
+**Methods: GET, POST, PUT**
 
-- **GET** : Liste toutes les vulnérabilités stockées dans la base de données.
-- **POST** : Permet d'ajouter une ou plusieurs nouvelles vulnérabilités à la base de données. L'API peut envoyer plusieurs vulnérabilités simultanément en format JSON.
-- **PUT** : Permet de modifier une vulnérabilité sans spécifier d'ID dans l'URL. Cette méthode récupère l'ID depuis le corps JSON de la vulnérabilité pour effectuer la modification en toute sécurité.
+- **GET**: Lists all the vulnerabilities stored in the database.
+- **POST**: Allows you to add one or more new vulnerabilities to the database. The API can send multiple vulnerabilities simultaneously in JSON format.
+- **PUT**: Allows you to modify a vulnerability without specifying an ID in the URL. This method retrieves the ID from the JSON body of the vulnerability for secure modification.
 
 ### 3. `/Vulnerability/<int:id_Vuln>`
-**Méthodes : GET, DELETE, PUT**
+**Methods: GET, DELETE, PUT**
 
-- **GET** : Permet de récupérer une vulnérabilité spécifique en utilisant son ID.
-- **DELETE** : Permet de supprimer une vulnérabilité en spécifiant son ID.
-- **PUT** : Permet de modifier une vulnérabilité en utilisant son ID dans l'URL.
+- **GET**: Retrieves a specific vulnerability using its ID.
+- **DELETE**: Deletes a vulnerability by specifying its ID.
+- **PUT**: Modifies a vulnerability using its ID in the URL.
 
 ### 4. `/Vulnerability/sbom`
-**Méthode : POST**
+**Method: POST**
 
-- **Description** : Permet de rechercher dans la base de données la présence de vulnérabilités pour une version spécifique d'un package, envoyée depuis l'API du SBOM (Software Bill of Materials). Si une version compromise est trouvée, la méthode retourne les informations relatives à cette vulnérabilité, telles que la version corrigée, les liens vers la documentation, etc.
+- **Description**: Allows searching for the presence of vulnerabilities in the database for a specific version of a package, sent from the SBOM (Software Bill of Materials) API. If a compromised version is found, the method returns information about that vulnerability, such as the fixed version, links to documentation, etc.
 
-## Fichiers Importants
+## Important Files
 
-- **Vulnerability.py** : Script principal de l'application qui définit les routes et gère les requêtes.
-- **test.py** : Script de test en Python pour vérifier le bon fonctionnement du service et tester les différentes routes.
-- **Vulnerability.yaml** : Contrat d'interface (Swagger/OpenAPI) définissant les routes, les paramètres et les réponses possibles.
+- **Vulnerability.py**: The main application script that defines the routes and handles requests.
+- **test.py**: A Python test script to verify the proper functioning of the service and test the various routes.
+- **Vulnerability.yaml**: An interface contract (Swagger/OpenAPI) that defines the routes, parameters, and possible responses.
 
-## Exemple d'Utilisation
+## Example Usage
 
-1. **Ajouter une vulnérabilité** (méthode POST) :
+1. **Add a vulnerability** (POST method):
     ```bash
     curl -X POST -H "Content-Type: application/json" -d '{
         "VulnerabilityID": "CVE-2021-3156",
@@ -55,12 +55,12 @@ L'application expose plusieurs routes, chacune correspondant à une fonctionnali
     }' http://127.0.0.1:5007/Vulnerability
     ```
 
-2. **Obtenir la liste des vulnérabilités** (méthode GET) :
+2. **Get the list of vulnerabilities** (GET method):
     ```bash
     curl http://127.0.0.1:5007/Vulnerability
     ```
 
-3. **Modifier une vulnérabilité** (méthode PUT) :
+3. **Modify a vulnerability** (PUT method):
     ```bash
     curl -X PUT -H "Content-Type: application/json" -d '{
         "VulnerabilityID": "CVE-2021-3156",
@@ -74,41 +74,41 @@ L'application expose plusieurs routes, chacune correspondant à une fonctionnali
     }' http://127.0.0.1:5007/Vulnerability
     ```
 
-4. **Supprimer une vulnérabilité** (méthode DELETE) :
+4. **Delete a vulnerability** (DELETE method):
     ```bash
     curl -X DELETE http://127.0.0.1:5007/Vulnerability/1
     ```
 
 ## Installation
 
-1. Clonez ce repository :
+1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/vulnerability-microservice.git
+    git clone https://github.com/ssaumon/SAE401FI/tree/Gestion-de-vulnérabilités
     cd vulnerability-microservice
     ```
 
-2. Installez les dépendances :
+2. Install the dependencies:
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Lancez l'application Flask :
+3. Run the Flask application:
     ```bash
     python Vulnerability.py
     ```
 
-4. L'application sera disponible à l'adresse `http://127.0.0.1:5007`.
+4. The application will be available at `http://127.0.0.1:5007`.
 
-## Technologies Utilisées
+## Technologies Used
 
-- **Flask** : Framework web pour Python.
-- **JSON** : Format de stockage des vulnérabilités.
-- **cURL** : Utilisé dans les exemples pour tester les routes API.
+- **Flask**: A web framework for Python.
+- **JSON**: The format used for storing vulnerabilities.
+- **cURL**: Used in the examples to test the API routes.
 
-## Contributeurs
+## Contributors
 
-- Votre nom ou équipe
+- FI
 
 ## License
 
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
