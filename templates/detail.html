@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Projet {{ projets.nom }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div class="container-fluid p-5 bg-success text-warning text-center">
+    <h1>Projet : {{ projets.nom }}</h1>
+
+  </div>
+  <br>
+
+  <div class="container bg-light">
+    <h1>Projet n°{{ projets.id }} : {{ projets.nom }}</h1>
+    <h2>Description :</h2>
+    <p>{{ projets.description }}</p> 
+    <br>
+    <h2>Télécharger le rapport :</h2>
+    <a href="http://simon/sbom/{{ projets.id }}" class="btn btn-info" download="SBOM_Projet_{{ projets.id }}.pdf">Lien du téléchargement du Raport {{ projets.id }}</a>
+    <br>
+    <br>
+    <h2>Télécharger les SBOM :</h2>
+    <a href="http://simon/sbom/{{ projets.id }}" class="btn btn-info" download="SBOM_Projet_{{ projets.id }}.json">Lien du téléchargement du SBOM {{ projets.id }}</a>
+    <br>
+    <br>
+    <h2>Télécharger le rapport de vulnérabilité :</h2>
+    <a href="http://simon/sbom/{{ projets.id }}" class="btn btn-info" download="SBOM_Projet_{{ projets.id }}.pdf">Lien du téléchargement du Raport de vulnérabilité {{ projets.id }}</a>
+    <br>
+    <br>
+    <h2>Mettre à jour le projet :</h2>
+    <form method="POST" action="/projet/update">
+        <div class="mb-3 mt-3">
+          <label class="form-label">Nom du projet:</label>
+          <input class="form-control" name="name">
+        </div>
+        <input type="hidden" name="id" value="{{ projets.id }}">
+        <label for="comment">Description:</label>
+        <textarea class="form-control" rows="5" name="description"></textarea>
+        <br>
+        <button type="submit" class="btn btn-primary">Mettre a jour et revenir à la page d'acceuil</button>
+      </form>
+      <br>
+      <a class="nav-link" href="/projet/delete/{{ projets.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+      <br>
+    <a class="nav-link" href="/"><button type="button" class="btn btn-warning">Retour à la page d'accueil</button></a>
+  </div>
+
+</body>
+</html>

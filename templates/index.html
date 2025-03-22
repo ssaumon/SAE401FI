@@ -34,7 +34,7 @@
           <th>Description</th>
           <th> Rapport</th>
           <th>SBOM</th>
-          <th>Utilisateurs</th>
+          <th>Plus d'informations</th>
         </tr>
       </thead>
       <tbody>
@@ -50,7 +50,7 @@
             <td><a href="http://simon/sbom/{{ projet.id }}" class="btn btn-info" download="SBOM_Projet_{{ projet.id }}.json">
               SBOM {{ projet.id }}
             </a></td>
-
+            <td><a href="/projet/{{ projet.id }}" class="btn btn-info">Plus</a></td>
         </tr>
     {% endfor %}
       </tbody>
@@ -59,7 +59,7 @@
   <br>
   <div class="container">
     <h1>Ajouter un projet :</h1>
-    <form method="POST" action="/project/add">
+    <form method="POST" action="/projet/add">
       <div class="mb-3 mt-3">
         <label class="form-label">Nom du projet:</label>
         <input class="form-control" name="name">
@@ -70,7 +70,7 @@
       <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
-
+    <br>
 
   </div>
 

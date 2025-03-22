@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, json
+from flask import Flask, request, render_template, redirect, json
 import json
 
 app = Flask(__name__)
@@ -35,9 +35,9 @@ if __name__ == "__main__":
 @app.route('/projet/<id>')
 def get_project(id):
     projets = open_project_file()
-    return projets[str(id)]
+    return render_template("detail.html", projets=projets[str(id)])
 
-@app.route('/project/add', methods=["POST"])
+@app.route('/projet/add', methods=["POST"])
 def add_project():
     projects= open_project_file()
     idp=len(projects)+1
@@ -45,12 +45,23 @@ def add_project():
     description = request.form.get('description')
     projects[str(idp)]={"id":idp, "nom":nom, "description":description}
     save_project_file(projects)
-    return redirect(url_for('bienvenue'))
+    return redirect("/")
+
+@app.route('/projet/update', methods=["POST"])
+def update_project():
+    projects= open_project_file()
+    idp = request.form.get('id')
+    nom = request.form.get('name')
+    description = request.form.get('description')
+    projects[str(idp)]={"id":idp, "nom":nom, "description":description}
+    save_project_file(projects)
+    return redirect("/")
+
 
 @app.route('/projet/delete/<id>')
 def remove_project(id):
     projects= open_project_file()
     del projects[str(id)]
     save_project_file(projects)
-    return ""
+    return redirect("/")
 
