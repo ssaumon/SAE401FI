@@ -57,6 +57,33 @@ paths:
         '401':
           description: Invalid credentials
 
+  /user/{email}:
+    get:
+      tags:
+      - user
+      summary: User info
+      parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          example: "john.doe2@example.com"
+        description: user ID
+      responses:
+        '201':
+          description: Login successful
+          content:
+            application/json:
+              example:
+                last_name: Doe
+                first_name: John
+                email: john.doe@example.com
+                birth_date: '1990-01-01'
+
+        '401':
+          description: Invalid credentials
+
   /modify:
     put:
       tags:
@@ -102,11 +129,11 @@ paths:
         '400':
           description: Invalid request
 
-  /permissions:
+  /add-permissions:
     post:
       tags:
       - user
-      summary: Manage user permissions
+      summary: Add user permissions
       requestBody:
         required: true
         content:
@@ -116,6 +143,56 @@ paths:
       responses:
         '200':
           description: Permissions successfully updated
+          content:
+            application/json:
+              example:
+                message: "Permissions added successfully"
+        '400':
+          description: Invalid request
+  /modify-permissions:
+    put:
+      tags:
+      - user
+      summary: Modify user permissions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Permission"
+      responses:
+        '200':
+          description: Permissions successfully updated
+          content:
+            application/json:
+              example:
+                message: "Permissions updated successfully"
+        '400':
+          description: Invalid request
+  /delete-permissions:
+    delete:
+      tags:
+      - user
+      summary: Modify user permissions
+      parameters:
+      - in: query
+        name: project_id
+        required: true
+        schema:
+          type: string
+          example: "1"
+        description: Identifiant du projet pour lequel les permissions doivent être supprimées
+      - in: query
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        description: Adresse email de l'utilisateur dont les permissions doivent être supprimées
+      responses:
+        '200':
+          description: Permissions successfully deleted
           content:
             application/json:
               example:

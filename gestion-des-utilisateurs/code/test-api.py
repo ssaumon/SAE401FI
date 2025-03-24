@@ -1,99 +1,90 @@
-import requests
 import json
+import os
 
-url = 'http://127.0.0.1:5000'
-# url = 'http://148.60.76.67:5001'
+def read_json(filename):
+    """Lit un fichier JSON et retourne son contenu sous forme de dictionnaire."""
+    if not os.path.exists(filename):
+        print(f"Le fichier {filename} n'existe pas.")
+        return None
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return data
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON dans le fichier {filename} : {e}")
+        return None
+    except Exception as e:
+        print(f"Erreur lors de la lecture du fichier {filename} : {e}")
+        return None
 
+def write_json(filename, data):
+    """Écrit un dictionnaire dans un fichier JSON avec un formatage lisible."""
+    try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
+    except Exception as e:
+        print(f"Erreur d'écriture dans le fichier {filename} : {e}")
 
-# myobj = {'somekey': 'somevalue'}
+def clean_data(data):
+    """Supprime les clés avec des valeurs None dans un dictionnaire."""
+    if isinstance(data, dict):
+        return {k: clean_data(v) for k, v in data.items() if v is not None}
+    elif isinstance(data, list):
+        return [clean_data(item) for item in data]
+    else:
+        return data
 
+json_path_usr = 'user.json'
+json_path_perm = 'permission.json'
 
-print("test post /register")
-js = {
-    "last_name": "Doe3",
-    "first_name": "John3",
-    "email": "john.doe3@example.com",
-    "password": "securepassword123",
-    "birth_date": "1990-02-02"
+json_user1 = [
+    {
+        "last_name": "Doe",
+        "first_name": "John",
+        "email": "john.doe@example.com",
+        "password": "securepassword123",
+        "birth_date": "1990-01-01"
+    },
+    {
+        "last_name": "Doe2",
+        "first_name": "John2",
+        "email": "john.doe2@example.com",
+        "password": "securepassword123",
+        "birth_date": "1990-02-02"
     }
-# print("Données envoyées :", json.dumps(js, indent=4))
+]
 
-x = requests.post(url+'/register', json=js)
-if x.status_code != 201:
-    print(x)
-    exit(1)
-    
-    
-print("test post /login")
-js = {
-      "email": "john.doe@example.com",
-      "password": "securepassword123"
+json_perm1 = [
+    {
+        "project_id": "1",
+        "email": "john.doe@example.com",
+        "write": True,
+        "read": True,
+        "admin": False
+    },
+    {
+        "project_id": "2",
+        "email": "john.doe2@example.com",
+        "write": True,
+        "read": True,
+        "admin": False
     }
-# print("Données envoyées :", json.dumps(js, indent=4))
+]
 
-x = requests.post(url+'/login', json=js)
-if x.status_code != 201:
-    print(x)
-    exit(1)
-    
-    
-print("test post /modify")
-js = {
-    "last_name": "Does",
-    "first_name": "Johns",
-    "email": "john.doe3@example.com",
-    "password": "securepassword123",
-    "birth_date": "1990-02-02"
-    }
-# print("Données envoyées :", json.dumps(js, indent=4))
+# Vérifier et traiter le fichier user.json
+a = read_json(json_path_usr)
+if a is None:
+    print(f"Réécriture du fichier {json_path_usr} avec les données par défaut.")
+    write_json(json_path_usr, json_user1)
+else:
+    a_clean = clean_data(a)
+    write_json(json_path_usr, a_clean)
 
-x = requests.post(url+'/modify', json=js)
-if x.status_code != 201:
-    print(x.content)
-    exit(1)
-    
-    
-print("test post /modify")
-js = {
-    "last_name": "Does",
-    "first_name": "Johns",
-    "email": "john.doe3@example.com",
-    "password": "securepassword123",
-    "birth_date": "1990-02-02"
-    }
-# print("Données envoyées :", json.dumps(js, indent=4))
-
-x = requests.post(url+'/modify', json=js)
-if x.status_code != 201:
-    print(x.content)
-    exit(1)
-    
-    
-print("test post /delete-user")
-js = {
-    "email": "john.doe3@example.com"
-    }
-# print("Données envoyées :", json.dumps(js, indent=4))
-
-x = requests.delete(url+'/delete-user', json=js)
-if x.status_code != 201:
-    print(x.content)
-    exit(1)
-    
-    
-print("Test GET /permissions-by-project/<project_id>")
-project_id = "1"
-x = requests.get(url+f'/permissions-by-project/{project_id}')
-if x.status_code != 200:
-    print("Erreur lors de la récupération des permissions:", x.json())
-    exit(1)
-# print("Récupération des permissions réussie:", x.json())
-
-
-print("Test GET /permissions-by-email/<email>")
-email = "john.doe@example.com"
-x = requests.get(url+f'/permissions-by-email/{email}')
-if x.status_code != 200:
-    print("Erreur lors de la récupération des permissions:", x.json())
-    exit(1)
-# print("Récupération des permissions réussie:", x.json())
+# Vérifier et traiter le fichier permission.json
+b = read_json(json_path_perm)
+if b is None:
+    print(f"Réécriture du fichier {json_path_perm} avec les données par défaut.")
+    write_json(json_path_perm, json_perm1)
+else:
+    b_clean = clean_data(b)
+    write_json(json_path_perm, b_clean)

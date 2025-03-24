@@ -1,13 +1,15 @@
+## librairy
 from flask import *
+import copy
 
+## fichier locaux
+import reset_app
 from fonction import *
-
 ##### INIT #####
 
 json_path_usr = 'user.json'
 json_path_perm = 'permission.json'
 
-import reset_app
 
 json_user = read_json(json_path_usr)
 
@@ -64,16 +66,15 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     global json_user 
-    if request.method == 'POST':    # ajoute un bloc json 
-        data = request.get_json()
-        # print(data['id'])
-        email = data['email'].strip()  # .strip() pour supprimer les espaces
-        password = data['password'].strip()
-        
-        required_fields = ["email", "password"]
-        for field in required_fields:
-            if field not in data:
-                return jsonify({"error": f"Champ manquant : {field}"}), 400
+    data = request.get_json()
+    # print(data['id'])
+    email = data['email'].strip()  # .strip() pour supprimer les espaces
+    password = data['password'].strip()
+     
+    required_fields = ["email", "password"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Champ manquant : {field}"}), 400
 
         # print(data)
         # print(request)
@@ -82,6 +83,18 @@ def login():
         # print(a)
         if a['password']==password:
             return jsonify({"message": "User avec bon mdp"}), 201
+        
+############################################################################################################################
+    
+@app.route('/user/<email>', methods=['GET'])
+def user(email):
+    
+    # Supposons que json_user soit une liste d'utilisateurs chargée ailleurs dans votre application
+    user_data = get_user_by_email(json_user, email)
+    if user_data is None:
+        return jsonify({"error": "Utilisateur non trouvé"}), 409
+    else:
+        return jsonify({"message": "Utilisateur trouvé", "data": user_data}), 200
 
 ############################################################################################################################
 
@@ -148,42 +161,108 @@ def deleteuser():
 
 ############################################################################################################################
 
-@app.route('/permissions', methods=['POST'])
-def permissions():
+@app.route('/add-permissions', methods=['POST'])
+def addpermissions():
     global json_user 
-    if request.method == 'POST':    # ajoute un bloc json 
-        data = request.get_json()
-        # print(data['id'])
-        last_name = data['last_name'].strip()  # .strip() pour supprimer les espaces
-        first_name = data['first_name'].strip()
-        email = data['email'].strip()
-        password = data['password']
-        birth_date = data['birth_date']
-        
-        required_fields = ["last_name", "first_name", "email", "password", "birth_date"]
-        for field in required_fields:
-            if field not in data:
-                return jsonify({"error": f"Champ manquant : {field}"}), 400
-        print(data)
-        print(request)
-        # json_user= []
-        if last_name != "" and first_name != "" and email != "" and password != "" and birth_date != "":
-            js = {
-                "last_name": last_name,
-                "first_name": first_name,
-                "email": email,  
-                "password": password,
-                "birth_date": birth_date
-            }
-            if get_object_by_email(json_user, email) == "":
-                return jsonify({"message": "User dosent exist"}), 409
-            a = modify_user_by_email(json_user, last_name, first_name, email, password, birth_date)
-            if a != "":
-                json_user = a
-                write_json(json_path_usr,json_user)
-                return jsonify({"message": "User modify", "data": js}), 201
-        # print("a"+id+nom+localisation+version)
+    data = request.get_json()
+    # print(data['id'])
+    project_id = data['project_id'].strip()  # .strip() pour supprimer les espaces
+    email = data['email'].strip()
+    write = data['write'].strip()
+    read = data['read']
+    admin = data['admin']
+    
+    required_fields = ["project_id", "email", "write", "read", "admin"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Champ manquant : {field}"}), 400
+
+    if project_id == "" or email == "" or email == "" or write == "" or read == "" or admin == "":
         return jsonify({"error": "Tous les champs sont requis"}), 400
+
+    if get_object_by_email(json_user, email) == "":
+        return jsonify({"message": "User dosent exist"}), 409
+    
+    a = get_perm_email_idproject(json_perm, email, project_id)
+    if a == None:
+        js = {
+            "project_id": project_id,
+            "email": email,
+            "write": write,
+            "read": read,
+            "admin": admin
+        }
+        json_user.append(js)
+        
+        write_json(json_path_usr,json_user)
+    return jsonify({"message": "User modify", "data": "true"}), 201
+
+############################################################################################################################
+
+@app.route('/modify-permissions', methods=['PUT'])
+def modifypermissions():
+    global json_user 
+    data = request.get_json()
+    # print(data['id'])
+    project_id = data['project_id'].strip()  # .strip() pour supprimer les espaces
+    email = data['email'].strip()
+    write = data['write'].strip()
+    read = data['read']
+    admin = data['admin']
+    
+    required_fields = ["project_id", "email", "write", "read", "admin"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Champ manquant : {field}"}), 400
+
+    if project_id == "" or email == "" or email == "" or write == "" or read == "" or admin == "":
+        return jsonify({"error": "Tous les champs sont requis"}), 400
+
+    if get_object_by_email(json_user, email) == "":
+        return jsonify({"message": "User dosent exist"}), 409
+    
+    js = {
+        "project_id": project_id,
+        "email": email,
+        "write": write,
+        "read": read,
+        "admin": admin
+    }
+    json_user.append(js)
+    
+    write_json(json_path_usr,json_user)
+    return jsonify({"message": "User modify", "data": "true"}), 201
+
+
+############################################################################################################################
+
+
+@app.route('/delete-permissions', methods=['delete'])
+def deletepermissions():
+    global json_user 
+    data = request.get_json()
+    # print(data['id'])
+    project_id = data['project_id'].strip()  # .strip() pour supprimer les espaces
+    email = data['email'].strip()
+
+    
+    required_fields = ["project_id", "email"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Champ manquant : {field}"}), 400
+
+    if project_id == "" or email == "" or email == "":
+        return jsonify({"error": "Tous les champs sont requis"}), 400
+
+    if get_object_by_email(json_user, email) == "":
+        return jsonify({"message": "User dosent exist"}), 409
+    
+    for pem in json_perm:
+        if pem['project_id'] == project_id and pem['email'] == email:
+            json_perm.remove(pem)
+            write_json(json_path_perm, json_perm)    
+            
+    return jsonify({"message": "User modify", "data": "true"}), 201
 
 
 ############################################################################################################################
@@ -214,13 +293,14 @@ def permissionsbyemail(email):
 
     js = get_permissions_by_email(json_perm, email)
 
-    if js:
+    if js != "":
         return jsonify({"message": "Get permissions", "data": js}), 200
     else:
-        return jsonify({"error": "Aucune permission trouvée pour ce projet"}), 404
+        return jsonify({"error": "Aucune permission trouvée pour ce projet"}), 409
 
 ############################################################################################################################
 
 
 if __name__ == '__main__':
+    # app.run(host='0.0.0.0', port=5000, ssl_context='adhoc')
     app.run(host='0.0.0.0', port=5000)
