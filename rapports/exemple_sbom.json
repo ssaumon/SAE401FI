@@ -4,22 +4,22 @@
     "serialNumber": "urn:uuid:3e016e55-f35b-41cd-b660-e6e642ecc9e5",
     "version": 1,
     "metadata": {
-    "timestamp": "2023-10-01T12:00:00Z",
-    "tools": [
-    {
-    "vendor": "CycloneDX",
-    "name": "CycloneDX Core Library",
-    "version": "1.4"
-    }
-    ],
-    "component": {
-    "type": "application",
-    "name": "ExampleApp",
-    "version": "1.0.0",
-    "swid": {
-    "tagId": "ExampleApp"
-    }
-    }
+        "timestamp": "2023-10-01T12:00:00Z",
+        "tools": [
+            {
+            "vendor": "CycloneDX",
+            "name": "CycloneDX Core Library",
+            "version": "1.4"
+            }
+        ],
+        "component": {
+            "type": "application",
+            "name": "ExampleApp",
+            "version": "1.0.0",
+            "swid": {
+                "tagId": "ExampleApp"
+            }
+        }
     },
     "components": [
     {

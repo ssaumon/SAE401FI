@@ -9,5 +9,28 @@
         "Title":"SQLi",
         "Description":"injection SQL pas bien",
         "References":"RFC3628"
+    },
+
+    {
+        "id":10,
+        "VulnerabilityID": "40",
+        "PkgName": "jinja2",
+        "InstalledVersion": "1.8.1",
+        "FixedVersion": "1.9.0",
+        "Severity":"Medium",
+        "Title":"pas d'idee",
+        "Description":"le manque d'idée va tuer ton projet",
+        "References":"RFC498"
+    },
+    {
+        "id":11,
+        "VulnerabilityID": "50",
+        "PkgName": "jinja2",
+        "InstalledVersion": "1.8.1",
+        "FixedVersion": "1.9.0",
+        "Severity":"Medium",
+        "Title":"pas d'idee",
+        "Description":"le manque d'idée va tuer ton projet",
+        "References":"RFC498"
     }
 ]
