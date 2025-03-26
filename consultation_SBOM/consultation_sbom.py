@@ -29,5 +29,5 @@ def sbom(id):
     recup_sbom()
     return sboms[id]
 
-app.run()
+#app.run()
 
