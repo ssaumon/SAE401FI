@@ -36,34 +36,6 @@ paths:
         '400':
           description: Invalid status value
 
-  /template/{idprojet}:
-    get:
-      tags:
-        - rapports
-      summary: affiche sur une page web le rapport d'un projet en fonction de son ID
-
-      parameters:
-        - name: idprojet
-          in: path
-          description: ID du projet à afficher
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/sbom'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/sbom'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: sbom non trouvé
 
 components:
   schemas:
