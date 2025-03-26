@@ -1,5 +1,5 @@
 # Utiliser une image Python officielle comme image de base
-FROM python:3.8-slim
+FROM python:3.11
 
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /tmp
