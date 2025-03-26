@@ -2,7 +2,7 @@
 
 ## Gestion des projets --> Paul Hoffbeck
 
-## Importation de SBOM --> Maxence Debeauvais
+## Importation de SBOM --> Simon Collet
 
 ## Consultation de SBOM --> Simon Collet
 
@@ -12,4 +12,4 @@
 
 ## Rapports --> Paul Hoffbeck
 
-## Conteneurisation et orchestration --> Tout le monde
+## Conteneurisation et orchestration --> Maxence Debeauvais
