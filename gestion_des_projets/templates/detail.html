@@ -31,6 +31,8 @@
     <a href="http://killian/vulne/{{ projets.id }}" class="btn btn-info" download="Vulné_Projet_{{ projets.id }}.json">Lien du téléchargement du Raport de vulnérabilité {{ projets.id }}</a>
     <br>
     <br>
+
+    {%if perm.write%}
     <h2>Mettre à jour le projet :</h2>
     <form method="POST" action="/projet/update">
         <div class="mb-3 mt-3">
@@ -43,10 +45,39 @@
         <br>
         <button type="submit" class="btn btn-primary">Mettre a jour et revenir à la page d'acceuil</button>
       </form>
+      {% endif %}
       <br>
-      <a class="nav-link" href="/projet/delete/{{ projets.id }}"><button type="button" class="btn btn-danger">Supprimer</button></a>
+      {% if perm.admin %}
+      <a class="nav-link" href="/projet/delete/{{ projets.id }}">
+        <button type="button" class="btn btn-danger">Supprimer</button>
+      </a>
       <br>
-    <a class="nav-link" href="/"><button type="button" class="btn btn-warning">Retour à la page d'accueil</button></a>
+          <h2>Ajouter un utilisateur :</h2>
+          <form method="POST" action="/projet/projet/adduser">
+            <div class="mb-3 mt-3">
+                <label class="form-label">Mail de l'utilisateur :</label>
+                <input type="email" class="form-control" name="user" required>
+            </div>
+            <input type="hidden" name="id" value="{{ projets.id }}">
+            
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="permissions" value="write" id="lecture">
+                <label class="form-check-label" for="lecture">Lecture</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="permissions" value="read" id="ecriture">
+                <label class="form-check-label" for="ecriture">Écriture</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="permissions" value="admin" id="admin">
+                <label class="form-check-label" for="admin">Admin</label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Ajouter un utilisateur</button>
+        </form>
+      <br>        
+    {% endif %}
+    <a class="nav-link" href="/homepage"><button type="button" class="btn btn-warning">Retour à la page d'accueil</button></a>
   </div>
 
 </body>
