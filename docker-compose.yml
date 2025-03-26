@@ -4,11 +4,12 @@ services:
   user:
     build:
       context: "./gestion-des-utilisateurs"
+      dockerfile: gestuser.Dockerfile
     container_name: user
     networks:
       - internal_network
     volumes:
-      - user
+      - user:/app
 
   import-sbom:
     build:
@@ -17,7 +18,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - sbom
+      - sbom:/app
 
   consult-sbom:
     build: 
@@ -37,7 +38,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - vuln
+      - vuln:/app
 
   rapport:
     build:
@@ -50,7 +51,7 @@ services:
 
   gestion_projet:
     build: 
-      context: "./gestion-des-projets"
+      context: "./gestion_des_projets"
     container_name: gestion_projet
     depends_on:
       - vuln
@@ -58,7 +59,7 @@ services:
     networks:
       - internal_network
     volumes:
-      - gestion_projet
+      - gestion_projet:/app
     ports:
       - "5000:5000"
 
