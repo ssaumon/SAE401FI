@@ -18,7 +18,7 @@
   "Nom du projet": "string",
   "Utilisateurs autorisés": [
     "user1",
-    "user2"
+    "user2"]
 }
 ```
 
