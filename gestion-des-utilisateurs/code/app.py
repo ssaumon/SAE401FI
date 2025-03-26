@@ -26,6 +26,14 @@ def hello_world():
 
 ############################################################################################################################
 
+@app.route('/reset_json')     # racine
+def reset_json():
+    write_json(json_path_usr, json_user)
+    write_json(json_path_perm, json_perm)
+    return 'reset_json'
+
+############################################################################################################################
+
 @app.route('/register', methods=['POST'])
 def register():
     global json_user 

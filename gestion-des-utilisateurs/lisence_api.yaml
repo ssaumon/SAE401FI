@@ -132,7 +132,7 @@ paths:
   /add-permissions:
     post:
       tags:
-      - user
+      - Permission
       summary: Add user permissions
       requestBody:
         required: true
@@ -152,7 +152,7 @@ paths:
   /modify-permissions:
     put:
       tags:
-      - user
+      - Permission
       summary: Modify user permissions
       requestBody:
         required: true
@@ -172,7 +172,7 @@ paths:
   /delete-permissions:
     delete:
       tags:
-      - user
+      - Permission
       summary: Modify user permissions
       parameters:
       - in: query
@@ -203,7 +203,7 @@ paths:
   /permissions-by-project/{project_id}:
     get:
       tags:
-      - user
+      - Permission
       summary: Retrieve user permissions
       parameters:
       - in: path
@@ -230,7 +230,7 @@ paths:
   /permissions-by-email/{email}:
     get:
       tags:
-      - user
+      - Permission
       summary: Retrieve user permissions
       parameters:
       - in: path
