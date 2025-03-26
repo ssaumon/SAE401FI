@@ -1,4 +1,17 @@
 import json
+
+def read_json(filename):
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)  # Charger le JSON dans un objet Python
+        return data
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON : {e}")
+        return None
+    except Exception as e:
+        (f"Erreur : {e}")
+        return None
+    
 def write_json(filename, data):
     try:
         with open(filename, 'w', encoding='utf-8') as f:
@@ -9,7 +22,8 @@ def write_json(filename, data):
     
 json_path_usr = 'user.json'
 json_path_perm = 'permission.json'
-a = [
+
+json_user1 = [
     {
     "last_name": "Doe",
     "first_name": "John",
@@ -25,8 +39,8 @@ a = [
     "birth_date": "1990-02-02"
     }
 ]
-write_json(json_path_usr, a)
-b = [
+# write_json(json_path_usr, a)
+json_perm1 = [
     {
         "project_id": "1",
         "email": "john.doe@example.com",
@@ -42,4 +56,29 @@ b = [
         "admin": False
     }
 ]
+# write_json(json_path_perm, b)
+
+### test json file else recreate id
+a = read_json(json_path_usr)
+# print(a)
+if a is None:
+    
+    write_json(json_path_usr, json_user1)
+try:
+    # Tente de charger la chaîne en tant que JSON
+    aa = json.loads(a)
+    print(aa)
+except (ValueError, TypeError) as e:
+    print(e)
+    # Une exception indique que la chaîne n'est pas un JSON valide
+    write_json(json_path_usr, json_user1)
+
+### test json file else recreate id
+b = read_json(json_path_perm)
+# print(b)
+if b is None:
+    write_json(json_path_perm, json_perm1)
+    
+    
+write_json(json_path_usr, a)
 write_json(json_path_perm, b)

@@ -1,5 +1,8 @@
 from flask import jsonify
 import json
+import copy
+
+############################################################################################################################
 
 # Fonction pour valider et lire un fichier JSON
 def read_json(filename):
@@ -14,10 +17,6 @@ def read_json(filename):
         (f"Erreur : {e}")
         return None
     
-    
-if __name__ == '__main__':
-    print(read_json('ap-python/ap.json'))
-
 def write_json(filename, data):
     try:
         with open(filename, 'w', encoding='utf-8') as f:
@@ -25,12 +24,8 @@ def write_json(filename, data):
     except Exception as e:
         return(f"Erreur d'écriture dans le fichier : {e}")
 
-    
-    
-if __name__ == '__main__':
-    print(write_json('ap-python/ap.json','{}'))
- 
-   
+############################################################################################################################
+
 def get_object_by_email(json_data, search_email):
     for obj in json_data:
         if obj['email'] == str(search_email):  # Vérifie si l'ID correspond
@@ -48,6 +43,15 @@ def modify_user_by_email(users, last_name, first_name, email, password, birth_da
             break  # Sortir de la boucle après modification
     return users  # Retourne toute la liste mise à jour
 
+def get_user_by_email(users, email):
+    for user in users:
+        if user['email'] == email:
+            user_copy = copy.deepcopy(user)
+            del user_copy['password']
+            return user_copy
+    return None
+
+
 def delete_user_by_email(users, email):
     for user in users:
         if user["email"] == email:
@@ -55,9 +59,21 @@ def delete_user_by_email(users, email):
             return users  # Retourne la liste mise à jour
     return ""
 
+############################################################################################################################
+
 def get_permissions_by_project(json_perm, project_id: str):
     return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
 
-
 def get_permissions_by_email(json_perm, email_id: str):
     return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
+
+def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
+    for perm in json_perm:
+        if str(perm['email']) == (email_id) and str(perm['project_id']) == (project_id) :
+            return perm
+    return None
+
+
+
+        
+        
