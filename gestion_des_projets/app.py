@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, json
+from flask import Flask, request, render_template, redirect, json, jsonify
 import json
 import requests
 
@@ -71,7 +71,8 @@ def get_project(id):
 @app.route('/projet/json/<id>')
 def get_json(id):
     projets = open_project_file()
-    return projets[str(id)]
+
+    return jsonify(projets[str(id)])
 
 @app.route('/projet/add', methods=["POST"])
 def add_project():
