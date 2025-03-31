@@ -5,4 +5,6 @@ services:
       dockerfile: gestuser.Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - ./code:/app
 

@@ -54,7 +54,7 @@ POST http://localhost:5000/add-permissions
 Content-Type: application/json
 
 {
-  "project_id": "1",
+  "project_id": "3",
   "email": "john.doe@example.com",
   "write": true,
   "read": true,

@@ -7,13 +7,15 @@ import copy
 # Fonction pour valider et lire un fichier JSON
 def read_json(filename):
     try:
-        with open(filename, 'r') as pr:
-            return json.load(pr)
-    except FileNotFoundError:
-        with open(filename, 'w') as pr:
-            json.dump({}, pr)
-        return []
-
+        with open(filename, 'r', encoding='utf-8') as f:
+            data = json.load(f)  # Charger le JSON dans un objet Python
+        return data
+    except json.JSONDecodeError as e:
+        print(f"Erreur de décodage JSON : {e}")
+        return ""
+    except Exception as e:
+        (f"Erreur : {e}")
+        return ""
     
 def write_json(filename, data):
     try:
@@ -25,10 +27,13 @@ def write_json(filename, data):
 ############################################################################################################################
 
 def get_object_by_email(json_data, search_email):
+    searchemail = str(search_email)
     for obj in json_data:
-        if obj['email'] == search_email:
+        print(obj)
+        print(obj['email'])
+        if str(obj['email']) == searchemail:
             return obj
-    return None
+    return ""
 
 def modify_user_by_email(users, last_name, first_name, email, password, birth_date):
     for user in users:
@@ -46,7 +51,7 @@ def get_user_by_email(users, email):
             user_copy = copy.deepcopy(user)
             del user_copy['password']
             return user_copy
-    return None
+    return ""
 
 
 def delete_user_by_email(users, email):
@@ -59,16 +64,24 @@ def delete_user_by_email(users, email):
 ############################################################################################################################
 
 def get_permissions_by_project(json_perm, project_id: str):
-    return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
+    # return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
+    for perm in json_perm:
+        if str(perm['project_id']) == (project_id):
+            return perm
+    return ""
 
 def get_permissions_by_email(json_perm, email_id: str):
-    return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
+    # return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
+    for perm in json_perm:
+        if str(perm['email']) == (email_id):
+            return perm
+    return ""
 
 def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
     for perm in json_perm:
         if str(perm['email']) == (email_id) and str(perm['project_id']) == (project_id) :
             return perm
-    return None
+    return ""
 
 
 
@@ -107,3 +120,23 @@ json_perm1 = [
 ]
         
         
+def purify_field(value):
+    """
+    Purifie un champ en s'assurant qu'il est une chaîne de caractères,
+    supprime les espaces superflus et élimine les caractères indésirables.
+
+    :param value: La valeur à purifier.
+    :return: La valeur purifiée sous forme de chaîne de caractères.
+    """
+    if not isinstance(value, str):
+        # Si la valeur n'est pas une chaîne, convertissez-la en chaîne
+        value = str(value)
+
+    # Supprimer les espaces superflus au début et à la fin
+    value = value.strip()
+
+    # Supprimer ou remplacer les caractères indésirables (exemple : supprimer les caractères non alphanumériques)
+    value = ''.join(char for char in value if char.isalnum() or char.isspace())
+
+    return value
+
