@@ -79,7 +79,7 @@ paths:
                 last_name: Doe
                 first_name: John
                 email: john.doe@example.com
-                birth_date: '1990-01-01'
+                birth_date: '01-01-1990'
 
         '401':
           description: Invalid credentials
@@ -275,7 +275,7 @@ components:
         birth_date:
           type: string
           format: date
-          example: "1990-01-01"
+          example: "01-01-1990"
       required:
       - last_name
       - first_name
