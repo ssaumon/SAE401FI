@@ -1,0 +1,23 @@
+# Fichiers compilés Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Environnements virtuels
+venv/
+env/
+
+# Artefacts de build
+build/
+dist/
+
+# Fichiers de configuration locaux
+*.env
+
+# Fichiers spécifiques à l'IDE
+*.idea/
+*.vscode/
+
+# Autres fichiers ou dossiers à ignorer
+gestion-des-utilisateurs/bin/
+gestion-des-utilisateurs/code/__pycache__/
