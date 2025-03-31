@@ -18,7 +18,7 @@
   "Nom du projet": "string",
   "Utilisateurs autorisés": [
     "user1",
-    "user2"]
+    "user2"
 }
 ```
 
@@ -93,15 +93,6 @@
 |---------|---------|-------------|----------|
 | **GET** | `consult_sbom(id)` | Récupère le fichier SBOM correspondant à `id` | **200** : OK <br> **404** : SBOM introuvable |
 | **GET** | `Import_perms(id_sbom, id_user)` | Retourne les permissions relatives à l’ID du SBOM pour un utilisateur donné | **200** : OK |
-
----
-
-## Rapports
-**Responsable : Simon COLLET**
-
-| Méthode | Requête | Description | Réponse |
-|---------|---------|-------------|----------|
-| **GET** | `getrapport(id)` |crée le rapport a partir de l'ID passé en paramètre | **200** : OK <br> **404** : ID introuvable |
 
 ---
 
