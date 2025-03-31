@@ -8,35 +8,44 @@ app = Flask(__name__)
 sbom = {}
 vul = []
 prj = {}
+
+
 cwd= Path.cwd().joinpath("rapports")
 
 
 
 def recup_sbom(id):
     global sbom
-    sbom = json.loads(requests.get("http://consult-sbom:5000/sbom/"+id).text)
-    #with open(cwd.joinpath("exemple_sbom.json"),encoding='UTF-8') as f:
-    #    sbom = json.load(f)
+    requ=requests.get("http://consult-sbom:5000/sbom/"+id)
+    if requ.status_code==200:
+        sbom = json.loads(requ.text)
+    return requ.status_code
+
+
 
 def recup_vul(id):
     global vul
-    
-    vul = json.loads(requests.get("http://vuln:5000/Vulnerability/sbom/"+id).text)
-    #with open(cwd.joinpath("exemple_vulnerabilite.json"),encoding='UTF-8')as f:
-    #    vul = json.load(f)
+    requ=requests.get("http://vuln:5000/Vulnerability/sbom/"+id)
+    if requ.status_code==200:
+        vul = json.loads(requ.text)
+    return requ.status_code
+
 
 def recup_prj(id):
     global prj
-    
-    prj = json.loads(requests.get("http://projet:5000/projet/"+id).text)
-    #with open(cwd.joinpath("exemple_projet.json"),encoding='UTF-8') as f:
-    #    prj = json.load(f)
+    requ=requests.get("http://gestion_projet:5000/projet/json/"+id)
+    return requ
+    if requ.status_code==200:
+        prj = json.loads(requ.text)
+    return requ.status_code
+
 
 def recup_global(id):
     recup_vul(id)
-    recup_sbom(id)
-    recup_prj(id)
-    
+    if recup_sbom(id) != 200:
+        "sbom non importé"
+    if recup_prj(id) != 200:
+        "projet non récupéré"
 
 @app.route("/")
 def index():
