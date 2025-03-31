@@ -56,17 +56,17 @@ def register():
     if not data:
         return jsonify({"error": "Invalid content type, JSON is expected"}), 415
 
-    last_name = data.get('last_name', '').strip()
-    first_name = data.get('first_name', '').strip()
-    email = data.get('email', '').strip()
-    password = data.get('password', '')
-    birth_date = data.get('birth_date', '')
-
     required_fields = ["last_name", "first_name", "email", "password", "birth_date"]
     for field in required_fields:
         if field not in data or not data[field]:
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
+    last_name = data['last_name']
+    first_name = data['first_name']
+    email = data['email']
+    password = data['password']
+    birth_date = data['birth_date']
+    
     if get_object_by_email(json_user, email):
         return jsonify({"message": "Un utilisateur avec cet e-mail existe déjà."}), 409
 
@@ -95,8 +95,8 @@ def login():
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
     # Purifiez les champs
-    email = (data['email'])
-    password = (data['password'])
+    email = data['email']
+    password = data['password']
 
     # Écrire dans le journal (à des fins de débogage)
     write_json(json_path_log, {"action": "login_attempt", "email": email})
@@ -129,18 +129,18 @@ def user(email):
 @app.route('/modify', methods=['POST'])
 def modify():
     global json_user 
-    data = request.get_json()
-    # print(data['id'])
-    last_name = data['last_name'].strip()  # .strip() pour supprimer les espaces
-    first_name = data['first_name'].strip()
-    email = data['email'].strip()
-    password = data['password']
-    birth_date = data['birth_date']
+    data = request.get_json()    
     
     required_fields = ["last_name", "first_name", "email", "password", "birth_date"]
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Champ manquant : {field}"}), 400
+    last_name = data['last_name']  #  pour supprimer les espaces
+    first_name = data['first_name']
+    email = data['email']
+    password = data['password']
+    birth_date = data['birth_date']
+    
     print(data)
     print(request)
     # json_user= []
@@ -169,7 +169,7 @@ def deleteuser(email):
     global json_user 
     # data = request.get_json()
     # print(data['id'])
-    # email = data['email'].strip()
+    # email = data['email']
     
     # required_fields = ["email"]
     # for field in required_fields:
@@ -202,8 +202,8 @@ def addpermissions():
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
     # Vérifiez que les valeurs ne sont pas vides
-    project_id = data['project_id'].strip()
-    email = data['email'].strip()
+    project_id = data['project_id']
+    email = data['email']
     write = data['write']
     read = data['read']
     admin = data['admin']
@@ -240,11 +240,6 @@ def modifypermissions():
     global json_user 
     data = request.get_json()
     # print(data['id'])
-    project_id = data['project_id'].strip()  # .strip() pour supprimer les espaces
-    email = data['email'].strip()
-    write = data['write']
-    read = data['read']
-    admin = data['admin']
     
     required_fields = ["project_id", "email", "write", "read", "admin"]
     for field in required_fields:
@@ -254,6 +249,12 @@ def modifypermissions():
     if project_id == "" or email == "" or email == "" or write == "" or read == "" or admin == "":
         return jsonify({"error": "Tous les champs sont requis"}), 400
 
+    project_id = data['project_id']  #  pour supprimer les espaces
+    email = data['email']
+    write = data['write']
+    read = data['read']
+    admin = data['admin']
+    
     if get_object_by_email(json_user, email) == "":
         return jsonify({"message": "User dosent exist"}), 409
     
@@ -277,8 +278,8 @@ def modifypermissions():
 def delete_permissions():
     global json_user, json_perm
 
-    project_id = request.args.get('project_id', '').strip()
-    email = request.args.get('email', '').strip()
+    project_id = request.args['project_id']
+    email = request.args['email']
 
     if not project_id or not email:
         return jsonify({"error": "Tous les champs sont requis"}), 400
@@ -299,7 +300,7 @@ def delete_permissions():
 
 @app.route('/permissions-by-project/<project_id>', methods=['GET'])
 def permissionsbyproject(project_id):
-    project_id = project_id.strip()
+    project_id = project_id
 
     if not project_id:
         return jsonify({"error": "Le project_id est requis"}), 400
@@ -316,7 +317,7 @@ def permissionsbyproject(project_id):
 
 @app.route('/permissions-by-email/<email>', methods=['GET'])
 def permissionsbyemail(email):
-    email = email.strip()
+    email = email
 
     if not email:
         return jsonify({"error": "Le email est requis"}), 400
