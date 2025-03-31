@@ -10,20 +10,23 @@
 <body>
     <div class="container-fluid p-5 bg-success text-warning text-center">
         <h1>Connexion</h1>
-      </div>
-      <br>
-      <div class="container bg-light">
-        <h1>Connexion :</h1>
+    </div>
+    <br>
+    <div class="container bg-light p-4 rounded">
+        <h2>Connexion :</h2>
         <form method="POST" action="/login/login">
-          <div class="mb-3 mt-3">
+          <div class="mb-3">
             <label class="form-label">Adresse Mail</label>
-            <input class="form-control" name="mail">
+            <input type="email" class="form-control" name="mail" required>
           </div>
-          <label for="comment">Mot de passe :</label>
-          <textarea class="form-control" rows="5" name="password"></textarea>
-          <br>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="mb-3">
+            <label class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" name="password" required>
           </div>
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+          <br><br>
+          <p>Pas de compte ? <a href="/register">Inscrivez-vous</a></p>
         </form>
-      </div>
+    </div>
 </body>
+</html>
