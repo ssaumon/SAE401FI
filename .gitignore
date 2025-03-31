@@ -21,3 +21,4 @@ dist/
 # Autres fichiers ou dossiers à ignorer
 gestion-des-utilisateurs/bin/
 gestion-des-utilisateurs/code/__pycache__/
+gestion-des-utilisateurs/code/permission.json
