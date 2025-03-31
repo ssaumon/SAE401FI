@@ -48,7 +48,7 @@ def checklogin():
     r = requests.post("http://user/login", data=content)
     if r.status_code == 201:
         user = requests.get(f"http://user/user/{mail}")
-        perm =  requests.get("http://user//permissions-by-email/{email}")
+        perm =  requests.get(f"http://user//permissions-by-email/{mail}")
         return redirect("/homepage")
     else :
         return redirect('/')
