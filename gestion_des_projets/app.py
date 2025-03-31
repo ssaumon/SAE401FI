@@ -4,7 +4,6 @@ import requests
 
 app = Flask(__name__)
 
-page_login = "Page Login à Faire ultérieurement"
 
 user={}
 perm=[]
@@ -27,11 +26,14 @@ def bienvenue():
     global perm
     global user
     projets = open_project_file()
-    lstid= [permission["project_id" ] for permission in perm if permission['read']== True]
+    lstid=[]
+    if len(perm)!=0:
+        lstid= [permission["project_id" ] for permission in perm if permission['read']== True]
     lstprojet={}
     for projet in projets:
         if projet in lstid:
             lstprojet[projet] = projets[projet]
+
     return render_template("index.html", projets=lstprojet, user=user)
 
 @app.route('/')
@@ -45,10 +47,11 @@ def checklogin():
     mail = request.form.get('mail')
     pswd= request.form.get('password')
     content = {'email':mail, 'password':pswd}
-    r = requests.post("http://user/login", data=content)
+
+    r = requests.post("http://user:5000/login", json=content)
     if r.status_code == 201:
-        user = requests.get(f"http://user/user/{mail}")
-        perm =  requests.get(f"http://user//permissions-by-email/{mail}")
+        user = requests.get(f"http://user:5000/user/{mail}").json()["data"]
+        perm =  requests.get(f"http://user:5000//permissions-by-email/{mail}").json()["data"]
         return redirect("/homepage")
     else :
         return redirect('/')
@@ -78,7 +81,7 @@ def add_project():
     description = request.form.get('description')
     projects[str(idp)]={"id":idp, "nom":nom, "description":description}
     permprojet= { "project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
-    r= requests.post('http://user/add-permissions', data = permprojet)
+    r= requests.post('http://user:5000/add-permissions', json = permprojet)
     perm.append(permprojet)
     save_project_file(projects)
     return redirect("/homepage")
@@ -120,7 +123,7 @@ def ajouter_user():
     admin = True if "admin" in auth else False
 
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
-    r= requests.post('http://user/add-permissions', data = permprojet)
+    r= requests.post('http://user:5000/add-permissions', json = permprojet)
     return redirect(f"/projet/{idproj}")
 
 
@@ -132,5 +135,13 @@ def enre():
 @app.route("/register/send", methods=['POST'])
 def send_user():
     donnee= request.form.to_dict()
-    r=requests.post('http://user/register', data= donnee)
+    r=requests.post('http://user:5000/register', json= donnee)
+    return redirect("/")
+
+@app.route("/logout")
+def logout():
+    global user
+    global perm
+    user={}
+    perm=[]
     return redirect("/")
