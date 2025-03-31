@@ -217,7 +217,7 @@ def addpermissions():
 
     # Vérifiez si les permissions existent déjà
     existing_perm = get_perm_email_idproject(json_perm, email, project_id)
-    if existing_perm:
+    if existing_perm != "":
         return jsonify({"error": "Permissions déjà existantes pour cet utilisateur et ce projet"}), 409
 
     # Ajoutez les nouvelles permissions
@@ -258,7 +258,7 @@ def modifypermissions():
         return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 400
 
     # Vérifiez si l'utilisateur existe
-    if not get_object_by_email(json_user, email):
+    if get_object_by_email(json_user, email) == "":
         return jsonify({"error": "Utilisateur inexistant"}), 404
 
     # Vérifiez si les permissions existent déjà

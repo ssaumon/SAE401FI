@@ -69,7 +69,7 @@ Content-Type: application/json
 
 {
   "project_id": "1",
-  "email": "john.doe2@example.com",
+  "email": "john.doe@example.com",
   "write": false,
   "read": true,
   "admin": true

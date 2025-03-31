@@ -27,11 +27,11 @@ def write_json(filename, data):
 ############################################################################################################################
 
 def get_object_by_email(json_data, search_email):
-    search_email = str(search_email)
+    searchemail = str(search_email)
     for obj in json_data:
         print(obj)
         print(obj['email'])
-        if str(obj['email']) == search_email:
+        if str(obj['email']) == searchemail:
             return obj
     return ""
 
