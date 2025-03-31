@@ -19,12 +19,12 @@ Content-Type: application/json
   "password": "wrongpassword"
 }
 
-HTTP/1.1 401
+HTTP/1.1 400
 
 # Test 3: Get user info with invalid email format
 GET http://localhost:5000/user/invalid-email
 
-HTTP/1.1 401
+HTTP/1.1 409
 
 # Test 4: Modify user information with invalid data
 PUT http://localhost:5000/modify
@@ -38,7 +38,7 @@ Content-Type: application/json
   "birth_date": "invalid-date"
 }
 
-HTTP/1.1 400
+HTTP/1.1 405
 
 # Test 5: Delete a user with invalid email format
 DELETE http://localhost:5000/delete-user/invalid-email

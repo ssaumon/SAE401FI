@@ -18,11 +18,12 @@ from fonction import *
 
 json_path_usr = 'user.json'
 json_path_perm = 'permission.json'
+json_path_log = 'logs.txt'
 
 
-json_user = str(read_json(json_path_usr))
+json_user = read_json(json_path_usr)
 
-json_perm = str(read_json(json_path_perm))
+json_perm = read_json(json_path_perm)
 
 ##### START #####
 
@@ -87,22 +88,23 @@ def login():
     global json_user 
     data = request.get_json()
     # print(data['id'])
-    email = data['email'].strip()  # .strip() pour supprimer les espaces
-    password = data['password'].strip()
-     
+    email = purify_field(data['email'])  # .strip() pour supprimer les espaces
+    password = purify_field(data['password'])
+    write_json(json_path_log, email)
     required_fields = ["email", "password"]
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
-        # print(data)
+        print(json_user)
         # print(request)
 
         a = get_object_by_email(json_user, email)
         # print(a)
-        if a['password']==password:
-            return jsonify({"message": "User avec bon mdp"}), 200
-        
+        if a != None:
+            if a['password'] == password:
+                return jsonify({"message": "User avec bon mdp"}), 200
+    return jsonify({"error": "Tous les champs sont requis"}), 400
 ############################################################################################################################
     
 @app.route('/user/<email>', methods=['GET'])
