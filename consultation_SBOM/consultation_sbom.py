@@ -18,8 +18,9 @@ def recup_sbom():
 def version(id):
     recup_sbom()
     li=[]
-    temp_dict={}
+    
     for el in sboms[id]["components"]:
+        temp_dict={}
         temp_dict[el["name"]]=el["version"]
         li.append(temp_dict)
     return li
