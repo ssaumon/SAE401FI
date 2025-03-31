@@ -21,7 +21,8 @@ def version(id):
     
     for el in sboms[id]["components"]:
         temp_dict={}
-        temp_dict[el["name"]]=el["version"]
+        temp_dict["InstalledVersion"]=el["version"]
+        temp_dict["PkgName"]=el["name"]
         li.append(temp_dict)
     return li
 

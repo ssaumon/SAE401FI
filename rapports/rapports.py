@@ -89,8 +89,8 @@ def pdf(id):
             pdf.cell(30,20,v["References"],border=1,ln=1)
             pdf.ln()
 
-
-    pdf.output(cwd.joinpath("mon_fichier.pdf"))
-    return send_file(cwd.joinpath("mon_fichier.pdf"))
+    
+    pdf.output("mon_fichier.pdf")
+    return send_file("mon_fichier.pdf")
 
 #app.run()
