@@ -8,9 +8,9 @@ sboms= {}
 
 def recup_sbom():
     global sboms
-    #sboms = requests.get("URL de maxence")
-    with open(Path.cwd().joinpath("consultation_SBOM\exemple_sbom.json")) as f:
-        sboms = json.load(f)
+    sboms = requests.get("import_sbom:5000/sbom")
+    #with open(Path.cwd().joinpath("consultation_SBOM\exemple_sbom.json")) as f:
+    #    sboms = json.load(f)
 
 
 
