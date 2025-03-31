@@ -14,26 +14,29 @@ cwd= Path.cwd().joinpath("rapports")
 
 def recup_sbom(id):
     global sbom
-    sbom = requests.get("consult_sbom/sbom/"+id)
+    sbom = json.loads(requests.get("http://consult-sbom:5000/sbom/"+id).text)
     #with open(cwd.joinpath("exemple_sbom.json"),encoding='UTF-8') as f:
     #    sbom = json.load(f)
 
 def recup_vul(id):
     global vul
-    vul = requests.get("vuln:5000/Vulnerability/sbom/"+id)
+    
+    vul = json.loads(requests.get("http://vuln:5000/Vulnerability/sbom/"+id).text)
     #with open(cwd.joinpath("exemple_vulnerabilite.json"),encoding='UTF-8')as f:
     #    vul = json.load(f)
 
 def recup_prj(id):
     global prj
-    vul = requests.get("projet:5000/projet/"+id)
+    
+    prj = json.loads(requests.get("http://projet:5000/projet/"+id).text)
     #with open(cwd.joinpath("exemple_projet.json"),encoding='UTF-8') as f:
     #    prj = json.load(f)
 
 def recup_global(id):
+    recup_vul(id)
     recup_sbom(id)
     recup_prj(id)
-    recup_vul(id)
+    
 
 @app.route("/")
 def index():
