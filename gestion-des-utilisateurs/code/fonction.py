@@ -7,15 +7,13 @@ import copy
 # Fonction pour valider et lire un fichier JSON
 def read_json(filename):
     try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            data = json.load(f)  # Charger le JSON dans un objet Python
-        return data
-    except json.JSONDecodeError as e:
-        print(f"Erreur de décodage JSON : {e}")
-        return None
-    except Exception as e:
-        (f"Erreur : {e}")
-        return None
+        with open(filename, 'r') as pr:
+            return json.load(pr)
+    except FileNotFoundError:
+        with open(filename, 'w') as pr:
+            json.dump({}, pr)
+        return []
+
     
 def write_json(filename, data):
     try:
