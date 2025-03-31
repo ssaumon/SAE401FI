@@ -22,7 +22,7 @@ def version(id):
     for el in sboms[id]["components"]:
         temp_dict[el["name"]]=el["version"]
         li.append(temp_dict)
-    return temp_dict
+    return li
 
 @app.route("/sbom/<id>")
 def sbom(id):
