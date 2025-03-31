@@ -4,10 +4,8 @@ import requests
 
 app = Flask(__name__)
 
-
 user={}
 perm=[]
-
 def open_project_file():
     try:
         with open('ap.json', 'r') as pr:
@@ -47,7 +45,6 @@ def checklogin():
     mail = request.form.get('mail')
     pswd= request.form.get('password')
     content = {'email':mail, 'password':pswd}
-
     r = requests.post("http://user:5000/login", json=content)
     if r.status_code == 201:
         user = requests.get(f"http://user:5000/user/{mail}").json()["data"]
@@ -70,6 +67,11 @@ def get_project(id):
         if permission['read']==True and permission["project_id"]==str(id):
             return render_template("detail.html", projets=projets[str(id)], perm=perm[0])
     return "Petit chenapant c'est interdit"
+
+@app.route('/projet/json/<id>')
+def get_json(id):
+    projets = open_project_file()
+    return projets[str(id)]
 
 @app.route('/projet/add', methods=["POST"])
 def add_project():
@@ -137,6 +139,8 @@ def send_user():
     donnee= request.form.to_dict()
     r=requests.post('http://user:5000/register', json= donnee)
     return redirect("/")
+
+
 
 @app.route("/logout")
 def logout():
