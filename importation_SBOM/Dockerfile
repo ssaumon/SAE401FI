@@ -1,9 +1,9 @@
-FROM ubuntu
-RUN apt update && apt upgrade -y
-RUN apt install -y python3 python3-pip python3-venv python3-flask
-WORKDIR /home/
-COPY ImportSBOM.py ImportSBOM.py
-COPY base_de_donnees_sbom.json base_de_donnees_sbom.json
+FROM python:3.11
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 ENV FLASK_APP=ImportSBOM.py
-ENV FLASK_ENV=development
-CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000"]
+ENV FLASK_RUN_HOST=0.0.0.0
+EXPOSE 5000
+CMD ["flask", "run"]
