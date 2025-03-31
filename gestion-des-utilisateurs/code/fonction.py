@@ -28,10 +28,9 @@ def write_json(filename, data):
 
 def get_object_by_email(json_data, search_email):
     for obj in json_data:
-        if obj['email'] == str(search_email):  # Vérifie si l'ID correspond
-            return obj  # Retourne l'objet trouvé
-    return ""  # Retourne None si l'objet n'est pas trouvé
-
+        if obj['email'] == search_email:
+            return obj
+    return None
 
 def modify_user_by_email(users, last_name, first_name, email, password, birth_date):
     for user in users:
@@ -75,5 +74,38 @@ def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
 
 
 
+json_user1 = [
+    {
+    "last_name": "Doe",
+    "first_name": "John",
+    "email": "john.doe@example.com",
+    "password": "securepassword123",
+    "birth_date": "1990-01-01"
+    },
+    {
+    "last_name": "Doe2",
+    "first_name": "John2",
+    "email": "john.doe2@example.com",
+    "password": "securepassword123",
+    "birth_date": "1990-02-02"
+    }
+]
+# write_json(json_path_usr, a)
+json_perm1 = [
+    {
+        "project_id": "1",
+        "email": "john.doe@example.com",
+        "write": True,
+        "read": True,
+        "admin": False
+    },
+    {
+        "project_id": "2",
+        "email": "john.doe2@example.com",
+        "write": True,
+        "read": True,
+        "admin": False
+    }
+]
         
         
