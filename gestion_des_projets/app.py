@@ -40,30 +40,19 @@ def login():
 
 @app.route('/login/login', methods=["POST"])
 def checklogin():
-    """
     global user
     global perm
     mail = request.form.get('mail')
     pswd= request.form.get('password')
     content = {'email':mail, 'password':pswd}
-    r = requests.post("http://malo/login", data=content)
+    r = requests.post("http://user/login", data=content)
     if r.status_code == 201:
-        user = requests.get("http://malo/getuser/"+mail)
-        perm =  requests.get("http://malo/getperm/"+mail)
+        user = requests.get(f"http://user/user/{mail}")
+        perm =  requests.get("http://user//permissions-by-email/{email}")
         return redirect("/homepage")
     else :
         return redirect('/')
-    """
-    global user
-    global perm
-    user={
-        "last_name": "Doe",
-        "first_name": "John",
-        "email": "john.doe@example.com",
-        "password": "securepassword123",
-        "birth_date": "1990-01-01"
-    }
-    return redirect('/homepage')
+
 
 
 
@@ -89,7 +78,7 @@ def add_project():
     description = request.form.get('description')
     projects[str(idp)]={"id":idp, "nom":nom, "description":description}
     permprojet= { "project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
-    #r= requests.post('http://malo/permission/post', data = permprojet)
+    r= requests.post('http://user/add-permissions', data = permprojet)
     perm.append(permprojet)
     save_project_file(projects)
     return redirect("/homepage")
@@ -131,5 +120,17 @@ def ajouter_user():
     admin = True if "admin" in auth else False
 
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
-    #r= requests.post('http://malo/permission/post', data = permprojet)
+    r= requests.post('http://user/add-permissions', data = permprojet)
     return redirect(f"/projet/{idproj}")
+
+
+@app.route("/register")
+def enre():
+    return render_template("register.html")
+
+
+@app.route("/register/send", methods=['POST'])
+def send_user():
+    donnee= request.form.to_dict()
+    r=requests.post('http://user/register', data= donnee)
+    return redirect("/")
