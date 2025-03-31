@@ -8,7 +8,7 @@ sboms= {}
 
 def recup_sbom():
     global sboms
-    sboms = requests.get("import_sbom:5000/sbom")
+    sboms = json.loads(requests.get("http://import-sbom:5000/sbom").text)
     #with open(Path.cwd().joinpath("consultation_SBOM\exemple_sbom.json")) as f:
     #    sboms = json.load(f)
 
@@ -28,6 +28,7 @@ def version(id):
 def sbom(id):
     recup_sbom()
     return sboms[id]
+    
 
 #app.run()
 
