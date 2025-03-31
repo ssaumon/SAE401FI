@@ -34,7 +34,7 @@ def recup_vul(id):
 def recup_prj(id):
     global prj
     requ=requests.get("http://gestion_projet:5000/projet/json/"+id)
-    return requ
+    
     if requ.status_code==200:
         prj = json.loads(requ.text)
     return requ.status_code
@@ -43,18 +43,18 @@ def recup_prj(id):
 def recup_global(id):
     recup_vul(id)
     if recup_sbom(id) != 200:
-        "sbom non importé"
+        return"sbom non importé"
     if recup_prj(id) != 200:
-        "projet non récupéré"
+        return"projet non récupéré"
 
 @app.route("/")
 def index():
-    recup_global(10)
+    recup_global(1)
     return render_template("rapport.j2",projet=prj,sbom=sbom,vul=vul)
 
 @app.route("/pdf/<id>")
 def pdf(id):
-    recup_global(id)
+    print(recup_global(id))
 
 
     pdf=FPDF()
