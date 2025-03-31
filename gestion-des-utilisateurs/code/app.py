@@ -1,3 +1,11 @@
+
+from datetime import datetime
+
+# Obtenir la date et l'heure actuelles
+# Afficher la date et l'heure
+print("Date et heure actuelles :", datetime.now())
+
+
 ## librairy
 from flask import *
 import copy
@@ -12,9 +20,9 @@ json_path_usr = 'user.json'
 json_path_perm = 'permission.json'
 
 
-json_user = read_json(json_path_usr)
+json_user = str(read_json(json_path_usr))
 
-json_perm = read_json(json_path_perm)
+json_perm = str(read_json(json_path_perm))
 
 ##### START #####
 

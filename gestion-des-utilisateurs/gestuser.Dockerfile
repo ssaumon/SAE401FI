@@ -4,6 +4,12 @@ FROM python:3.11
 # Définir le répertoire de travail dans le conteneur
 WORKDIR /tmp
 
+# Installer tzdata pour les informations de fuseau horaire
+RUN apt-get update && apt-get install -y tzdata
+
+# Définir le fuseau horaire sur Paris
+ENV TZ=Europe/Paris
+
 # Copier le fichier requirements.txt dans le conteneur
 COPY requirements.txt .
 
