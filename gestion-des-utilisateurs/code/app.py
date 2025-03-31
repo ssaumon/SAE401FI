@@ -85,26 +85,33 @@ def register():
     
 @app.route('/login', methods=['POST'])
 def login():
-    global json_user 
+    global json_user
     data = request.get_json()
-    # print(data['id'])
-    email = purify_field(data['email'])  # .strip() pour supprimer les espaces
-    password = purify_field(data['password'])
-    write_json(json_path_log, email)
+
+    # Vérifiez que toutes les clés requises sont présentes
     required_fields = ["email", "password"]
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
-        print(json_user)
-        # print(request)
+    # Purifiez les champs
+    email = (data['email'])
+    password = (data['password'])
 
-        a = get_object_by_email(json_user, email)
-        # print(a)
-        if a != None:
-            if a['password'] == password:
-                return jsonify({"message": "User avec bon mdp"}), 200
-    return jsonify({"error": "Tous les champs sont requis"}), 400
+    # Écrire dans le journal (à des fins de débogage)
+    write_json(json_path_log, {"action": "login_attempt", "email": email})
+
+    # Recherchez l'utilisateur par e-mail
+    user = get_object_by_email(json_user, email)
+    print(user)
+    if user:
+        # Vérifiez le mot de passe
+        if user['password'] == password:
+            return jsonify({"message": "Utilisateur authentifié avec succès"}), 200
+        else:
+            return jsonify({"error": "Mot de passe incorrect"}), 401
+    else:
+        return jsonify({"error": "Utilisateur non trouvé"}), 404
 ############################################################################################################################
     
 @app.route('/user/<email>', methods=['GET'])
@@ -112,7 +119,7 @@ def user(email):
     
     # Supposons que json_user soit une liste d'utilisateurs chargée ailleurs dans votre application
     user_data = get_user_by_email(json_user, email)
-    if user_data is None:
+    if user_data is "":
         return jsonify({"error": "Utilisateur non trouvé"}), 409
     else:
         return jsonify({"message": "Utilisateur trouvé", "data": user_data}), 200
@@ -183,39 +190,48 @@ def deleteuser(email):
 
 @app.route('/add-permissions', methods=['POST'])
 def addpermissions():
-    global json_user 
+    global json_user, json_perm
     data = request.get_json()
-    # print(data['id'])
-    project_id = data['project_id'].strip()  # .strip() pour supprimer les espaces
-    email = data['email'].strip()
-    write = data['write']
-    read = data['read']
-    admin = data['admin']
-    
+
+    # Liste des champs requis
     required_fields = ["project_id", "email", "write", "read", "admin"]
+
+    # Vérifiez que toutes les clés requises sont présentes
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Champ manquant : {field}"}), 400
 
-    if project_id == "" or email == "" or email == "" or write == "" or read == "" or admin == "":
-        return jsonify({"error": "Tous les champs sont requis"}), 400
+    # Vérifiez que les valeurs ne sont pas vides
+    project_id = data['project_id'].strip()
+    email = data['email'].strip()
+    write = data['write']
+    read = data['read']
+    admin = data['admin']
 
-    if get_object_by_email(json_user, email) == "":
-        return jsonify({"message": "User dosent exist"}), 409
-    
-    a = get_perm_email_idproject(json_perm, email, project_id)
-    if a == None:
-        js = {
-            "project_id": project_id,
-            "email": email,
-            "write": write,
-            "read": read,
-            "admin": admin
-        }
-        json_perm.append(js)
-        
-        write_json(json_path_perm,json_perm)
-    return jsonify({"message": "User modify", "data": "true"}), 200
+    if not project_id or not email or write is None or read is None or admin is None:
+        return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 400
+
+    # Vérifiez si l'utilisateur existe
+    if not get_object_by_email(json_user, email):
+        return jsonify({"error": "Utilisateur inexistant"}), 404
+
+    # Vérifiez si les permissions existent déjà
+    existing_perm = get_perm_email_idproject(json_perm, email, project_id)
+    if existing_perm:
+        return jsonify({"error": "Permissions déjà existantes pour cet utilisateur et ce projet"}), 409
+
+    # Ajoutez les nouvelles permissions
+    new_permission = {
+        "project_id": project_id,
+        "email": email,
+        "write": write,
+        "read": read,
+        "admin": admin
+    }
+    json_perm.append(new_permission)
+    write_json(json_path_perm, json_perm)
+
+    return jsonify({"message": "Permissions ajoutées avec succès"}), 200
 
 ############################################################################################################################
 
@@ -306,7 +322,7 @@ def permissionsbyemail(email):
         return jsonify({"error": "Le email est requis"}), 400
 
     js = get_permissions_by_email(json_perm, email)
-
+    print(js)
     if js != "":
         return jsonify({"message": "Get permissions", "data": js}), 200
     else:

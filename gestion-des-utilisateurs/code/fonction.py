@@ -12,10 +12,10 @@ def read_json(filename):
         return data
     except json.JSONDecodeError as e:
         print(f"Erreur de décodage JSON : {e}")
-        return None
+        return ""
     except Exception as e:
         (f"Erreur : {e}")
-        return None
+        return ""
     
 def write_json(filename, data):
     try:
@@ -30,10 +30,10 @@ def get_object_by_email(json_data, search_email):
     search_email = str(search_email)
     for obj in json_data:
         print(obj)
-        # print(obj['email'])
-        # if str(obj['email']) == search_email:
-        #     return obj
-    return None
+        print(obj['email'])
+        if str(obj['email']) == search_email:
+            return obj
+    return ""
 
 def modify_user_by_email(users, last_name, first_name, email, password, birth_date):
     for user in users:
@@ -51,7 +51,7 @@ def get_user_by_email(users, email):
             user_copy = copy.deepcopy(user)
             del user_copy['password']
             return user_copy
-    return None
+    return ""
 
 
 def delete_user_by_email(users, email):
@@ -64,16 +64,24 @@ def delete_user_by_email(users, email):
 ############################################################################################################################
 
 def get_permissions_by_project(json_perm, project_id: str):
-    return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
+    # return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
+    for perm in json_perm:
+        if str(perm['project_id']) == (project_id):
+            return perm
+    return ""
 
 def get_permissions_by_email(json_perm, email_id: str):
-    return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
+    # return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
+    for perm in json_perm:
+        if str(perm['email']) == (email_id):
+            return perm
+    return ""
 
 def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
     for perm in json_perm:
         if str(perm['email']) == (email_id) and str(perm['project_id']) == (project_id) :
             return perm
-    return None
+    return ""
 
 
 

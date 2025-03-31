@@ -3,17 +3,17 @@ import os
 
 def read_json(filename):
     if not os.path.exists(filename):
-        return None
+        return ""
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data
     except json.JSONDecodeError as e:
         print(f"Erreur de décodage JSON : {e}")
-        return None
+        return ""
     except Exception as e:
         print(f"Erreur : {e}")
-        return None
+        return ""
 
 def write_json(filename, data):
     try:
@@ -62,7 +62,7 @@ json_perm1 = [
 
 # Test et recréation des fichiers JSON si nécessaire
 a = read_json(json_path_usr)
-if a is None:
+if a is "":
     write_json(json_path_usr, json_user1)
 else:
     try:
@@ -74,12 +74,12 @@ else:
         write_json(json_path_usr, json_user1)
 
 b = read_json(json_path_perm)
-if b is None:
+if b is "":
     write_json(json_path_perm, json_perm1)
 else:
     write_json(json_path_perm, b)
 
 # Écriture des fichiers JSON
-write_json(json_path_usr, a if a is not None else json_user1)
-write_json(json_path_perm, b if b is not None else json_perm1)
+write_json(json_path_usr, a if a is not "" else json_user1)
+write_json(json_path_perm, b if b is not "" else json_perm1)
 write_json(json_path_log, "a")

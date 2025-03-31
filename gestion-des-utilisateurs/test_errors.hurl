@@ -19,7 +19,7 @@ Content-Type: application/json
   "password": "wrongpassword"
 }
 
-HTTP/1.1 400
+HTTP/1.1 401
 
 # Test 3: Get user info with invalid email format
 GET http://localhost:5000/user/invalid-email
@@ -69,7 +69,7 @@ Content-Type: application/json
   "admin": false
 }
 
-HTTP/1.1 400
+HTTP/1.1 409
 
 # Test 8: Delete permissions with missing parameters
 DELETE http://localhost:5000/delete-permissions
@@ -79,9 +79,9 @@ HTTP/1.1 400
 # Test 9: Retrieve permissions by project with invalid project ID
 GET http://localhost:5000/permissions-by-project/invalid-project-id
 
-HTTP/1.1 400
+HTTP/1.1 409
 
 # Test 10: Retrieve permissions by email with invalid email format
 GET http://localhost:5000/permissions-by-email/invalid-email
 
-HTTP/1.1 400
+HTTP/1.1 409
