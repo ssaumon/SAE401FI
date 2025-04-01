@@ -64,36 +64,50 @@ def pdf(id):
     pdf=FPDF()
     pdf.add_page()
 
-    pdf.set_font("Arial", size=30)
-    pdf.cell(0,30,prj["nom"],align="C",ln=1)
+    #pdf.set_font("Arial", size=30)
+    #pdf.cell(0,30,prj["nom"],align="C",ln=1)
 
-    pdf.set_font("Arial", size=20)
-    pdf.cell(0,20,"description : ",ln=1)
+    #pdf.set_font("Arial", size=20)
+    #pdf.cell(0,20,"description : ",ln=1)
 
-    pdf.set_font("Arial", size=12)
-    pdf.cell(0,20,prj["description"],ln=1)
+    #pdf.set_font("Arial", size=12)
+    #pdf.multi_cell(0,20,prj["description"],ln=1)
 
-    pdf.set_font("Arial", size=20)
-    pdf.cell(0,20,f'Version : {sbom["metadata"]["component"]["version"]}',ln=1)
+    #pdf.set_font("Arial", size=20)
+    #pdf.cell(0,20,f'Version : {sbom["metadata"]["component"]["version"]}',ln=1)
 
-    pdf.cell(0,15,'Tableau de dépendances : ',ln=1)
+    #pdf.cell(0,15,'Tableau de dépendances : ',ln=1)
 
+    pagehtml = render_template("rapport.j2",vul=vul,prj=prj,sbom=sbom)
+
+    templi=[]
     for v in vul:
-        if str(v["id"])==id:
+        tempdict={}
+        for cle, valeur in v.items():
+            if type(valeur)==str:
+                l=len(valeur)
+                tempst=""
+                for i in range(l):
+                    tempst+=valeur[i]
+                    if i%30==0:
+                        tempst+="\n"
+                tempdict[cle]=tempst
+        
+        
+        
+        #pdf.set_font("Arial", size=17)
+        #pdf.cell(180,15,tempdict["PkgName"]+" : "+tempdict["InstalledVersion"],border=1,ln=1)
 
-            pdf.set_font("Arial", size=17)
-            pdf.cell(180,20,v["PkgName"]+" : "+v["InstalledVersion"],border=1,ln=1)
+        #pdf.set_font("Arial", size=12)
+        #pdf.cell(60,15,"Vulneraibilité"+" : "+tempdict["Title"],border=1)
+        #pdf.cell(60,15,"Severity"+" : "+tempdict["Severity"],border=1)
+        #pdf.cell(60,15,"Version fixé"+" : "+tempdict["FixedVersion"],border=1,ln=1)
 
-            pdf.set_font("Arial", size=12)
-            pdf.cell(60,20,"Vulneraibilité"+" : "+v["Title"],border=1)
-            pdf.cell(60,20,"Severity"+" : "+v["Severity"],border=1)
-            pdf.cell(60,20,"Version fixé"+" : "+v["FixedVersion"],border=1,ln=1)
+        #pdf.cell(150,15,tempdict["Description"],border=1)
+        #pdf.cell(30,15,tempdict["References"],border=1,ln=1)
+        #pdf.ln()
 
-            pdf.cell(150,20,v["Description"],border=1)
-            pdf.cell(30,20,v["References"],border=1,ln=1)
-            pdf.ln()
-
-    
+    pdf.write_html(pagehtml)
     pdf.output("mon_fichier.pdf")
     return send_file("mon_fichier.pdf")
 
