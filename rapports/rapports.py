@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_file
 import json, requests
 from pathlib import Path
 from fpdf import FPDF, HTMLMixin
+import os
 
 app = Flask(__name__)
 
@@ -34,7 +35,7 @@ def recup_vul(id):
 def recup_prj(id):
     global prj
     requ=requests.get("http://gestion_projet:5000/projet/json/"+id)
-    return requ
+    
     if requ.status_code==200:
         prj = json.loads(requ.text)
     return requ.status_code
@@ -43,19 +44,22 @@ def recup_prj(id):
 def recup_global(id):
     recup_vul(id)
     if recup_sbom(id) != 200:
-        "sbom non importé"
+        return"sbom non importé"
     if recup_prj(id) != 200:
-        "projet non récupéré"
+        return"projet non récupéré"
 
 @app.route("/")
 def index():
-    recup_global(10)
+    recup_global(1)
     return render_template("rapport.j2",projet=prj,sbom=sbom,vul=vul)
 
 @app.route("/pdf/<id>")
 def pdf(id):
-    recup_global(id)
-
+    print(recup_global(id))
+    try:
+        os.system("rm mon_fichier.pdf")
+    except:
+        print("pas de fichier de ce nom")
 
     pdf=FPDF()
     pdf.add_page()
@@ -89,8 +93,8 @@ def pdf(id):
             pdf.cell(30,20,v["References"],border=1,ln=1)
             pdf.ln()
 
-
-    pdf.output(cwd.joinpath("mon_fichier.pdf"))
-    return send_file(cwd.joinpath("mon_fichier.pdf"))
+    
+    pdf.output("mon_fichier.pdf")
+    return send_file("mon_fichier.pdf")
 
 #app.run()
