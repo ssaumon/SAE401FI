@@ -135,10 +135,10 @@ def ajouter_user():
     ecriture=True if "write" in auth else False
     admin = True if "admin" in auth else False
 
+
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     return redirect(f"/projet/{idproj}")
-
 
 @app.route("/register")
 def enre():
