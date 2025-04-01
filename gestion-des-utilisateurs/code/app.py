@@ -28,6 +28,7 @@ json_perm = read_json(json_path_perm)
 ##### START #####
 
 app = Flask(__name__)
+# le debug sert pour les test
 app.config['DEBUG'] = True
 
 @app.route('/')     # racine
@@ -35,20 +36,23 @@ def hello_world():
     return 'Hello, World!'
 
 ############################################################################################################################
+# reinistiallise les json par default
 
-@app.route('/reset_json')     # racine
+### /!\ c est a enlever en prod /!\ ###
+
+@app.route('/reset_json')
 def reset_json():
     write_json(json_path_usr, json_user1)
     write_json(json_path_perm, json_perm1)
     
     global json_user, json_perm
-    json_user = json_user1.copy()
+    json_user = json_user1.copy()   # le copy permet de pas lier les json
     json_perm = json_perm1.copy()
     time.sleep(0.1)
     return jsonify({"message": "reset_json"}), 200
 
 ############################################################################################################################
-
+# register permet d ajouter des user
 @app.route('/register', methods=['POST'])
 def register():
     global json_user
@@ -67,7 +71,7 @@ def register():
     password = data['password']
     birth_date = data['birth_date']
     
-    if get_object_by_email(json_user, email):
+    if get_user_by_email(json_user, email) != []:
         return jsonify({"message": "A user with this e-mail address already exists"}), 409
 
     js = {
@@ -82,7 +86,7 @@ def register():
     return jsonify({"message": "User added", "data": js}), 200
     
 ############################################################################################################################
-    
+
 @app.route('/login', methods=['POST'])
 def login():
     global json_user
@@ -102,9 +106,9 @@ def login():
     write_json(json_path_log, {"action": "login_attempt", "email": email})
 
     # Recherchez l'utilisateur par e-mail
-    user = get_object_by_email(json_user, email)
+    user = get_user_by_email(json_user, email)
     # print(user)
-    if user:
+    if user != []:
         # Vérifiez le mot de passe
         if user['password'] == password:
             return jsonify({"message": "User successfully authenticated"}), 200
@@ -113,19 +117,19 @@ def login():
     else:
         return jsonify({"error": "User not found"}), 404
 ############################################################################################################################
-    
+# retourne les info de l user
 @app.route('/user/<email>', methods=['GET'])
 def user(email):
     
     # Supposons que json_user soit une liste d'utilisateurs chargée ailleurs dans votre application
     user_data = get_user_by_email(json_user, email)
-    if user_data == "":
+    if user_data == []:
         return jsonify({"error": "Utilisateur non trouvé"}), 409
     else:
         return jsonify({"message": "Utilisateur trouvé", "data": user_data}), 200
 
 ############################################################################################################################
-
+# modifie les info du l user
 @app.route('/modify', methods=['POST'])
 def modify():
     global json_user 
@@ -135,6 +139,7 @@ def modify():
     for field in required_fields:
         if field not in data:
             return jsonify({"error": f"Missing field : {field}"}), 400
+        
     last_name = data['last_name']  #  pour supprimer les espaces
     first_name = data['first_name']
     email = data['email']
@@ -152,18 +157,18 @@ def modify():
             "password": password,
             "birth_date": birth_date
         }
-        if get_object_by_email(json_user, email) == "":
+        if get_user_by_email(json_user, email) == []:
             return jsonify({"message": "User dosent exist"}), 409
         a = modify_user_by_email(json_user, last_name, first_name, email, password, birth_date)
-        if a != "":
-            json_user = a
-            write_json(json_path_usr,json_user)
-            return jsonify({"message": "User modify", "data": js}), 200
+        # if a != "":
+        json_user = a
+        write_json(json_path_usr,json_user)
+        return jsonify({"message": "User modify", "data": js}), 200
     # print("a"+id+nom+localisation+version)
     return jsonify({"error": "Tous les champs sont requis"}), 400
 
 ############################################################################################################################
-
+# supprime l user
 @app.route('/delete-user/<email>', methods=['DELETE'])
 def deleteuser(email):
     global json_user 
@@ -178,9 +183,10 @@ def deleteuser(email):
         #return jsonify({"error": f"Missing field"}), 400
     # print(request)
         # json_user= []
-    if email != "":
+    if email != []:
         a = delete_user_by_email(json_user, email)
-        if a != "":
+        if a != []:
+            write_json(json_path_usr, a)
             return jsonify({"message": "User deleted"}), 200
 
     return jsonify({"error": "Missing field"}), 400
@@ -211,11 +217,11 @@ def addpermissions():
         return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 400
 
     # Vérifiez si l'utilisateur existe
-    if not get_object_by_email(json_user, email):
+    if not get_user_by_email(json_user, email):
         return jsonify({"error": "Utilisateur inexistant"}), 404
 
     # Vérifiez si les permissions existent déjà
-    existing_perm = get_perm_email_idproject(json_perm, email, project_id)
+    existing_perm = get_permissions_email_idproject(json_perm, email, project_id)
     if existing_perm != []:
         return jsonify({"error": "Permissions déjà existantes pour cet utilisateur et ce projet"}), 409
 
@@ -257,12 +263,12 @@ def modifypermissions():
         return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 400
 
     # Vérifiez si l'utilisateur existe
-    if get_object_by_email(json_user, email) == "":
+    if get_user_by_email(json_user, email) == []:
         return jsonify({"error": "Utilisateur inexistant"}), 404
 
     # Vérifiez si les permissions existent déjà
-    existing_perm = get_perm_email_idproject(json_perm, email, project_id)
-    if existing_perm == "":
+    existing_perm = get_permissions_email_idproject(json_perm, email, project_id)
+    if existing_perm == []:
         return jsonify({"error": "Permissions non trouvées pour cet utilisateur et ce projet"}), 404
 
     # Modifiez les permissions existantes
@@ -274,8 +280,7 @@ def modifypermissions():
     return jsonify({"message": "Permissions modifiées avec succès"}), 200
 
 ############################################################################################################################
-
-
+# supprime les permission 
 @app.route('/delete-permissions', methods=['DELETE'])
 def delete_permissions():
     global json_user, json_perm
@@ -289,7 +294,7 @@ def delete_permissions():
         return jsonify({"error": "Tous les champs sont requis"}), 400
 
     # Vérifier si l'utilisateur existe
-    if not get_object_by_email(json_user, email):
+    if get_user_by_email(json_user, email) == []:
         return jsonify({"error": "L'utilisateur n'existe pas"}), 404
 
     # Supprimer les permissions correspondantes
@@ -302,7 +307,7 @@ def delete_permissions():
     return jsonify({"error": "Permissions non trouvées"}), 404
 
 ############################################################################################################################
-
+# retourne les perm qui on cet project_id
 @app.route('/permissions-by-project/<project_id>', methods=['GET'])
 def permissionsbyproject(project_id):
     project_id = project_id
@@ -318,11 +323,10 @@ def permissionsbyproject(project_id):
         return jsonify({"error": "Aucune permission trouvée pour ce projet"}), 409
 
 ############################################################################################################################
-
-
+# retourne les perm qui on cet email
 @app.route('/permissions-by-email/<email>', methods=['GET'])
 def permissionsbyemail(email):
-    email = email
+    # email = email
 
     if not email:
         return jsonify({"error": "Le email est requis"}), 400
