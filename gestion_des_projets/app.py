@@ -91,10 +91,11 @@ def add_project():
     projects= open_project_file()
     idp=len(projects)+1
     nom = request.form.get('name')
-    fichier= request.files.get('json')
+    file = request.files.get('json')
+    fichier = json.load(file)
     description = request.form.get('description')
     projects[str(idp)]={"id":idp, "nom":nom, "description":description}
-    permprojet= { "project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
+    permprojet= {"project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     envoie = requests.post('http://import-sbom:5000/sbom', json=fichier)
     perm.append(permprojet)

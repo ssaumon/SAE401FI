@@ -59,7 +59,7 @@
   <br>
   <div class="container">
     <h1>Ajouter un projet :</h1>
-    <form method="POST" action="/projet/add">
+    <form method="POST" action="/projet/add" enctype="multipart/form-data">
       <div class="mb-3 mt-3">
         <label class="form-label">Nom du projet:</label>
         <input class="form-control" name="name">
@@ -67,7 +67,7 @@
       <label for="comment">Description:</label>
       <textarea class="form-control" rows="5" name="description"></textarea>
       <br>
-      <input type="file" id="json" accept="application/json">
+      <input type="file" name="json">
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
       </div>
