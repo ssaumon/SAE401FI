@@ -1,11 +1,24 @@
 <!doctype html>
+<html>
   <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="static/styles.css"/>
+    <link rel="stylesheet" href="../static/styles.css"/>
     <title>rapport de {{prj.nom}}</title>
-  </head>
+  <style>
+body {
+    font-family: Arial, sans-serif;
+}
+table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+  </style>
+</head>
   <body>
-    <h1 class="text-center">{{prj.nom}}</h1>
+    <h1 style="font-family: Arial, sans-serif">{{prj.nom}}</h1>
     <br><br>
     <h2>Description :</h2>
     <br>
@@ -15,7 +28,7 @@
     <br><br>
     <h2>tableau de dépendance :</h2>
     {% for v in vul %}
-    <table class="table">
+    <table>
         <tbody>
             <tr>
                 <td>{{v.PkgName}}</td>
