@@ -42,12 +42,12 @@
         <tr>
             <td>{{ projet.nom }}</td>
             <td>{{ projet.description }}</td>
-            <td><a href="http://perdu.com" class="btn btn-info">
+            <td><a href="http://rapport:5000/pdf/{{projet.id}}" class="btn btn-info" download="Rapport{{ projet.id }}.json">
               Rapport {{ projet.id }}</a></td>
 
 
 
-            <td><a href="http://simon/sbom/{{ projet.id }}" class="btn btn-info" download="SBOM_Projet_{{ projet.id }}.json">
+            <td><a href="http://consult-sbom:5000/sbom/{{ projet.id }}" class="btn btn-info" download="SBOM_Projet_{{ projet.id }}.json">
               SBOM {{ projet.id }}
             </a></td>
             <td><a href="/projet/{{ projet.id }}" class="btn btn-info">Plus</a></td>
@@ -66,6 +66,8 @@
       </div>
       <label for="comment">Description:</label>
       <textarea class="form-control" rows="5" name="description"></textarea>
+      <br>
+      <input type="file" id="json" accept="application/json">
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
       </div>

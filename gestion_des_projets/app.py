@@ -26,7 +26,11 @@ def bienvenue():
     projets = open_project_file()
     lstid=[]
     if len(perm)!=0:
-        lstid= [permission["project_id" ] for permission in perm if permission['read']== True]
+        #lstid= [permission["project_id" ] for permission in perm if permission['read']== True]
+        for permission in perm:
+            print(permission)
+            if permission['read']== True:
+                lstid.append(permission["project_id" ])
     lstprojet={}
     for projet in projets:
         if projet in lstid:
@@ -36,6 +40,7 @@ def bienvenue():
 
 @app.route('/')
 def login():
+
     return render_template("login.html")
 
 @app.route('/login/login', methods=["POST"])
@@ -46,9 +51,14 @@ def checklogin():
     pswd= request.form.get('password')
     content = {'email':mail, 'password':pswd}
     r = requests.post("http://user:5000/login", json=content)
-    if r.status_code == 201:
-        user = requests.get(f"http://user:5000/user/{mail}").json()["data"]
-        perm =  requests.get(f"http://user:5000//permissions-by-email/{mail}").json()["data"]
+    if r.status_code == 200:
+        user1 = requests.get(f"http://user:5000/user/{mail}").json()
+        perm1 =  requests.get(f"http://user:5000/permissions-by-email/{mail}").json()
+        if "error" in perm1:
+            perm=[]
+        else : 
+            perm = perm1["data"]
+        user = user1["data"]
         return redirect("/homepage")
     else :
         return redirect('/')
@@ -81,10 +91,12 @@ def add_project():
     projects= open_project_file()
     idp=len(projects)+1
     nom = request.form.get('name')
+    fichier= request.files.get('json')
     description = request.form.get('description')
     projects[str(idp)]={"id":idp, "nom":nom, "description":description}
     permprojet= { "project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
+    envoie = requests.post('http://import-sbom:5000/sbom', json=fichier)
     perm.append(permprojet)
     save_project_file(projects)
     return redirect("/homepage")
@@ -99,10 +111,10 @@ def update_project():
     nom = request.form.get('name')
     if idp in lstid:
         description = request.form.get('description')
-        projects[str(idp)]={"id":idp, "nom":nom, "description":description}
+        data = {"id":idp, "nom":nom, "description":description}
+        projects[str(idp)]= data
         save_project_file(projects)
         return redirect("/homepage")
-
 
 @app.route('/projet/delete/<id>')
 def remove_project(id):
@@ -125,10 +137,10 @@ def ajouter_user():
     ecriture=True if "write" in auth else False
     admin = True if "admin" in auth else False
 
+
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     return redirect(f"/projet/{idproj}")
-
 
 @app.route("/register")
 def enre():
