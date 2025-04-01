@@ -70,12 +70,14 @@ def get_permissions_by_project(json_perm, project_id: str):
             return perm
     return ""
 
-def get_permissions_by_email(json_perm, email_id: str):
+
     # return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
-    for perm in json_perm:
-        if str(perm['email']) == (email_id):
-            return perm
-    return ""
+def get_permissions_by_email(permissions_list, email):
+    result = []
+    for perm in permissions_list:
+        if perm['email'] == email:
+            result.append(perm)
+    return result 
 
 def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
     for perm in json_perm:

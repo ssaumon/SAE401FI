@@ -3,7 +3,7 @@ import os
 
 def read_json(filename):
     if not os.path.exists(filename):
-        return ""
+        return []
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)

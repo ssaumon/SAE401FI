@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /app
 # Copier le reste du code de l'application dans le conteneur
-# COPY ./code/ .
+COPY ./code/ .
 
 # Exposer le port sur lequel l'application écoute
 EXPOSE 5000
