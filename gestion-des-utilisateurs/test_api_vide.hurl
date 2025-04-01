@@ -25,7 +25,7 @@ HTTP/1.1 405
 # Test 5: Delete a user with invalid email format
 DELETE http://localhost:5000/delete-user/
 
-HTTP/1.1 400
+HTTP/1.1 404
 
 # Test 6: Add permissions with missing fields
 POST http://localhost:5000/add-permissions
@@ -50,9 +50,9 @@ HTTP/1.1 400
 # Test 9: Retrieve permissions by project with invalid project ID
 GET http://localhost:5000/permissions-by-project/
 
-HTTP/1.1 409
+HTTP/1.1 404
 
 # Test 10: Retrieve permissions by email with invalid email format
 GET http://localhost:5000/permissions-by-email/
 
-HTTP/1.1 409
+HTTP/1.1 404

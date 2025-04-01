@@ -1,14 +1,14 @@
 [
     {
-        "project_id": "2",
-        "email": "john.doe2@example.com",
+        "project_id": "1",
+        "email": "john.doe@example.com",
         "write": true,
         "read": true,
         "admin": false
     },
     {
-        "project_id": "3",
-        "email": "john.doe@example.com",
+        "project_id": "2",
+        "email": "john.doe2@example.com",
         "write": true,
         "read": true,
         "admin": false
