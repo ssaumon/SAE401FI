@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_file
 import json, requests
 from pathlib import Path
 from fpdf import FPDF, HTMLMixin
+import os
 
 app = Flask(__name__)
 
@@ -55,7 +56,10 @@ def index():
 @app.route("/pdf/<id>")
 def pdf(id):
     print(recup_global(id))
-
+    try:
+        os.system("rm mon_fichier.pdf")
+    except:
+        print("pas de fichier de ce nom")
 
     pdf=FPDF()
     pdf.add_page()
@@ -89,8 +93,8 @@ def pdf(id):
             pdf.cell(30,20,v["References"],border=1,ln=1)
             pdf.ln()
 
-
-    pdf.output(cwd.joinpath("mon_fichier.pdf"))
-    return send_file(cwd.joinpath("mon_fichier.pdf"))
+    
+    pdf.output("mon_fichier.pdf")
+    return send_file("mon_fichier.pdf")
 
 #app.run()
