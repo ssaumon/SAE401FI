@@ -5,12 +5,16 @@ info:
   version: 1.0.0
 
 servers:
-- url: http://localhost:5000
+- url: http://api.rt.lan/
   description: Serveur principal
+- url: http://user:5000
+  description: Serveur docker
 
 tags:
 - name: user
   description: User management operations
+- name: Permission
+  description: Permission management operations
 
 paths:
   /register:
@@ -30,10 +34,31 @@ paths:
           content:
             application/json:
               example:
-                registered: "True"
-                user_id: "12345"
+                message: "User added"
+                data:
+                  last_name: "Doe"
+                  first_name: "John"
+                  email: "john.doe@example.com"
+                  password: "securepassword123"
+                  birth_date: "01-01-1990"
         '400':
-          description: Invalid request
+          description: Missing field
+          content:
+            application/json:
+              example:
+                error: "Missing field : last_name"
+        '409':
+          description: A user with this e-mail address already exists
+          content:
+            application/json:
+              example:
+                message: "A user with this e-mail address already exists"
+        '415':
+          description: Invalid content type, JSON is expected
+          content:
+            application/json:
+              example:
+                error: "Invalid content type, JSON is expected"
 
   /login:
     post:
@@ -52,10 +77,31 @@ paths:
           content:
             application/json:
               example:
-                logged: "True"
-                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                message: "User successfully authenticated"
+        '400':
+          description: Missing field
+          content:
+            application/json:
+              example:
+                error: "Missing field : email"
         '401':
-          description: Invalid credentials
+          description: Incorrect password
+          content:
+            application/json:
+              example:
+                error: "Incorrect password"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              example:
+                error: "User not found"
+        '415':
+          description: Invalid content type, JSON is expected
+          content:
+            application/json:
+              example:
+                error: "Invalid content type, JSON is expected"
 
   /user/{email}:
     get:
@@ -69,20 +115,25 @@ paths:
         schema:
           type: string
           example: "john.doe2@example.com"
-        description: user ID
+        description: User email
       responses:
         '200':
-          description: Login successful
+          description: User found
           content:
             application/json:
               example:
-                last_name: Doe
-                first_name: John
-                email: john.doe@example.com
-                birth_date: '01-01-1990'
-
-        '401':
-          description: Invalid credentials
+                message: "User found"
+                data:
+                  last_name: "Doe"
+                  first_name: "John"
+                  email: "john.doe@example.com"
+                  birth_date: "01-01-1990"
+        '409':
+          description: User not found
+          content:
+            application/json:
+              example:
+                error: "User not found"
 
   /modify:
     put:
@@ -101,9 +152,25 @@ paths:
           content:
             application/json:
               example:
-                updated: "True"
+                message: "User modified"
+                data:
+                  last_name: "Doe"
+                  first_name: "John"
+                  email: "john.doe@example.com"
+                  password: "securepassword123"
+                  birth_date: "01-01-1990"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "All fields are required"
+        '409':
+          description: User does not exist
+          content:
+            application/json:
+              example:
+                message: "User does not exist"
 
   /delete-user/{email}:
     delete:
@@ -125,9 +192,13 @@ paths:
           content:
             application/json:
               example:
-                message: "User deleted successfully"
+                message: "User deleted"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "Missing field"
 
   /add-permissions:
     post:
@@ -142,13 +213,30 @@ paths:
               $ref: "#/components/schemas/Permission"
       responses:
         '200':
-          description: Permissions successfully updated
+          description: Permissions successfully added
           content:
             application/json:
               example:
                 message: "Permissions added successfully"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "Missing field : project_id"
+        '404':
+          description: User not found
+          content:
+            application/json:
+              example:
+                error: "User not found"
+        '409':
+          description: Permissions already exist
+          content:
+            application/json:
+              example:
+                error: "Permissions already exist for this user and project"
+
   /modify-permissions:
     put:
       tags:
@@ -169,11 +257,22 @@ paths:
                 message: "Permissions updated successfully"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "Missing field : project_id"
+        '404':
+          description: Permissions not found
+          content:
+            application/json:
+              example:
+                error: "Permissions not found for this user and project"
+
   /delete-permissions:
     delete:
       tags:
       - Permission
-      summary: Modify user permissions
+      summary: Delete user permissions
       parameters:
       - in: query
         name: project_id
@@ -181,7 +280,7 @@ paths:
         schema:
           type: string
           example: "1"
-        description: Identifiant du projet pour lequel les permissions doivent être supprimées
+        description: Project ID for which permissions should be deleted
       - in: query
         name: email
         required: true
@@ -189,22 +288,33 @@ paths:
           type: string
           format: email
           example: "john.doe@example.com"
-        description: Adresse email de l'utilisateur dont les permissions doivent être supprimées
+        description: Email address of the user whose permissions should be deleted
       responses:
         '200':
           description: Permissions successfully deleted
           content:
             application/json:
               example:
-                message: "Permissions updated successfully"
+                message: "Permissions deleted successfully"
+                data: "true"
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "All fields are required"
+        '404':
+          description: User or permissions not found
+          content:
+            application/json:
+              example:
+                error: "User or permissions not found"
 
   /permissions-by-project/{project_id}:
     get:
       tags:
       - Permission
-      summary: Retrieve user permissions
+      summary: Retrieve user permissions by project
       parameters:
       - in: path
         name: project_id
@@ -219,19 +329,31 @@ paths:
           content:
             application/json:
               example:
-                project_id: "2"
-                email: "john.doe2@example.com"
-                read: True
-                write: False
-                admin: False
+                message: "Get permissions"
+                data:
+                - project_id: "2"
+                  email: "john.doe2@example.com"
+                  read: true
+                  write: false
+                  admin: false
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "Project ID is required"
+        '409':
+          description: No permissions found for this project
+          content:
+            application/json:
+              example:
+                error: "No permissions found for this project"
 
   /permissions-by-email/{email}:
     get:
       tags:
       - Permission
-      summary: Retrieve user permissions
+      summary: Retrieve user permissions by email
       parameters:
       - in: path
         name: email
@@ -239,20 +361,32 @@ paths:
         schema:
           type: string
           example: "john.doe2@example.com"
-        description: Project ID
+        description: User email
       responses:
         '200':
           description: Permissions successfully retrieved
           content:
             application/json:
               example:
-                project_id: "2"
-                email: "john.doe2@example.com"
-                read: True
-                write: False
-                admin: False
+                message: "Get permissions"
+                data:
+                - project_id: "2"
+                  email: "john.doe2@example.com"
+                  read: true
+                  write: false
+                  admin: false
         '400':
           description: Invalid request
+          content:
+            application/json:
+              example:
+                error: "Email is required"
+        '409':
+          description: No permissions found for this user
+          content:
+            application/json:
+              example:
+                error: "No permissions found for this user"
 
 components:
   schemas:

@@ -59,7 +59,7 @@ def register():
     required_fields = ["last_name", "first_name", "email", "password", "birth_date"]
     for field in required_fields:
         if field not in data or not data[field]:
-            return jsonify({"error": f"Champ manquant : {field}"}), 400
+            return jsonify({"error": f"Missing field : {field}"}), 400
 
     last_name = data['last_name']
     first_name = data['first_name']
@@ -68,7 +68,7 @@ def register():
     birth_date = data['birth_date']
     
     if get_object_by_email(json_user, email):
-        return jsonify({"message": "Un utilisateur avec cet e-mail existe déjà."}), 409
+        return jsonify({"message": "A user with this e-mail address already exists"}), 409
 
     js = {
         "last_name": last_name,
@@ -92,7 +92,7 @@ def login():
     required_fields = ["email", "password"]
     for field in required_fields:
         if field not in data:
-            return jsonify({"error": f"Champ manquant : {field}"}), 400
+            return jsonify({"error": f"Missing field : {field}"}), 400
 
     # Purifiez les champs
     email = data['email']
@@ -107,11 +107,11 @@ def login():
     if user:
         # Vérifiez le mot de passe
         if user['password'] == password:
-            return jsonify({"message": "Utilisateur authentifié avec succès"}), 200
+            return jsonify({"message": "User successfully authenticated"}), 200
         else:
-            return jsonify({"error": "Mot de passe incorrect"}), 401
+            return jsonify({"error": "Incoorect password"}), 401
     else:
-        return jsonify({"error": "Utilisateur non trouvé"}), 404
+        return jsonify({"error": "User not found"}), 404
 ############################################################################################################################
     
 @app.route('/user/<email>', methods=['GET'])
@@ -134,7 +134,7 @@ def modify():
     required_fields = ["last_name", "first_name", "email", "password", "birth_date"]
     for field in required_fields:
         if field not in data:
-            return jsonify({"error": f"Champ manquant : {field}"}), 400
+            return jsonify({"error": f"Missing field : {field}"}), 400
     last_name = data['last_name']  #  pour supprimer les espaces
     first_name = data['first_name']
     email = data['email']
@@ -174,17 +174,16 @@ def deleteuser(email):
     # required_fields = ["email"]
     # for field in required_fields:
     #     if field not in data:
-    if email == "":
-        return jsonify({"error": f"Champ manquant"}), 400
-    # print(data)
+    # if email != "":
+        #return jsonify({"error": f"Missing field"}), 400
     print(request)
-    # json_user= []
+        # json_user= []
     if email != "":
         a = delete_user_by_email(json_user, email)
         if a != "":
             return jsonify({"message": "User deleted"}), 200
 
-    return jsonify({"error": "Tous les champs sont requis"}), 400
+    return jsonify({"error": "Missing field"}), 400
 
 ############################################################################################################################
 
@@ -199,7 +198,7 @@ def addpermissions():
     # Vérifiez que toutes les clés requises sont présentes
     for field in required_fields:
         if field not in data:
-            return jsonify({"error": f"Champ manquant : {field}"}), 400
+            return jsonify({"error": f"Missing field : {field}"}), 400
 
     # Vérifiez que les valeurs ne sont pas vides
     project_id = data['project_id']
@@ -244,7 +243,7 @@ def modifypermissions():
     required_fields = ["project_id", "email", "write", "read", "admin"]
     for field in required_fields:
         if field not in data:
-            return jsonify({"error": f"Champ manquant : {field}"}), 400
+            return jsonify({"error": f"Missing field : {field}"}), 400
 
     # Récupérez et nettoyez les valeurs
     project_id = data['project_id'].strip()
