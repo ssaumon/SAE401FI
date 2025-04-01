@@ -1,4 +1,3 @@
-"
 # User Management API
 
 L'API User Management permet la gestion des utilisateurs, y compris l'enregistrement, la connexion, la déconnexion, la suppression et la gestion des permissions.
@@ -16,6 +15,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
   - **Endpoint**: `POST /register`
   - **Description**: Enregistre un nouvel utilisateur.
   - **Requête**:
+
     ```json
     {
       "last_name": "Doe",
@@ -25,6 +25,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
       "birth_date": "01-01-1990"
     }
     ```
+
   - **Réponses**:
     - `200 OK`: Utilisateur créé avec succès.
     - `400 Bad Request`: Champ manquant.
@@ -35,12 +36,14 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
   - **Endpoint**: `POST /login`
   - **Description**: Authentifie un utilisateur.
   - **Requête**:
+
     ```json
     {
       "email": "john.doe@example.com",
       "password": "securepassword123"
     }
     ```
+
   - **Réponses**:
     - `200 OK`: Connexion réussie.
     - `400 Bad Request`: Champ manquant.
@@ -61,6 +64,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
   - **Endpoint**: `PUT /modify`
   - **Description**: Met à jour les informations d'un utilisateur.
   - **Requête**:
+
     ```json
     {
       "last_name": "Doe",
@@ -70,6 +74,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
       "birth_date": "01-01-1990"
     }
     ```
+
   - **Réponses**:
     - `200 OK`: Informations utilisateur mises à jour.
     - `400 Bad Request`: Requête invalide.
@@ -90,6 +95,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
   - **Endpoint**: `POST /add-permissions`
   - **Description**: Ajoute des permissions pour un utilisateur.
   - **Requête**:
+
     ```json
     {
       "project_id": "1",
@@ -99,6 +105,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
       "admin": false
     }
     ```
+
   - **Réponses**:
     - `200 OK`: Permissions ajoutées avec succès.
     - `400 Bad Request`: Requête invalide.
@@ -109,6 +116,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
   - **Endpoint**: `PUT /modify-permissions`
   - **Description**: Met à jour les permissions d'un utilisateur.
   - **Requête**:
+
     ```json
     {
       "project_id": "1",
@@ -118,6 +126,7 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
       "admin": false
     }
     ```
+
   - **Réponses**:
     - `200 OK`: Permissions mises à jour avec succès.
     - `400 Bad Request`: Requête invalide.
@@ -153,5 +162,3 @@ L'API User Management permet la gestion des utilisateurs, y compris l'enregistre
     - `200 OK`: Permissions récupérées avec succès.
     - `400 Bad Request`: Requête invalide.
     - `409 Conflict`: Aucune permission trouvée pour cet utilisateur.
-
-"
