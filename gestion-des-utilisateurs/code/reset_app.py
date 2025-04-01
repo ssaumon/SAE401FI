@@ -62,24 +62,24 @@ json_perm1 = [
 
 # Test et recréation des fichiers JSON si nécessaire
 a = read_json(json_path_usr)
-if a is "":
+if a == "":
     write_json(json_path_usr, json_user1)
 else:
     try:
         # Vérifiez que les données sont un objet JSON valide
         aa = json.loads(json.dumps(a))
-        print(aa)
+        # print(aa)
     except (ValueError, TypeError) as e:
         print(f"Erreur de validation JSON : {e}")
         write_json(json_path_usr, json_user1)
 
 b = read_json(json_path_perm)
-if b is "":
+if b == "":
     write_json(json_path_perm, json_perm1)
 else:
     write_json(json_path_perm, b)
 
 # Écriture des fichiers JSON
-write_json(json_path_usr, a if a is not "" else json_user1)
-write_json(json_path_perm, b if b is not "" else json_perm1)
+write_json(json_path_usr, a if a != "" else json_user1)
+write_json(json_path_perm, b if b != "" else json_perm1)
 write_json(json_path_log, "a")
