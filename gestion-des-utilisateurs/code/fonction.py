@@ -29,8 +29,8 @@ def write_json(filename, data):
 def get_object_by_email(json_data, search_email):
     searchemail = str(search_email)
     for obj in json_data:
-        print(obj)
-        print(obj['email'])
+        # print(obj)
+        # print(obj['email'])
         if str(obj['email']) == searchemail:
             return obj
     return ""
@@ -83,7 +83,7 @@ def get_perm_email_idproject(json_perm, email_id: str, project_id: str):
     for perm in json_perm:
         if str(perm['email']) == (email_id) and str(perm['project_id']) == (project_id) :
             return perm
-    return ""
+    return []
 
 
 

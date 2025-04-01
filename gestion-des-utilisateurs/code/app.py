@@ -42,8 +42,8 @@ def reset_json():
     write_json(json_path_perm, json_perm1)
     
     global json_user, json_perm
-    json_user = json_user1
-    json_perm = json_perm1
+    json_user = json_user1.copy()
+    json_perm = json_perm1.copy()
     time.sleep(0.1)
     return jsonify({"message": "reset_json"}), 200
 
@@ -103,7 +103,7 @@ def login():
 
     # Recherchez l'utilisateur par e-mail
     user = get_object_by_email(json_user, email)
-    print(user)
+    # print(user)
     if user:
         # Vérifiez le mot de passe
         if user['password'] == password:
@@ -119,7 +119,7 @@ def user(email):
     
     # Supposons que json_user soit une liste d'utilisateurs chargée ailleurs dans votre application
     user_data = get_user_by_email(json_user, email)
-    if user_data is "":
+    if user_data == "":
         return jsonify({"error": "Utilisateur non trouvé"}), 409
     else:
         return jsonify({"message": "Utilisateur trouvé", "data": user_data}), 200
@@ -141,8 +141,8 @@ def modify():
     password = data['password']
     birth_date = data['birth_date']
     
-    print(data)
-    print(request)
+    # print(data)
+    # print(request)
     # json_user= []
     if last_name != "" and first_name != "" and email != "" and password != "" and birth_date != "":
         js = {
@@ -176,7 +176,7 @@ def deleteuser(email):
     #     if field not in data:
     # if email != "":
         #return jsonify({"error": f"Missing field"}), 400
-    print(request)
+    # print(request)
         # json_user= []
     if email != "":
         a = delete_user_by_email(json_user, email)
@@ -216,7 +216,7 @@ def addpermissions():
 
     # Vérifiez si les permissions existent déjà
     existing_perm = get_perm_email_idproject(json_perm, email, project_id)
-    if existing_perm != "":
+    if existing_perm != []:
         return jsonify({"error": "Permissions déjà existantes pour cet utilisateur et ce projet"}), 409
 
     # Ajoutez les nouvelles permissions
@@ -328,8 +328,8 @@ def permissionsbyemail(email):
         return jsonify({"error": "Le email est requis"}), 400
 
     js = get_permissions_by_email(json_perm, email)
-    print(js)
-    if js != "":
+    # print(js)
+    if js != []:
         return jsonify({"message": "Get permissions", "data": js}), 200
     else:
         return jsonify({"error": "Aucune permission trouvée pour ce projet"}), 409
