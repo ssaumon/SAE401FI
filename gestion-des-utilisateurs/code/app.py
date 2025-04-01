@@ -212,9 +212,9 @@ def addpermissions():
     write = data['write']
     read = data['read']
     admin = data['admin']
+    if project_id.strip() == "" or email.strip() == "" or write not in [True, False] or read not in [True, False] or admin not in [True, False]:
+        return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 402
 
-    if not project_id or not email or write is None or read is None or admin is None:
-        return jsonify({"error": "Tous les champs sont requis et doivent avoir des valeurs valides"}), 400
 
     # Vérifiez si l'utilisateur existe
     if not get_user_by_email(json_user, email):

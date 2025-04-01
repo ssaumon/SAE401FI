@@ -27,6 +27,7 @@ services:
     networks:
       - internal_network
 
+
   vuln:
     build: 
       context: "./Microservice-vuln"
@@ -46,6 +47,9 @@ services:
       - vuln
     networks:
       - internal_network
+      - external_network
+    ports:
+      - "5001:5000"
 
   gestion_projet:
     build: 
