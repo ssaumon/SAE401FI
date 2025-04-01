@@ -71,7 +71,7 @@ def pdf(id):
     pdf.cell(0,20,"description : ",ln=1)
 
     pdf.set_font("Arial", size=12)
-    pdf.cell(0,20,prj["description"],ln=1)
+    pdf.multi_cell(0,20,prj["description"])
 
     pdf.set_font("Arial", size=20)
     pdf.cell(0,20,f'Version : {sbom["metadata"]["component"]["version"]}',ln=1)
@@ -79,19 +79,18 @@ def pdf(id):
     pdf.cell(0,15,'Tableau de dépendances : ',ln=1)
 
     for v in vul:
-        if str(v["id"])==id:
+        
+        pdf.set_font("Arial", size=17)
+        pdf.multi_cell(180,15,v["PkgName"]+" : "+v["InstalledVersion"],border=1)
 
-            pdf.set_font("Arial", size=17)
-            pdf.cell(180,20,v["PkgName"]+" : "+v["InstalledVersion"],border=1,ln=1)
+        pdf.set_font("Arial", size=12)
+        pdf.multi_cell(60,15,"Vulneraibilité"+" : "+v["Title"],border=1,ln=1)
+        pdf.multi_cell(60,15,"Severity"+" : "+v["Severity"],border=1,ln=1)
+        pdf.multi_cell(60,15,"Version fixé"+" : "+v["FixedVersion"],border=1)
 
-            pdf.set_font("Arial", size=12)
-            pdf.cell(60,20,"Vulneraibilité"+" : "+v["Title"],border=1)
-            pdf.cell(60,20,"Severity"+" : "+v["Severity"],border=1)
-            pdf.cell(60,20,"Version fixé"+" : "+v["FixedVersion"],border=1,ln=1)
-
-            pdf.cell(150,20,v["Description"],border=1)
-            pdf.cell(30,20,v["References"],border=1,ln=1)
-            pdf.ln()
+        pdf.multi_cell(150,15,v["Description"],border=1,ln=1)
+        pdf.multi_cell(30,15,v["References"],border=1)
+        pdf.ln()
 
     
     pdf.output("mon_fichier.pdf")
