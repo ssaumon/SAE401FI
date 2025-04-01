@@ -42,9 +42,9 @@
         <tr>
             <td>{{ projet.nom }}</td>
             <td>{{ projet.description }}</td>
-            <td><a href="http://rapport:5000/pdf/{{projet.id}}" class="btn btn-info" download="Rapport{{ projet.id }}.json">
+            <td><a href="/rapport/{{projet.id}}" class="btn btn-info">
               Rapport {{ projet.id }}</a></td>
-            <td><a href="http://consult-sbom:5000/sbom/{{ projet.id }}" class="btn btn-info" download>
+            <td><a href="/sbom/{{projet.id}}" class="btn btn-info">
               SBOM {{ projet.id }}
             </a></td>
             <td><a href="/projet/{{ projet.id }}" class="btn btn-info">Plus</a></td>

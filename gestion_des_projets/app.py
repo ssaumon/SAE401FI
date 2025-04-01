@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, json, jsonify
+from flask import Flask, request, render_template, redirect, json, jsonify, send_file
 import json
 import requests
 
@@ -138,11 +138,28 @@ def ajouter_user():
     lecture=True if "read" in auth else False
     ecriture=True if "write" in auth else False
     admin = True if "admin" in auth else False
-
-
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     return redirect(f"/projet/{idproj}")
+
+
+@app.route("/rapport/<id>")
+def get_rapport(id):
+    r = requests.get(f"http://rapport:5000/pdf/{id}")
+    if r.status_code == 200:
+        with open("rapport.pdf", "wb") as f:
+            f.write(r.content)
+        return send_file("rapport.pdf", as_attachment=True, download_name=f"rapport_{id}.pdf")
+
+
+@app.route("/sbom/<id>")
+def get_sbom(id):
+    r = requests.get(f"http://consult-sbom:5000/sbom/{id}")
+    if r.status_code == 200:
+        with open("sbom.json", "wb") as f:
+            f.write(r.content)
+        return send_file("sbom.json", as_attachment=True, download_name=f"sbom_{id}.json")
+
 
 @app.route("/register")
 def enre():
