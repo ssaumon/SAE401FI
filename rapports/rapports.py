@@ -78,7 +78,7 @@ def pdf(id):
 
     #pdf.cell(0,15,'Tableau de dépendances : ',ln=1)
 
-    pagehtml = render_template("rapport.j2",vul=vul,prj=prj,sbom=sbom)
+    pagehtml = render_template("rapport.html",vul=vul,prj=prj,sbom=sbom)
 
     templi=[]
     for v in vul:
