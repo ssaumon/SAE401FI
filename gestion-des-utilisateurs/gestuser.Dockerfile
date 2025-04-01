@@ -5,7 +5,9 @@ FROM python:3.11
 WORKDIR /tmp
 
 # Installer tzdata pour les informations de fuseau horaire
-RUN apt-get update && apt-get install -y tzdata
+RUN apt-get update 
+RUN apt-get upgrade -y
+RUN apt-get install -y tzdata
 
 # Définir le fuseau horaire sur Paris
 ENV TZ=Europe/Paris
