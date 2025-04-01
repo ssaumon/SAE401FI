@@ -116,6 +116,7 @@ def update_project():
         projects[str(idp)]= data
         save_project_file(projects)
         return redirect("/homepage")
+        
 
 @app.route('/projet/delete/<id>')
 def remove_project(id):
