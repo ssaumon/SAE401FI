@@ -19,7 +19,10 @@
 | **GET /Vulnerability/sbom/int:idSbom** | `getSbomTrait(idSbom)` | Reçois un ID SBOM et effectue une requête vers le Microservice SBOM pour retourner les vulnérabilités associés | **200** :Retourne les vulnérabilités associées au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans les données récupérées <br> **500**: Erreur de lecture de la base de données <br> **420**: Erreur de liaison du microservice |
 
 ---
+Ce microservice va servir de base de données de vulnerabilité, nous avons cette base de données au format json. Atravers les differents chemin possible dans l'url nous pouvons lister les vulnerabilités, en afficher une precisement modifier une vulnerabilité automatiquement sans preiser dans le chemin son id cest a dire que le microservice va recuperer automatiquement lid pour modifier les informations en recuperant automatiquement l'id. Nous pouvons aussi les supprime en fonction de l'id. En ce qui concerne les jonctions entre les microservices nous avons deux chemin interessannt pour les autre micro service il sagit du post d'un json au format pkgname et versioninstalled qui seront recuperer puis comparer au sein de la base de données. Si une vulnerabilité est trouvé pour le ou les packages envoyer il retournera les vulnerabilité associer. Nous avons le dernier chemin ou, nous pouvons preciser un id qui sera reinjecter dans une requete pour consulter un sbom en particulier sur consult-sbom. Il retournera ensuite les vulnerabilité associer au sbom.
 
+Vous disposez egalement d'un fichier de test unitaire pour tester le microservice. Vous trouverez ce fichier ci-joint au format json. Cette batterie de test est a realiser avec postman.
+---
 ![Représentation du MicroService Vulnérabilité](Exemple.jpg)
 
 ## Contributors
