@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="../static/styles.css"/>
+    <title>rapport de {{prj.nom}}</title>
+  <style>
+body {
+    font-family: Arial, sans-serif;
+}
+table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+  </style>
+</head>
+  <body>
+    <h1 style="font-family: Arial, sans-serif">{{prj.nom}}</h1>
+    <br><br>
+    <h2>Description :</h2>
+    <br>
+    <p>{{prj.description}}</p>
+    <br>
+    <h2>Version : {{sbom.version}} </h2>
+    <br><br>
+    <h2>tableau de dépendance :</h2>
+    {% for v in vul %}
+    <table>
+        <tbody>
+            <tr>
+                <td>{{v.PkgName}}</td>
+                <td>{{v.InstalledVersion}}</td>
+                <td>{{v.Severity}}</td>
+            </tr>
+
+            <tr>
+                <td>{{v.Title}}</td>
+                <td>{{v.Description}}</td>
+                <td>version fixée :{{v.FixedVersion}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endfor %}
+  </body>
+</html>
