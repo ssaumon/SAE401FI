@@ -237,7 +237,7 @@ The application uses three data files:
 
 #### User Management Functions
 
-- `get_object_by_email(json_data, search_email)`: Finds user by email
+- `get_user_by_email(json_data, search_email)`: Finds user by email
 - `modify_user_by_email(users, last_name, first_name, email, password, birth_date)`: Updates user data
 - `get_user_by_email(users, email)`: Retrieves user data (without password)
 - `delete_user_by_email(users, email)`: Removes user from the system
@@ -247,10 +247,6 @@ The application uses three data files:
 - `get_permissions_by_project(json_perm, project_id)`: Gets project permissions
 - `get_permissions_by_email(permissions_list, email)`: Gets user permissions
 - `get_perm_email_idproject(json_perm, email_id, project_id)`: Finds specific permission
-
-#### Data Purification
-
-- `purify_field(value)`: Cleans and validates input data
 
 ### Reset Application (`reset_app.py`)
 

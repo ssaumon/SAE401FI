@@ -1,0 +1,1040 @@
+{
+	"info": {
+		"_postman_id": "bcc67a8a-c682-45ba-835a-74e9c06bf262",
+		"name": "Threat Processing API",
+		"description": "This API allows users to process a vulnerabilities file.\nThey can export or import vulnerabilities in or outside the database.\n\nContact Support:\n Email: apiteam@iut.io",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43455135",
+		"_collection_link": "https://killian-4851147.postman.co/workspace/killian's-Workspace~660740f8-726c-48db-8745-7768a3ed0432/collection/43455135-bcc67a8a-c682-45ba-835a-74e9c06bf262?action=share&source=collection_link&creator=43455135"
+	},
+	"item": [
+		{
+			"name": "Vulnerability",
+			"item": [
+				{
+					"name": "{id}",
+					"item": [
+						{
+							"name": "Find vulnerability by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability/20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability",
+										"20"
+									]
+								},
+								"description": "Retrieve a specific vulnerability by its ID"
+							},
+							"response": [
+								{
+									"name": "Retourne la vulnérabilité correspondante",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Aucune vulnérabilité avec cet ID",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Erreur de lecture de la base de données",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Delete vulnerability by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability/20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability",
+										"20"
+									]
+								},
+								"description": "Remove a vulnerability from the database"
+							},
+							"response": [
+								{
+									"name": "Suppression réussie",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Aucune vulnérabilité avec cet ID",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Erreur de lecture de la base de données",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Update vulnerability by ID",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"VulnerabilityID\": \"<string>\",\r\n  \"PkgName\": \"<string>\",\r\n  \"InstalledVersion\": \"<string>\",\r\n  \"FixedVersion\": \"<string>\",\r\n  \"Severity\": \"<string>\",\r\n  \"Title\": \"<string>\",\r\n  \"Description\": \"<string>\",\r\n  \"References\": \"<string>\",\r\n  \"id\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability/20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability",
+										"20"
+									]
+								},
+								"description": "Modify a specific vulnerability"
+							},
+							"response": [
+								{
+									"name": "Mise à jour réussie",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Aucune vulnérabilité avec cet ID",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Erreur de lecture de la base de données",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "sbom",
+					"item": [
+						{
+							"name": "{id}",
+							"item": [
+								{
+									"name": "Process SBOM for report by id",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												"sbom",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "<long>",
+													"description": "(Required) ID of the sbom database you want to test"
+												}
+											]
+										},
+										"description": "Processes SBOM to generate a report on vulnerabilities"
+									},
+									"response": [
+										{
+											"name": "Retourne les vulnérabilités associées au SBOM",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+										},
+										{
+											"name": "Clés manquantes dans les données récupérées",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Aucune vulnérabilité correspondante trouvée",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Erreur de liaison du microservice",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"code": 420,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Erreur de lecture de la base de données",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Process SBOM for report",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability/sbom",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability",
+										"sbom"
+									]
+								},
+								"description": "Processes SBOM to generate a report on vulnerabilities"
+							},
+							"response": [
+								{
+									"name": "Retourne les vulnérabilités correspondant au SBOM",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/sbom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												"sbom"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Clés manquantes dans l'entrée JSON",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/sbom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												"sbom"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Aucune vulnérabilité correspondante trouvée",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/sbom",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												"sbom"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "List vulnerabilities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/Vulnerability",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"Vulnerability"
+							]
+						},
+						"description": "Retrieve all vulnerabilities"
+					},
+					"response": [
+						{
+							"name": "Succès",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"VulnerabilityID\": \"<string>\",\n    \"PkgName\": \"<string>\",\n    \"InstalledVersion\": \"<string>\",\n    \"FixedVersion\": \"<string>\",\n    \"Severity\": \"<string>\",\n    \"Title\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"References\": \"<string>\",\n    \"id\": \"<integer>\"\n  },\n  {\n    \"VulnerabilityID\": \"<string>\",\n    \"PkgName\": \"<string>\",\n    \"InstalledVersion\": \"<string>\",\n    \"FixedVersion\": \"<string>\",\n    \"Severity\": \"<string>\",\n    \"Title\": \"<string>\",\n    \"Description\": \"<string>\",\n    \"References\": \"<string>\",\n    \"id\": \"<integer>\"\n  }\n]"
+						},
+						{
+							"name": "Erreur lors de la lecture du fichier JSON",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Add a vulnerability",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": 20\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Vulnerability",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"Vulnerability"
+							]
+						},
+						"description": "Add a new vulnerability"
+					},
+					"response": [
+						{
+							"name": "Ajout Réussi",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Données invalides ou champs manquants",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "L'ID existe déjà",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Update vulnerability Auto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"VulnerabilityID\": \"<string>\",\r\n  \"PkgName\": \"<string>\",\r\n  \"InstalledVersion\": \"<string>\",\r\n  \"FixedVersion\": \"<string>\",\r\n  \"Severity\": \"<string>\",\r\n  \"Title\": \"<string>\",\r\n  \"Description\": \"<string>\",\r\n  \"References\": \"a\",\r\n  \"id\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/Vulnerability",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"Vulnerability"
+							]
+						},
+						"description": "Modify a specific vulnerability automatically"
+					},
+					"response": [
+						{
+							"name": "Mise à jour réussie.",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Aucune vulnérabilité avec cet ID",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Erreur de lecture de la base de données",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/Vulnerability",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"Vulnerability"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:5000/"
+		}
+	]
+}
