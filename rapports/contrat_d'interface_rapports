@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: rapport
   description: |-
-    Gestion des clients et des livres disponibles dans la librairie
+    Génération des rapports au format PDF
 
   version: 0.1.0
 
@@ -37,7 +37,7 @@ paths:
             text/plain:
               schema:
                 type: string
-        '401':
+        '402':
           description: projet non importé
           content:
             text/plain:
@@ -45,23 +45,5 @@ paths:
                 type: string
 
 
-components:
-  schemas:
-    prjet:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        contenu:
-          type: string
-          example: contenu du fichier sbom
-        idUser:
-          type: integer
-          format: int64
-          example: 10
-        date:
-          type: string
-          format: date
-          example: 2025-03-21
+
+
