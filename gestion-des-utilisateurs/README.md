@@ -22,7 +22,9 @@ The application allows you to:
 code/
 ├── app.py           # Main Flask application
 ├── fonction.py      # Utility functions
-└── reset_app.py     # Data reset script
+├── reset_app.py     # Data reset script
+├── user.json        # User data in json
+└── permission.json  # Perm data in json
 ```
 
 ## Prerequisites
