@@ -208,7 +208,7 @@ def ajouter_user():
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     if r.status_code != 200:
         return {"error": "Echec de l'ajout"}, 511
-    return redirect(f"/projet/{idproj}")
+    return redirect(f"/projet/{idproj}", code= 302)
 
 
 @app.route("/rapport/<id>")
@@ -217,7 +217,7 @@ def get_rapport(id):
     if r.status_code == 200:
         with open("rapport.pdf", "wb") as f:
             f.write(r.content)
-        return send_file("rapport.pdf", as_attachment=True, download_name=f"rapport_{id}.pdf")
+        return send_file("rapport.pdf", as_attachment=True, download_name=f"rapport_{id}.pdf"),200
     return {"error": "ID introuvable"}, 404
 
 @app.route("/sbom/<id>")
@@ -226,7 +226,7 @@ def get_sbom(id):
     if r.status_code == 200:
         with open("sbom.json", "wb") as f:
             f.write(r.content)
-        return send_file("sbom.json", as_attachment=True, download_name=f"sbom_{id}.json")
+        return send_file("sbom.json", as_attachment=True, download_name=f"sbom_{id}.json"),200
     return {"error": "ID introuvable"}, 404
 
 @app.route("/vulne/<id>")
@@ -235,7 +235,7 @@ def get_vulne(id):
     if r.status_code == 200:
         with open("vulne.json", "wb") as f:
             f.write(r.content)
-        return send_file("vulne.json", as_attachment=True, download_name=f"vulne_{id}.json")
+        return send_file("vulne.json", as_attachment=True, download_name=f"vulne_{id}.json"),200
     return {"error": "ID introuvable"}, 404
 
 
