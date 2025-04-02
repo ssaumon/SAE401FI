@@ -29,11 +29,12 @@
 
 | HTTP Méthode | Action | Description | Codes |
 |-------------|--------|-------------|--------|
-| **POST** | `Ajout_SBOM` | Ajout d'un SBOM en fournissant un nom d’application, une version, des dépendances et leurs caractéristiques | **200** : OK <br> **400** : Erreur d'entrée |
-| **PATCH** | `Update_SBOM` | Modification d’une ou plusieurs données d’un fichier SBOM existant | **200** : Modification réussie <br> **400** : Entrée invalide <br> **404** : SBOM introuvable |
-| **POST** | `Ajout_dependance_sbom` | Ajout d’une dépendance à un fichier SBOM existant | **200** : OK <br> **400** : Erreur d'entrée <br> **404** : SBOM introuvable |
-| **DELETE** | `Suppression_dependance_sbom` | Suppression d’une dépendance dans un fichier SBOM | **200** : Succès <br> **404** : SBOM introuvable |
-| **DELETE** | `Suppression_SBOM` | Suppression d’un fichier SBOM | **200** : Succès <br> **404** : SBOM introuvable |
+| **GET** | `Get_SBOMs` | Affichage de l'ensemble des SBOMs actuellement dans la base de données | **200** : OK |
+| **POST** | `Ajout_SBOM` | Ajout d'un SBOM en fournissant un nom d’application, une version, des dépendances et leurs caractéristiques | **200** : SBOM Added To The Data Base |
+| **POST** | `Ajout_dependance_SBOM` | Ajout d’une dépendance à un fichier SBOM existant | **200** : Dependance Added To The SBOM <br> **404** : SBOM Not Found |
+| **PATCH** | `Update_SBOM` | Modification d’une ou plusieurs données d’un fichier SBOM existant | **200** : Value Changed <br> **404** : Key Of SBOM Not Found <br> **404** : SBOM Not Found |
+| **DELETE** | `Suppression_dependance_SBOM` | Suppression d’une dépendance dans un fichier SBOM | **200** : Dependance Deleted <br> **404** : Dependance Not Found <br> **404** : SBOM Not Found |
+| **DELETE** | `Suppression_SBOM` | Suppression d’un fichier SBOM | **200** : SBOM Deleted <br> **404** : SBOM Not Found |
 ```
 
 **Base de Données SBOM :**
