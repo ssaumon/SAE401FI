@@ -127,7 +127,41 @@
 | **POST /Vulnerability/sbom** | `traitement()` | Récupère le Nom du Package et sa version, cela retourne les vulnérabilités associés | **200** :Retourne les vulnérabilités correspondant au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans l'entrée JSON |
 | **GET /Vulnerability/sbom/int:idSbom** | `getSbomTrait(idSbom)` | Reçois un ID SBOM et effectue une requête vers le Microservice SBOM pour retourner les vulnérabilités associés | **200** :Retourne les vulnérabilités associées au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans les données récupérées <br> **500**: Erreur de lecture de la base de données <br> **420**: Erreur de liaison du microservice |
 
+## Voici l'organisation de la base de données.
+
+### **Vulnerability.json**  
+```json
+{
+    "id": 1,
+    "VulnerabilityID": "CVE-2023-23397",
+    "PkgName": "microsoft-outlook",
+    "InstalledVersion": "16.0.15330.20298",
+    "FixedVersion": "16.0.16130.20306",
+    "Severity": "CRITICAL",
+    "Title": "Microsoft Outlook - NTLM Relay Attack (CVE-2023-23397)",
+    "Description": "A vulnerability in Microsoft Outlook allows remote attackers to perform NTLM relay attacks by sending specially crafted emails, leading to privilege escalation.",
+    "References": "https://nvd.nist.gov/vuln/detail/CVE-2023-23397"
+}
+```
+
 ---
+
+### **Cette API permet notamment :**  
+- L'ajout de vulnérabilités, plusieurs à la fois.  
+- La suppression de vulnérabilités par leur ID.  
+- La liste de toutes les vulnérabilités ou d'une seule grâce à son ID.  
+- La modification d'une vulnérabilité avec la possibilité de préciser ou non l'ID.  
+
+---
+
+### **Interaction avec deux autres microservices**  
+L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+
+1. **Récupération des vulnérabilités associées à un SBOM**  
+   - Le SBOM peut contenir un ou plusieurs packages (nom, version).  
+2. **Consultation du microservice `consult-sbom` pour récupérer les vulnérabilités associées.**  
+
+
 
 ## Gestion des utilisateurs
 
