@@ -3,7 +3,8 @@
 ## Identification des micro-services
 
 ### Gestion des projets
-**Responsable : Paul HOFFBECK** 
+
+**Responsable : Paul HOFFBECK**
 
 | HTTP Méthode | Action | Description | Codes |  
 |-------------|--------|-------------|---------- |
@@ -13,6 +14,7 @@
 | **DELETE** | `Delete_Project` | Suppression d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
 
 **Base de Données Projet :**
+
 ```json
 {
   "Nom du projet": "string",
@@ -25,6 +27,7 @@
 ---
 
 ### Importation de SBOM  
+
 **Responsable : Maxence DEBEAUVAIS**
 
 | HTTP Méthode | Action | Description | Codes |
@@ -34,6 +37,7 @@
 | **POST** | `Ajout_dependance_sbom` | Ajout d’une dépendance à un fichier SBOM existant | **200** : OK <br> **400** : Erreur d'entrée <br> **404** : SBOM introuvable |
 | **DELETE** | `Suppression_dependance_sbom` | Suppression d’une dépendance dans un fichier SBOM | **200** : Succès <br> **404** : SBOM introuvable |
 | **DELETE** | `Suppression_SBOM` | Suppression d’un fichier SBOM | **200** : Succès <br> **404** : SBOM introuvable |
+
 ```
 
 **Base de Données SBOM :**
@@ -87,6 +91,7 @@
 ---
 
 ## Consultation de SBOM
+
 **Responsable : Simon COLLET**
 
 | Méthode | Requête | Description | Réponse |
@@ -97,6 +102,7 @@
 ---
 
 ## Rapports
+
 **Responsable : Simon COLLET**
 
 | Méthode | Requête | Description | Réponse |
@@ -106,6 +112,7 @@
 ---
 
 ## Gestion des vulnérabilités
+
 **Responsable : Killian CHESNOT**
 
 | API REST | Méthode | Description | Code |
@@ -118,63 +125,96 @@
 ---
 
 ## Gestion des utilisateurs
+
 **Responsable : Malo DURANTON**  
+
+***Fonction utillisateur***
+
 - Fonction pour inscrire un utilisateur  
 - Fonction pour connecter un utilisateur  
-- Fonction de déconnexion  
-- Suppression de compte  
+- Fonction pour recuperer les info d'un utillisateur
+- Fonction pour suppression un compte  
 - Gestion des permissions (lecture, écriture, suppression)
 
+***Fonction utillisateur***
+
+- Fonction pour ajouter des permissions a un utillisateur  
+- Fonction pour modifier des permissions  
+- Fonction pour supprimser des permission
+- Fonction pour recuperer les permissions par identifient de projet
+- Fonction pour recuperer les permissions par email
+
 **Base de données Utilisateurs :**
+
 ```json
 {
-  "nom": "string",
-  "prenom": "string",
-  "email": "string",
-  "mdp": "string",
-  "date_naissance": "jj-mm-yyyy",
-  "permissions": {
-    "read": true,
-    "write": false,
-    "delete": false
-  }
+   "last_name": "string",
+   "first_name": "string",
+   "email": "string",
+   "password": "string",
+   "birth_date": "string"
 }
+
+```
+
+**Base de données des Permmissions :**
+
+```json
+{
+    "project_id": "int",
+    "email": "string",
+    "write": "bool",
+    "read": "bool",
+    "admin": "bool"
+}
+
 ```
 
 **Requêtes API :**
-```http
-POST /createuser
-{
-  "mail": "string",
-  "mdp": "string",
-  "nom": "string",
-  "prenom": "string",
-  "date_naissance": "jj-mm-yyyy"
-}
 
-POST /connect
-{
-  "mail": "string",
-  "mdp": "string"
-}
+| HTTP Méthode | Action | Description | Codes |
+|--------------|--------|-------------|-------|
+| **POST** | `Register` | Inscription d'un nouvel utilisateur | **200** : Utilisateur créé avec succès <br> **400** : Champ manquant <br> **411** : Un utilisateur avec cet e-mail existe déjà <br> **415** : Type de contenu invalide, JSON attendu |
+| **POST** | `Login` | Connexion utilisateur | **200** : Connexion réussie <br> **400** : Champ manquant <br> **401** : Mot de passe incorrect <br> **404** : Utilisateur non trouvé <br> **415** : Type de contenu invalide, JSON attendu |
+| **GET** | `User Info` | Informations utilisateur | **200** : Utilisateur trouvé <br> **409** : Utilisateur non trouvé |
+| **PUT** | `Modify User` | Modifier les informations utilisateur | **200** : Informations utilisateur mises à jour <br> **400** : Requête invalide <br> **409** : Utilisateur n'existe pas |
+| **DELETE** | `Delete User` | Supprimer un utilisateur | **200** : Utilisateur supprimé avec succès <br> **400** : Requête invalide |
+| **POST** | `Add Permissions` | Ajouter des permissions utilisateur | **200** : Permissions ajoutées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur non trouvé <br> **409** : Permissions existent déjà |
+| **PUT** | `Modify Permissions` | Modifier les permissions utilisateur | **200** : Permissions mises à jour avec succès <br> **400** : Requête invalide <br> **404** : Permissions non trouvées |
+| **DELETE** | `Delete Permissions` | Supprimer les permissions utilisateur | **200** : Permissions supprimées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur ou permissions non trouvés |
+| **GET** | `Permissions by Project` | Récupérer les permissions utilisateur par projet | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour ce projet |
+| **GET** | `Permissions by Email` | Récupérer les permissions utilisateur par e-mail | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour cet utilisateur |
 
-POST /deleteuser
-{
-  "mail": "string"
-}
+## Code Details
 
-POST /permission
-{
-  "id_user": "string",
-  "permissions": {
-    "read": true,
-    "write": false,
-    "delete": false
-}
-```
----
+### Utility Functions (`fonction.py`)
+
+#### JSON Operations
+
+- `read_json(filename)`: Reads and validates JSON files
+- `write_json(filename, data)`: Writes data to JSON files
+
+#### User Management Functions
+
+- `get_user_by_email(json_data, search_email)`: Finds user by email
+- `modify_user_by_email(users, last_name, first_name, email, password, birth_date)`: Updates user data
+- `get_user_by_email(users, email)`: Retrieves user data (without password)
+- `delete_user_by_email(users, email)`: Removes user from the system
+
+#### Permission Management Functions
+
+- `get_permissions_by_project(json_perm, project_id)`: Gets project permissions
+- `get_permissions_by_email(permissions_list, email)`: Gets user permissions
+- `get_perm_email_idproject(json_perm, email_id, project_id)`: Finds specific permission
+
+### Reset Application (`reset_app.py`)
+
+- Initializes default data in JSON files
+- Handles file creation and validation
+- Provides default user and permission data
 
 ## Conteneurisation et orchestration
+
 **Responsable :** Tout le monde
 
 - Conteneurisation des microservices
@@ -185,6 +225,7 @@ POST /permission
 ---
 
 ## Sécurité : Authentification et permissions
+
 - Gestion de l'authentification des utilisateurs
 - Implémentation de l’authentification par token JWT
 - Sécurisation des API avec des rôles et permissions spécifiques
@@ -193,7 +234,7 @@ POST /permission
 ---
 
 ### Liens utiles
+
 - [Documentation](https://foad.univ-exemple.com/docs/SAE401)
 
 ---
-
