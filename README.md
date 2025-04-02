@@ -108,7 +108,7 @@
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
-| **GET** | `getrapport(id)` |crée le rapport a partir de l'ID passé en paramètre | **200** : OK <br> **404** : ID introuvable |
+| **GET** | `/pdf/<id>` |crée le rapport au format PDF à partir de l'ID passé en paramètre | **200** : OK <br> **400** : SBOM introuvable <br> **401** : projet introuvable |
 
 ---
 
