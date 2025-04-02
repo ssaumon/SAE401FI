@@ -132,11 +132,7 @@ def add_project():
     permprojet= {"project_id": str(idp), "email": user["email"], "write": True,  "read": True, "admin": True}
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
     if r.status_code != 200:
-        return r.json()
-    
-
-
-
+        return {"error": "Echec de l'ajout"}, 511
     envoie = requests.post('http://import-sbom:5000/sbom', json=fichier)
     if r.status_code != 200:
         return {"error": "Echec de l'importation du sbom"}, 512
@@ -187,8 +183,20 @@ def remove_project(id):
         mess, stat =save_project_file(projects)
         if stat != 200:
             return {"error": "Echec de la sauvegarde"}, 513
+        
+
+        listemeailprojet=requests.get(f"http://user:5000/permissions-by-project/{id}").json()
+        perms = listemeailprojet["data"]
+        lst=[]
+        for permi in perms:
+            lst.append(permi)
+        return lst
+        if perms[permi]["project_id"]==str(id):
+                data = {"project_id":id, "email":perms[permi]["project_id"]}
+                de = requests.delete("http://user:5000/delete-permissions", data=data)
+
         return redirect("/homepage")
-    return {"error": "Vous n'avez pas les droits d'access"}, 513
+    return {"error": "Vous n'avez pas les droits de success"}, 513
 
 @app.route("/projet/projet/adduser", methods=['POST'])
 def ajouter_user():
