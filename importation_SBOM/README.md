@@ -23,7 +23,7 @@
 
 Cette méthode permet de recevoir l'ensemble du contenu de la base de données SBOM, contenant l'ensemble des SBOMs enregistrés jusqu'à maintenant.
 
-Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom
+Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom``.
 
 Elle renvoie uniquement une réponse 200 avec la base de données en json.
 
@@ -31,7 +31,7 @@ Elle renvoie uniquement une réponse 200 avec la base de données en json.
 
 Cette méthode permet d'ajouter un SBOM en renseignant tout le json du SBOM dans son entiereté.
 
-Pour faire appelle à cette méthode il faut dans une requête curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom avec le SBOM en json
+Pour faire appelle à cette méthode il faut dans une requête curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom`` avec le SBOM en json.
 
 Elle renvoie uniquement une réponse 200 en renvoyant SBOM Added To The Data Base.
 
@@ -39,7 +39,7 @@ Elle renvoie uniquement une réponse 200 en renvoyant SBOM Added To The Data Bas
 
 Cette méthode permet d'ajouter une dépendance à un SBOM en particulier que l'on doit préciser en plus de la dépendance en json/dictionnaire.
 
-Pour faire appelle à cette méthode il faut dans une requête curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom/dependance/&lt;id&gt; avec l'id du SBOM voulue + en json/dictionnaire la dépendance à ajouter.
+Pour faire appelle à cette méthode il faut dans une requête curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom/dependance/<id>`` avec l'id du SBOM voulue + en json/dictionnaire la dépendance à ajouter.
 
 Elle renvoie une réponse 200 en renvoyant Dependance Added To The SBOM et une réponse 404 en renvoyant SBOM Not Found.
 
@@ -47,7 +47,7 @@ Elle renvoie une réponse 200 en renvoyant Dependance Added To The SBOM et une r
 
 Cette méthode permet de modifier une valeur d'un SBOM en particulier tant que la clé dont on veut changer la valeur existe dans le SBOM.
 
-Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom/&lt;id&gt;/&lt;cle&gt;/&lt;new_val&gt; avec, &lt;id&gt; l'id du SBOM à modifier, &lt;cle&gt; la clé correspondant à la valeur a changer et &lt;new_val&gt; la nouvelle valeur à mettre en place.
+Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom/<id>/<cle>/<new_val>`` avec, &lt;id&gt; l'id du SBOM à modifier, &lt;cle&gt; la clé correspondant à la valeur a changer et &lt;new_val&gt; la nouvelle valeur à mettre en place.
 
 Elle renvoie une réponse 200 en renvoyant Value Changed, une réponse 404 en renvoyant Key Of SBOM Not Found et une autre réponse 404 en renvoyant SBOM Not Found.
 
@@ -55,7 +55,7 @@ Elle renvoie une réponse 200 en renvoyant Value Changed, une réponse 404 en re
 
 Cette méthode permet de supprimer une dépendance d'un SBOM
 
-Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom/delete/&lt;id&gt;/&lt;id_dependance&gt; avec, &lt;id&gt; l'id du SBOM à modifier, &lt;id_dependance&gt; l'id correspondant à l'index de l'emplace de la dépendance à supprimer.
+Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom/dependance/delete/<id>/<id_dependance>`` avec, &lt;id&gt; l'id du SBOM à modifier, &lt;id_dependance&gt; l'id correspondant à l'index de l'emplace de la dépendance à supprimer.
 
 Elle renvoie une réponse 200 en renvoyant Dependance Deleted, une réponse 404 en renvoyant Dependance Not Found et une réponse 404 en renvoyant SBOM Not Found.
 
@@ -63,6 +63,6 @@ Elle renvoie une réponse 200 en renvoyant Dependance Deleted, une réponse 404 
 
 Cette méthode permet de supprimer un sbom de la base de données.
 
-Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin http: //X.X.X.X:YYYY/sbom/delete/&lt;id&gt; avec &lt;id&gt; l'id du SBOM à supprimer.
+Pour faire appelle à cette méthode il faut dans une requête web, curl ou Postman mettre le chemin ``http://X.X.X.X:YYYY/sbom/delete/<id>`` avec &lt;id&gt; l'id du SBOM à supprimer.
 
 Elle renvoie une réponse 200 en renvoyant SBOM Deleted et une réponse 404 en renvoyant SBOM Not Found.
