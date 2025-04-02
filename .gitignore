@@ -13,7 +13,6 @@ dist/
 
 # Fichiers de configuration locaux
 *.env
-*.json
 # Fichiers spécifiques à l'IDE
 *.idea/
 *.vscode/
