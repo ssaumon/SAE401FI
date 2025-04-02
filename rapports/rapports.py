@@ -17,6 +17,7 @@ cwd= Path.cwd().joinpath("rapports")
 
 def recup_sbom(id):
     global sbom
+    sbom = {}
     requ=requests.get("http://consult-sbom:5000/sbom/"+id)
     if requ.status_code==200:
         sbom = json.loads(requ.text)
@@ -26,6 +27,7 @@ def recup_sbom(id):
 
 def recup_vul(id):
     global vul
+    vul = []
     requ=requests.get("http://vuln:5000/Vulnerability/sbom/"+id)
     if requ.status_code==200:
         vul = json.loads(requ.text)
@@ -34,8 +36,8 @@ def recup_vul(id):
 
 def recup_prj(id):
     global prj
+    prj = {}
     requ=requests.get("http://gestion_projet:5000/projet/json/"+id)
-    
     if requ.status_code==200:
         prj = json.loads(requ.text)
     return requ.status_code
