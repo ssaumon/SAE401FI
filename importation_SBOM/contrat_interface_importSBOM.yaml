@@ -1,0 +1,227 @@
+openapi: 3.0.4
+info:
+  title: Swagger SAÉ 4.DevCloud.01 - Importation SBOM - OpenAPI 3.0.4
+  description: |-
+    This is the SAÉ 4.DevCloud.01 for Importation SBOM Server based on the OpenAPI 3.0 specification.<br>
+    You can find out more about Swagger at [https://swagger.io](https://swagger.io).
+  termsOfService: https://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.12
+externalDocs:
+  description: Find out more about Swagger
+  url: https://swagger.io
+servers:
+  - url: http://127.0.0.1:5000
+tags:
+  - name: SBOM Import
+    description: Everything about the import of SBOM
+paths:
+  /sbom:
+    get:
+      tags:
+        - SBOM Import
+      summary: Show all SBOM of the Data Base
+      operationId: getSBOMs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportSBOM'
+    post:
+      tags:
+        - SBOM Import
+      summary: Add a new SBOM to the Data Base
+      operationId: addSBOM
+      requestBody:
+        description: Add a new SBOM in the Data Store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportSBOM'
+        required: true
+      responses:
+        '200':
+          description: SBOM Added To The Data Base
+  /sbom/dependance/{id}:
+    post:
+      tags:
+        - SBOM Import
+      summary: Add Dependance to SBOM
+      operationId: addDependance
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Add a new SBOM in the Data Store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dependance'
+        required: true
+      responses:
+        '200':
+          description: Dependance Added To The SBOM
+        '404':
+          description: SBOM Not Found
+  /sbom/{id}/{cle}/{new_val}:
+    patch:
+      tags:
+        - SBOM Import
+      summary: Change one value of one SBOM
+      operationId: patchSBOM
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: cle
+        in: path
+        required: true
+        schema:
+          type: string
+          example: bomFormat
+      - name: new_val
+        in: path
+        required: true
+        schema:
+          type: string
+          example: CycloneDX
+      responses:
+        '200':
+          description: Value Changed
+        '404':
+          description: Key Of SBOM Not Found
+        '404.2':
+          description: SBOM Not Found
+  /sbom/delete/dependance/{id}/{id_compo}:
+    delete:
+      tags:
+        - SBOM Import
+      summary: Delete Dependance
+      operationId: deleteDependance
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: id_compo
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Dependance Deleted
+        '404':
+          description: Dependance Not Found
+        '404.2':
+          description: SBOM Not Found
+  /sbom/delete/{id}:
+    delete:
+      tags:
+        - SBOM Import
+      summary: Delete SBOM
+      operationId: deleteSBOM
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Dependance Deleted
+        '404':
+          description: SBOM Not Found
+components:
+  schemas:
+    ImportSBOM:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        bomFormat:
+          type: string
+          example: CycloneDX
+        specVersion:
+          type: string
+          example: 1.4
+        serialNumber:
+          type: string
+          example: urn:uuid:3e016e55-f35b-41cd-b660-e6e642ecc9e5
+        version:
+          type: integer
+          format: int64
+          example: 1
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              example: 2023-10-01T12:00:00Z
+            tools:
+              type: object
+              properties:
+                vendor:
+                  type: string
+                  example: CycloneDX
+                name:
+                  type: string
+                  example: CycloneDX Core Library
+                version:
+                  type: string
+                  example: "1.4"
+            component:
+              type: object
+              example: [{"type": "application", "name": "ExampleApp", "version": "1.0.0", "swid": {"tagId": "ExampleApp"}}]
+        components:
+          type: object
+          example: [{"type": "library", "name": "log4j", "version": "2.14.1", "swid": {"tagId": "log4j"}, "purl": "pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1"}, {"type": "library", "name": "jackson-databind", "version": "2.12.3", "swid": {"tagId": "jackson-databind"}, "purl": "pkg:maven/com.fasterxml.jackson.core/jackson-databind@2.12.3"}]
+    Dependance:
+      type: object
+      properties:
+        type: 
+          type: string
+          example: library
+        name: 
+          type: string
+          example: log4j
+        version: 
+          type: string
+          example: 2.14.1
+        swid:
+          example: {"tagId": "log4j"}
+        purl: 
+          type: string
+          example: pkg:maven/org.apache.logging.log4j/log4j-core@2.14.1
+securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
