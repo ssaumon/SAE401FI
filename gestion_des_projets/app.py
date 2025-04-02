@@ -250,8 +250,7 @@ def send_user():
     r=requests.post('http://user:5000/register', json= donnee)
     if r.status_code != 200:
         return {"error": "Echec de l'enregistrement"}, 513
-    return redirect("/")
-
+    return redirect("/homepage", code=302)
 
 
 
@@ -262,4 +261,4 @@ def logout():
     global perm
     user={}
     perm=[]
-    return redirect("/")
+    return redirect("/", code=302)
