@@ -189,12 +189,8 @@ def remove_project(id):
         perms = listemeailprojet["data"]
         lst=[]
         for permi in perms:
-            lst.append(permi)
-        return lst
-        if perms[permi]["project_id"]==str(id):
-                data = {"project_id":id, "email":perms[permi]["project_id"]}
-                de = requests.delete("http://user:5000/delete-permissions", data=data)
-
+            if permi["project_id"]==str(id):
+                de = requests.delete(f"http://user:5000/delete-permissions?project_id={id}&email={permi['email']}")
         return redirect("/homepage")
     return {"error": "Vous n'avez pas les droits de success"}, 513
 
@@ -203,10 +199,10 @@ def ajouter_user():
     mail = request.form.get('email')
     idproj = request.form.get('id')
     auth= request.form.getlist('permissions')
+
     lecture=True if "read" in auth else False
     ecriture=True if "write" in auth else False
     admin = True if "admin" in auth else False
-
     permprojet= { "project_id": str(idproj), "email": mail, "write": ecriture,  "read": lecture, "admin": admin}
 
     r= requests.post('http://user:5000/add-permissions', json = permprojet)
@@ -233,6 +229,16 @@ def get_sbom(id):
         return send_file("sbom.json", as_attachment=True, download_name=f"sbom_{id}.json")
     return {"error": "ID introuvable"}, 404
 
+@app.route("/vulne/<id>")
+def get_vulne(id):
+    r = requests.get(f"http://vuln:5000/Vulnerability/sbom/{id }")
+    if r.status_code == 200:
+        with open("vulne.json", "wb") as f:
+            f.write(r.content)
+        return send_file("vulne.json", as_attachment=True, download_name=f"vulne_{id}.json")
+    return {"error": "ID introuvable"}, 404
+
+
 @app.route("/register")
 def enre():
     return render_template("register.html", code="200")
@@ -245,6 +251,8 @@ def send_user():
     if r.status_code != 200:
         return {"error": "Echec de l'enregistrement"}, 513
     return redirect("/")
+
+
 
 
 

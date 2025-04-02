@@ -20,15 +20,15 @@
     <p>{{ projets.description }}</p> 
     <br>
     <h2>Télécharger le rapport :</h2>
-    <a href="http://simon/rapport/{{ projets.id }}" class="btn btn-info" download="Rapport_Projet_{{ projets.id }}.pdf">Lien du téléchargement du Raport {{ projets.id }}</a>
+    <td><a href="/rapport/{{projets.id}}" class="btn btn-info">Rapport {{ projets.id }}</a></td>
     <br>
     <br>
     <h2>Télécharger les SBOM :</h2>
-    <a href="http://simon/sbom/{{ projets.id }}" class="btn btn-info" download="SBOM_Projet_{{ projets.id }}.json">Lien du téléchargement du SBOM {{ projets.id }}</a>
+    <td><a href="/sbom/{{projets.id}}" class="btn btn-info">SBOM {{ projets.id }}</a></td>
     <br>
     <br>
     <h2>Télécharger le rapport de vulnérabilité :</h2>
-    <a href="http://killian/vulne/{{ projets.id }}" class="btn btn-info" download="Vulné_Projet_{{ projets.id }}.json">Lien du téléchargement du Raport de vulnérabilité {{ projets.id }}</a>
+    <a href="/vulne/{{ projets.id }}" class="btn btn-info" download="Vulné_Projet_{{ projets.id }}.json">Lien du téléchargement du Raport de vulnérabilité {{ projets.id }}</a>
     <br>
     <br>
 
@@ -61,11 +61,11 @@
             <input type="hidden" name="id" value="{{ projets.id }}">
             
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="permissions" value="write" id="lecture">
+                <input class="form-check-input" type="checkbox" name="permissions" value="read" id="lecture">
                 <label class="form-check-label" for="lecture">Lecture</label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="permissions" value="read" id="ecriture">
+                <input class="form-check-input" type="checkbox" name="permissions" value="write" id="ecriture">
                 <label class="form-check-label" for="ecriture">Écriture</label>
             </div>
             <div class="form-check">
