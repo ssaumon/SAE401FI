@@ -129,6 +129,24 @@
 
 **Responsable : Malo DURANTON**  
 
+## Project Structure
+
+```text
+code/
+├── app.py           # Main Flask application
+├── fonction.py      # Utility functions
+├── reset_app.py     # Data reset script
+├── user.json        # User data in json
+└── permission.json  # Perm data in json
+```
+
+## Prerequisites
+
+- Python 3.x
+- Flask
+- Docker and Docker Compose
+- Dependencies listed in `requirements.txt`
+
 ***Fonction utillisateur***
 
 - Fonction pour inscrire un utilisateur  
@@ -173,46 +191,75 @@
 
 **Requêtes API :**
 
-| HTTP Méthode | Action | Description | Codes |
-|--------------|--------|-------------|-------|
-| **POST** | `Register` | Inscription d'un nouvel utilisateur | **200** : Utilisateur créé avec succès <br> **400** : Champ manquant <br> **411** : Un utilisateur avec cet e-mail existe déjà <br> **415** : Type de contenu invalide, JSON attendu |
-| **POST** | `Login` | Connexion utilisateur | **200** : Connexion réussie <br> **400** : Champ manquant <br> **401** : Mot de passe incorrect <br> **404** : Utilisateur non trouvé <br> **415** : Type de contenu invalide, JSON attendu |
-| **GET** | `User Info` | Informations utilisateur | **200** : Utilisateur trouvé <br> **409** : Utilisateur non trouvé |
-| **PUT** | `Modify User` | Modifier les informations utilisateur | **200** : Informations utilisateur mises à jour <br> **400** : Requête invalide <br> **409** : Utilisateur n'existe pas |
-| **DELETE** | `Delete User` | Supprimer un utilisateur | **200** : Utilisateur supprimé avec succès <br> **400** : Requête invalide |
-| **POST** | `Add Permissions` | Ajouter des permissions utilisateur | **200** : Permissions ajoutées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur non trouvé <br> **409** : Permissions existent déjà |
-| **PUT** | `Modify Permissions` | Modifier les permissions utilisateur | **200** : Permissions mises à jour avec succès <br> **400** : Requête invalide <br> **404** : Permissions non trouvées |
-| **DELETE** | `Delete Permissions` | Supprimer les permissions utilisateur | **200** : Permissions supprimées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur ou permissions non trouvés |
-| **GET** | `Permissions by Project` | Récupérer les permissions utilisateur par projet | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour ce projet |
-| **GET** | `Permissions by Email` | Récupérer les permissions utilisateur par e-mail | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour cet utilisateur |
+| HTTP Méthode | Action | Description | Paramètres | Codes |
+|--------------|--------|-------------|------------|-------|
+| **POST** | `Register` | Inscription d'un nouvel utilisateur | `last_name`, `first_name`, `email`, `password`, `birth_date` | **200** : Utilisateur créé avec succès <br> **400** : Champ manquant <br> **411** : Un utilisateur avec cet e-mail existe déjà <br> **415** : Type de contenu invalide, JSON attendu |
+| **POST** | `Login` | Connexion utilisateur | `email`, `password` | **200** : Connexion réussie <br> **400** : Champ manquant <br> **401** : Mot de passe incorrect <br> **404** : Utilisateur non trouvé <br> **415** : Type de contenu invalide, JSON attendu |
+| **GET** | `User Info` | Informations utilisateur | `email` (dans le chemin) | **200** : Utilisateur trouvé <br> **409** : Utilisateur non trouvé |
+| **PUT** | `Modify User` | Modifier les informations utilisateur | `last_name`, `first_name`, `email`, `password`, `birth_date` | **200** : Informations utilisateur mises à jour <br> **400** : Requête invalide <br> **409** : Utilisateur n'existe pas |
+| **DELETE** | `Delete User` | Supprimer un utilisateur | `email` (dans le chemin) | **200** : Utilisateur supprimé avec succès <br> **400** : Requête invalide |
+| **POST** | `Add Permissions` | Ajouter des permissions utilisateur | `project_id`, `email`, `write`, `read`, `admin` | **200** : Permissions ajoutées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur non trouvé <br> **409** : Permissions existent déjà |
+| **PUT** | `Modify Permissions` | Modifier les permissions utilisateur | `project_id`, `email`, `write`, `read`, `admin` | **200** : Permissions mises à jour avec succès <br> **400** : Requête invalide <br> **404** : Permissions non trouvées |
+| **DELETE** | `Delete Permissions` | Supprimer les permissions utilisateur | `project_id`, `email` (dans la requête) | **200** : Permissions supprimées avec succès <br> **400** : Requête invalide <br> **404** : Utilisateur ou permissions non trouvés |
+| **GET** | `Permissions by Project` | Récupérer les permissions utilisateur par projet | `project_id` (dans le chemin) | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour ce projet |
+| **GET** | `Permissions by Email` | Récupérer les permissions utilisateur par e-mail | `email` (dans le chemin) | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour cet utilisateur |
 
-## Code Details
+## Détails du Code
 
-### Utility Functions (`fonction.py`)
+### Fonctions Utilitaires (`fonction.py`)
 
-#### JSON Operations
+#### Opérations JSON
 
-- `read_json(filename)`: Reads and validates JSON files
-- `write_json(filename, data)`: Writes data to JSON files
+- `read_json(filename)`: Lit et valide le fichier JSON.
+- `write_json(filename, data)`: Écrit les données dans le fichier JSON.
 
-#### User Management Functions
+#### Fonctions de Gestion des Utilisateurs
 
-- `get_user_by_email(json_data, search_email)`: Finds user by email
-- `modify_user_by_email(users, last_name, first_name, email, password, birth_date)`: Updates user data
-- `get_user_by_email(users, email)`: Retrieves user data (without password)
-- `delete_user_by_email(users, email)`: Removes user from the system
+- `get_user_by_email(json_data, search_email)`: Retourne l'utilisateur par son email.
+- `modify_user_by_email(users, last_name, first_name, email, password, birth_date)`: Modifie les données de l'utilisateur.
+- `get_user_by_email(users, email)`: Retourne les données de l'utilisateur (sans mot de passe).
+- `delete_user_by_email(users, email)`: Retire l'utilisateur du système.
 
-#### Permission Management Functions
+#### Fonctions de Gestion des Permissions
 
-- `get_permissions_by_project(json_perm, project_id)`: Gets project permissions
-- `get_permissions_by_email(permissions_list, email)`: Gets user permissions
-- `get_perm_email_idproject(json_perm, email_id, project_id)`: Finds specific permission
+- `get_permissions_by_project(json_perm, project_id)`: Obtient les permissions du projet.
+- `get_permissions_by_email(permissions_list, email)`: Obtient les permissions de l'utilisateur.
+- `get_perm_email_idproject(json_perm, email_id, project_id)`: Trouve une permission spécifique.
 
-### Reset Application (`reset_app.py`)
+### Réinitialisation de l'Application (`reset_app.py`)
 
-- Initializes default data in JSON files
-- Handles file creation and validation
-- Provides default user and permission data
+- Initialise les données par défaut dans les fichiers JSON.
+- Gère la création et la validation des fichiers.
+- Fournit des données par défaut pour les utilisateurs et les permissions.
+
+## Considérations de Sécurité
+
+- Les mots de passe sont stockés en texte brut (à améliorer).
+- Pas de système de jetons JWT (à implémenter).
+- Validation basique des entrées (à renforcer).
+- Pas de limitation de débit implémentée.
+- Pas de HTTPS par défaut.
+
+## Améliorations Possibles
+
+1. Implémenter le hachage des mots de passe.
+2. Ajouter un système d'authentification JWT.
+3. Améliorer la validation des données.
+4. Ajouter des tests unitaires.
+5. Implémenter une base de données au lieu de fichiers JSON.
+6. Ajouter une documentation Swagger/OpenAPI.
+7. Implémenter un système de journalisation plus robuste.
+8. Ajouter une limitation de débit.
+9. Activer HTTPS par défaut.
+10. Ajouter une désinfection des entrées.
+11. Implémenter la gestion des sessions.
+12. Ajouter un versionnage de l'API.
+
+## Ce que je peux faire mieux
+
+1. Mieux tester l'API.
+2. Standardiser les sorties des fonctions, toujours retourner `[]` pour les résultats vides.
+3. Améliorer l'organisation et la lisibilité du code.
 
 ---
 
