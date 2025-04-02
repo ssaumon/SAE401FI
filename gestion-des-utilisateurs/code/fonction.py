@@ -56,11 +56,11 @@ def delete_user_by_email(users, email: str):
 ############################################################################################################################
 
 def get_permissions_by_project(json_perm, project_id: str):
-    # return [perm for perm in json_perm if str(perm['project_id']) == str(project_id)]
+    result = []
     for perm in json_perm:
-        if str(perm['project_id']) == project_id:
-            return perm
-    return []
+        if perm['project_id'] == project_id:
+            result.append(perm)
+    return result 
 
 
     # return [perm for perm in json_perm if str(perm['email']) == str(email_id)]
