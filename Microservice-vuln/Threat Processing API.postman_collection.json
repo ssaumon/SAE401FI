@@ -1,11 +1,11 @@
 {
 	"info": {
-		"_postman_id": "bcc67a8a-c682-45ba-835a-74e9c06bf262",
-		"name": "Threat Processing API",
-		"description": "This API allows users to process a vulnerabilities file.\nThey can export or import vulnerabilities in or outside the database.\n\nContact Support:\n Email: apiteam@iut.io",
+		"_postman_id": "26f232c3-2d91-47e6-a631-190597a82d8e",
+		"name": "API de Traitement des Menaces",
+		"description": "Cette API permet aux utilisateurs de traiter un fichier de vulnérabilités.\nIls peuvent exporter ou importer des vulnérabilités dans ou hors de la base de données.\n\nContact Support:\n Email: apiteam@iut.io",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "43455135",
-		"_collection_link": "https://killian-4851147.postman.co/workspace/killian's-Workspace~660740f8-726c-48db-8745-7768a3ed0432/collection/43455135-bcc67a8a-c682-45ba-835a-74e9c06bf262?action=share&source=collection_link&creator=43455135"
+		"_collection_link": "https://killian-4851147.postman.co/workspace/660740f8-726c-48db-8745-7768a3ed0432/collection/43455135-26f232c3-2d91-47e6-a631-190597a82d8e?action=share&source=collection_link&creator=43455135"
 	},
 	"item": [
 		{
@@ -15,7 +15,7 @@
 					"name": "{id}",
 					"item": [
 						{
-							"name": "Find vulnerability by ID",
+							"name": "Trouver une vulnérabilité par ID",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -25,16 +25,23 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/Vulnerability/20",
+									"raw": "{{baseUrl}}/Vulnerability/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"Vulnerability",
-										"20"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<long>",
+											"description": "(Required) ID de la vulnerabilité a affiché"
+										}
 									]
 								},
-								"description": "Retrieve a specific vulnerability by its ID"
+								"description": "Trouver une vulnérabilité spécifique par ID"
 							},
 							"response": [
 								{
@@ -134,7 +141,7 @@
 							]
 						},
 						{
-							"name": "Delete vulnerability by ID",
+							"name": "Supprimer une vulnérabilité par ID",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -144,16 +151,23 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/Vulnerability/20",
+									"raw": "{{baseUrl}}/Vulnerability/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"Vulnerability",
-										"20"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<long>",
+											"description": "(Required) ID de la vulnérabilité a supprimer"
+										}
 									]
 								},
-								"description": "Remove a vulnerability from the database"
+								"description": "Supprimer une vulnérabilité de la base de données"
 							},
 							"response": [
 								{
@@ -253,7 +267,7 @@
 							]
 						},
 						{
-							"name": "Update vulnerability by ID",
+							"name": "Mise-à-jour d'une vulnérabilité par ID",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -262,26 +276,24 @@
 										"value": "application/json"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"VulnerabilityID\": \"<string>\",\r\n  \"PkgName\": \"<string>\",\r\n  \"InstalledVersion\": \"<string>\",\r\n  \"FixedVersion\": \"<string>\",\r\n  \"Severity\": \"<string>\",\r\n  \"Title\": \"<string>\",\r\n  \"Description\": \"<string>\",\r\n  \"References\": \"<string>\",\r\n  \"id\": 20\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{baseUrl}}/Vulnerability/20",
+									"raw": "{{baseUrl}}/Vulnerability/:id",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"Vulnerability",
-										"20"
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<long>",
+											"description": "(Required) ID de la vulnérabilité à mettre à jour"
+										}
 									]
 								},
-								"description": "Modify a specific vulnerability"
+								"description": "Modifier une vulnérabilité"
 							},
 							"response": [
 								{
@@ -389,7 +401,7 @@
 							"name": "{id}",
 							"item": [
 								{
-									"name": "Process SBOM for report by id",
+									"name": "Traiter le SBOM pour générer un rapport par ID",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -412,11 +424,11 @@
 												{
 													"key": "id",
 													"value": "<long>",
-													"description": "(Required) ID of the sbom database you want to test"
+													"description": "(Required) ID du sbom a tester"
 												}
 											]
 										},
-										"description": "Processes SBOM to generate a report on vulnerabilities"
+										"description": "Traite le SBOM pour générer un rapport sur les vulnérabilités"
 									},
 									"response": [
 										{
@@ -578,7 +590,153 @@
 							]
 						},
 						{
-							"name": "Process SBOM for report",
+							"name": "CVE",
+							"item": [
+								{
+									"name": "Traiter le SBOM grâce a l'API CVE",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"InstalledVersion\":\"2.5.6\",\r\n    \"PkgName\":\"openVPN\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/Vulnerability/sbom/CVE",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"Vulnerability",
+												"sbom",
+												"CVE"
+											]
+										},
+										"description": "Traite le SBOM pour générer un rapport sur les vulnérabilités"
+									},
+									"response": [
+										{
+											"name": "Retourne les vulnérabilités associées au SBOM",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/CVE",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														"CVE"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}"
+										},
+										{
+											"name": "Clés manquantes dans les données récupérées",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/CVE",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														"CVE"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Aucune vulnérabilité correspondante trouvée",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/CVE",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														"CVE"
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Erreur lors de la requête CVE",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/Vulnerability/sbom/CVE",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"Vulnerability",
+														"sbom",
+														"CVE"
+													]
+												}
+											},
+											"status": "HTTP Version Not Supported",
+											"code": 505,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Traiter le SBOM pour le rapport",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -597,7 +755,7 @@
 										"sbom"
 									]
 								},
-								"description": "Processes SBOM to generate a report on vulnerabilities"
+								"description": "Traite le SBOM pour générer un rapport sur les vulnérabilités"
 							},
 							"response": [
 								{
@@ -684,7 +842,7 @@
 					]
 				},
 				{
-					"name": "List vulnerabilities",
+					"name": "Liste des vulnerabilités",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -702,7 +860,7 @@
 								"Vulnerability"
 							]
 						},
-						"description": "Retrieve all vulnerabilities"
+						"description": "Récupérer toutes les vulnérabilités"
 					},
 					"response": [
 						{
@@ -762,7 +920,7 @@
 					]
 				},
 				{
-					"name": "Add a vulnerability",
+					"name": "Ajouter une vulnérabilité",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -777,7 +935,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": 20\n}",
+							"raw": "{\n  \"VulnerabilityID\": \"<string>\",\n  \"PkgName\": \"<string>\",\n  \"InstalledVersion\": \"<string>\",\n  \"FixedVersion\": \"<string>\",\n  \"Severity\": \"<string>\",\n  \"Title\": \"<string>\",\n  \"Description\": \"<string>\",\n  \"References\": \"<string>\",\n  \"id\": \"<integer>\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -794,7 +952,7 @@
 								"Vulnerability"
 							]
 						},
-						"description": "Add a new vulnerability"
+						"description": "Ajouter une vulnérabilité"
 					},
 					"response": [
 						{
@@ -920,7 +1078,7 @@
 					]
 				},
 				{
-					"name": "Update vulnerability Auto",
+					"name": "Mise à jour automatique de la vulnérabilité",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -929,15 +1087,6 @@
 								"value": "application/json"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"VulnerabilityID\": \"<string>\",\r\n  \"PkgName\": \"<string>\",\r\n  \"InstalledVersion\": \"<string>\",\r\n  \"FixedVersion\": \"<string>\",\r\n  \"Severity\": \"<string>\",\r\n  \"Title\": \"<string>\",\r\n  \"Description\": \"<string>\",\r\n  \"References\": \"a\",\r\n  \"id\": 20\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{baseUrl}}/Vulnerability",
 							"host": [
@@ -947,7 +1096,7 @@
 								"Vulnerability"
 							]
 						},
-						"description": "Modify a specific vulnerability automatically"
+						"description": "Modifier automatiquement une vulnérabilité spécifique"
 					},
 					"response": [
 						{
