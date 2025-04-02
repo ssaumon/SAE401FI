@@ -22,6 +22,7 @@ dist/
 gestion-des-utilisateurs/bin/
 gestion-des-utilisateurs/code/__pycache__/
 gestion-des-utilisateurs/code/logs.txt
+gestion-des-utilisateurs/code/*.json
+gestion-des-utilisateurs/*.json
 gestion-des-utilisateurs/note.txt
-gestion-des-utilisateurs/code/user.json
-gestion-des-utilisateurs/code/permission.json
+
