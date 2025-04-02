@@ -21,7 +21,7 @@ Ce micro service est donc constitué des fichiers :
 
 Voici maintenant le diagramme de fonctionnement de notre micro-service. Celui-ci illustrera le fonctionnement de notre micro service ainsi que ses nombreux liens avec les autres micro-services :
 
-![Diagramme de communication](diag_com "Titre de l'image").
+![Diagramme de communication](diag_com.png "Titre de l'image").
 
 Celui-ci est très dépendant des autres micro services
 
