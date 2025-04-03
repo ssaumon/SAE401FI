@@ -2,81 +2,76 @@ from flask import Flask, render_template, send_file
 import json, requests
 from pathlib import Path
 from fpdf import FPDF, HTMLMixin
+import os
 
 app = Flask(__name__)
 
 sbom = {}
 vul = []
 prj = {}
+
+
 cwd= Path.cwd().joinpath("rapports")
 
 
 
 def recup_sbom(id):
     global sbom
-    #requests.get("sbom/"+id)
-    with open(cwd.joinpath("exemple_sbom.json"),encoding='UTF-8') as f:
-        sbom = json.load(f)
+    sbom = {}
+    requ=requests.get("http://consult-sbom:5000/sbom/"+id)
+    if requ.status_code==200:
+        sbom = json.loads(requ.text)
+    return requ.status_code
+
+
 
 def recup_vul(id):
     global vul
-    with open(cwd.joinpath("exemple_vulnerabilite.json"),encoding='UTF-8')as f:
-        vul = json.load(f)
+    vul = []
+    requ=requests.get("http://vuln:5000/Vulnerability/sbom/"+id)
+    if requ.status_code==200:
+        vul = json.loads(requ.text)
+    return requ.status_code
+
 
 def recup_prj(id):
     global prj
-    with open(cwd.joinpath("exemple_projet.json"),encoding='UTF-8') as f:
-        prj = json.load(f)
+    prj = {}
+    requ=requests.get("http://gestion_projet:5000/projet/json/"+id)
+    if requ.status_code==200:
+        prj = json.loads(requ.text)
+    return requ.status_code
+
 
 def recup_global(id):
-    recup_sbom(id)
-    recup_prj(id)
     recup_vul(id)
+    if recup_sbom(id) != 200:
+        return"sbom non importé", 400
+    if recup_prj(id) != 200:
+        return"projet non importé", 401
+    else : return "recuperation complétée", 200
 
-@app.route("/")
-def index():
-    recup_global(10)
-    return render_template("rapport.j2",projet=prj,sbom=sbom,vul=vul)
 
 @app.route("/pdf/<id>")
 def pdf(id):
-    recup_global(id)
-
+    if recup_global(id)[1] ==400:
+        return "sbom non importé", 400
+    elif recup_global(id)[1] ==401:
+        return "projet non importé", 401
+    try:
+        os.system("rm mon_fichier.pdf")
+    except:
+        print("pas de fichier de ce nom")
 
     pdf=FPDF()
     pdf.add_page()
 
-    pdf.set_font("Arial", size=30)
-    pdf.cell(0,30,prj["nom"],align="C",ln=1)
-
-    pdf.set_font("Arial", size=20)
-    pdf.cell(0,20,"description : ",ln=1)
-
-    pdf.set_font("Arial", size=12)
-    pdf.cell(0,20,prj["description"],ln=1)
-
-    pdf.set_font("Arial", size=20)
-    pdf.cell(0,20,f'Version : {sbom["metadata"]["component"]["version"]}',ln=1)
-
-    pdf.cell(0,15,'Tableau de dépendances : ',ln=1)
-
-    for v in vul:
-        if str(v["id"])==id:
-
-            pdf.set_font("Arial", size=17)
-            pdf.cell(180,20,v["PkgName"]+" : "+v["InstalledVersion"],border=1,ln=1)
-
-            pdf.set_font("Arial", size=12)
-            pdf.cell(60,20,"Vulneraibilité"+" : "+v["Title"],border=1)
-            pdf.cell(60,20,"Severity"+" : "+v["Severity"],border=1)
-            pdf.cell(60,20,"Version fixé"+" : "+v["FixedVersion"],border=1,ln=1)
-
-            pdf.cell(150,20,v["Description"],border=1)
-            pdf.cell(30,20,v["References"],border=1,ln=1)
-            pdf.ln()
 
 
-    pdf.output(cwd.joinpath("mon_fichier.pdf"))
-    return send_file(cwd.joinpath("mon_fichier.pdf"))
+    pagehtml = render_template("rapport.html",vul=vul,prj=prj,sbom=sbom)
+
+    pdf.write_html(pagehtml)
+    pdf.output("mon_fichier.pdf")
+    return send_file("mon_fichier.pdf"), 200
 
 #app.run()
