@@ -19,12 +19,21 @@ The application allows you to:
 ## Project Structure
 
 ```text
-code/
-├── app.py           # Main Flask application
-├── fonction.py      # Utility functions
-├── reset_app.py     # Data reset script
-├── user.json        # User data in json
-└── permission.json  # Perm data in json
+├── README.md            # readme specialiser gestion des user
+├── code
+│   ├── app.py           # Application Flask principale
+│   ├── fonction.py      # Fichier avec les functions  
+│   ├── reset_app.py     # Réinitialliser les json si illisible
+│   ├── user.json        # Données utillisateur en json
+│   └── permission.json  # Données permission en json
+├── docker-compose.yaml  # docker compose de test
+├── gestuser.Dockerfile  # dockerfile pour build 
+├── lunsh_test.sh        # example pour tester l'api user
+├── openapi.yaml         # contrat d'api user
+├── requirements.txt     # dependances python a installer
+├── test_api_bon.hurl
+├── test_api_errors.hurl
+└── test_api_vide.hurl
 ```
 
 ## Prerequisites
@@ -85,7 +94,7 @@ The application uses three data files:
 - **Responses**:
   - `200 OK`: User successfully created
   - `400 Bad Request`: Missing field
-  - `409 Conflict`: User with this email already exists
+  - `411 Conflict`: User with this email already exists
   - `415 Unsupported Media Type`: Invalid content type, JSON expected
 
 #### User Login
@@ -287,13 +296,10 @@ The API will be available at `http://localhost:5000`
 3. Enhance data validation
 4. Add unit tests
 5. Implement a database instead of JSON files
-6. Add Swagger/OpenAPI documentation
-7. Implement a more robust logging system
-8. Add rate limiting
-9. Enable HTTPS by default
-10. Add input sanitization
-11. Implement session management
-12. Add API versioning
+6. Implement a more robust logging system
+7. Add rate limiting
+8. Add input sanitization
+9. Implement session management
 
 ## What can I do better
 

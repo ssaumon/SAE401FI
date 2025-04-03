@@ -7,171 +7,364 @@ info:
     email: paul.hoffbeck@etudiant.univ-rennes.fr
   version: 0.1.0
 servers:
-  - url: https://librairie.rt.lan/api/v1
+  - url: http://localhost:5000
 tags:
-  - name: projets
-    description: Gestion des projets
   - name: user
-    description: Operations about user
+    description : Authentification et gestion utilisateur
+  - name: projets
+    description:  Gestion de projets
+  - name: doc
+    description: Accès aux documents
 paths:
-  /projet:
+  /:
     get:
       tags:
-        - projets
-      summary: Lister les projets
-      description: Afficher tous les projets
+       - user
+      summary: Page de connexion
       responses:
         '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Projet'          
-        '400':
-          description: Invalid status value
+          description: Page de connexion HTML
           
-          
+  /login/login:
     post:
       tags:
-        - projets
-      summary: Ajouter un projet
-      description: Ajouter un projet à la liste des projets
+       - user
+      summary: Authentification utilisateur
       requestBody:
-        description: Ajouter un projet
         content:
-          application/json:
+           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Projet'
-        required: true
+              type: object
+              properties:
+                mail:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+              required:
+                - mail
+                - password
+      responses:
+        '302':
+          description: Redirection vers la page d'accueil si authentification réussie
+        '403':
+          description: Échec de l'authentification
+          
+  /register:
+    get:
+      tags:
+       - user
+      summary: Page d'inscription
       responses:
         '200':
-          description: Successful operation
+          description: Page d'inscription HTML
           content:
-            application/json:
+            text/html:
               schema:
-                $ref: '#/components/schemas/Projet'          
-        '400':
-          description: Invalid input
-        '422':
-          description: Validation exception
+                type: string
+                
+  /register/send:
+    post:
+      tags:
+       - user
+      summary: Enregistrement d'un nouvel utilisateur
+      requestBody:
+        content:
+           multipart/form-data:
+            schema:
+              type: object
+              properties:
+                mail:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                first-name:
+                  type: string
+                last-name:
+                  type: string
+                birth-date:
+                  type: string
+              required:
+                - mail
+                - password
+                - first-name
+                - last-name
+                - birth-date
+      responses:
+        '302':
+          description: Redirection vers la page de connexion si inscription réussie
+        '513':
+          description: Échec de l'enregistrement
+  /logout:
+    get:
+      tags:
+        - user
+      summary: Déconnexion de l'utilisateur
+      responses:
+        '302':
+          description: Redirection vers la page de connexion
           
-          
-          
-  /projet/{projetId}:
+  
+  /homepage:
     get:
       tags:
         - projets
-      summary: Recherche de projets par identifiant
-      description: Retourne un projet
-      operationId: getBookById
-      parameters:
-        - name: projetId
-          in: path
-          description: ID du projet à rechercher
-          required: true
-          schema:
-            type: integer
-            format: int64
+      summary: Page d'accueil avec liste des projets
+      description: Nécessite une authentification préalable
       responses:
         '200':
-          description: successful operation
+          description: Page d'accueil avec liste des projets HTML
+          content:
+            text/html:
+              schema:
+                type: string
+        '403':
+          description: Non authentifié
+  /projet/{id}:
+    get:
+      tags:
+        - projets
+      summary: Détails d'un projet spécifique
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Page de détails du projet HTML
+          content:
+            text/html:
+              schema:
+                type: string
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+
+  /projet/json/{id}:
+    get:
+      tags:
+        - projets
+      summary: Obtenir les données JSON d'un projet
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Données JSON du projet
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Projet'          
-        '400':
-          description: Invalid ID supplied
+                $ref: '#/components/schemas/Project'
+        '404':
+          description: Projet non trouvé
+  /projet/add:
+    post:
+      tags:
+       - projets
+      summary: Ajouter un nouveau projet
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                json:
+                  type: string
+                  format: json
+              required:
+                - name
+                - description
+                - json
+      responses:
+        '302':
+          description: Redirection vers la page d'accueil
+        '403':
+          description: Accès refusé - Non authentifié
+        '415':
+          description: Format de fichier non valide
+        '511':
+          description: Échec de l'ajout des permissions
+        '512':
+          description: Échec de l'importation du SBOM
+        '513':
+          description: Échec de la sauvegarde
+  /projet/update:
+    put:
+      tags:
+       - projets
+      summary: Mettre à jour un projet
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - id
+                - name
+                - description
+      responses:
+        '302':
+          description: Redirection vers la page d'accueil si mise à jour réussie
+        '403':
+          description: Accès refusé - Non authentifié
+        '404':
+          description: Projet non trouvé
+        '513':
+          description: Échec de la sauvegarde
 
-          
-  /projet/cherche/sbom/{projetId}:
-    get:
+  /projet/delete/{id}:
+    delete:
       tags:
-      - projets
+        - projets
+      summary: Supprimer un projet
       parameters:
-        - name: projetId
+        - name: id
           in: path
-          description: ID du projet à rechercher
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
-        '200':
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
+        '302':
+          description: Redirection vers la page d'accueil si suppression réussie
+        '403':
+          description: Accès refusé - Non authentifié
+        '404':
+          description: Projet non trouvé
+        '513':
+          description: Echec de la suppression
+
+  /projet/projet/adduser:
+    post:
+      tags: 
+        - projets
+      summary: Ajouter un utilisateur et ses permissions à un projet
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                id:
+                  type: string
+                permissions:
+                  type: array
+                  items:
+                    type: string
+                    enum: [read, write, admin]
+              required:
+                - email
+                - id
+      responses:
+        '302':
+          description: Redirection vers la page de détails du projet
+        '511':
+          description: Échec de l'ajout des permissions
           
-  /projet/cherche/vulne/{projetId}:
+  /rapport/{id}:
     get:
       tags:
-      - projets
+        - doc
+      summary: Chercher et télécharger le rapport
       parameters:
-        - name: projetId
+        - name: id
           in: path
-          description: ID du projet à rechercher
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
-          
-  /projet/cherche/rapport/{projetId}:
+          description: Fichier PDF du rapport
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: pdf
+        '404':
+          description: Rapport non trouvé
+  /sbom/{id}:
     get:
       tags:
-      - projets
+        - doc
+      summary: Chercher et télécharger le SBOM
       parameters:
-        - name: projetId
+        - name: id
           in: path
-          description: ID du projet à rechercher
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
-          description: successful operation
-        '400':
-          description: Invalid ID supplied
+          description: Fichier JSON du SBOM
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: json
+        '404':
+          description: SBOM non trouvé    
+  /vulne/{id}:
+    get:
+      tags: 
+        - doc
+      summary: Obtenir les informations de vulnérabilité pour un projet
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fichier JSON des vulnérabilités
+          content:
+            application/json:
+              schema:
+                type: string
+        '404':
+          description: Informations de vulnérabilité non trouvées
+
 
 components:
   schemas:
-    Projet:
+    Project:
       type: object
       properties:
         id:
-          type: integer
+          type: string
         nom:
           type: string
         description:
           type: string
-        sbom:
-          type: string
-        vulne:
-          type: string
-        rapport:
-          type: object
-        utilisateurs:
-          type: string
-    
-    User:
-      type: object
-      properties:
-        nom:
-          type: string
-        prenom:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        naissance:
-          type: string
+      required:
+        - nom
+        - description
           
           
           
