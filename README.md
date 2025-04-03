@@ -128,7 +128,23 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 
 1. **Récuperer le contenu de la base de donnée SBOM**  
 
+
+
 ## Rapports
+
+# Organisation du microservice consult-sbom
+
+```text
+code/
+├── rapports.py    # Application Flask principal
+├── Dockerfile          # Dockerfile pour conteneuriser l'application
+├── conception.md           # Documentation, explication de l'application
+├── requirements.txt    # les dépendance requise pour l'application
+├── contrat_dinterface_consultation_SBOM.yaml  # Contrat d'interface de l'application au format openAPI
+├── template
+    ├──rapport.html     # template des fichiers pdf
+
+```
 
 **Responsable : Simon COLLET**  
 
@@ -137,6 +153,22 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 | **GET** | `/pdf/<id>` |crée le rapport au format PDF à partir de l'ID passé en paramètre | **200** : OK <br> **400** : SBOM introuvable <br> **401** : projet introuvable |
 
 ---
+
+### **Cette API permet notamment :**  
+
+- permet de générer des rapports au format PDF  
+
+---
+
+### **Interaction avec deux autres microservices**  
+L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+
+1. **Consultation du microservice `vuln` pour récupérer les vulnérabilités associées a l'id**  
+     
+2. **Consultation du microservice `consult-sbom` pour récupérer le sbom correspondant a l'id.**  
+
+2. **Consultation du microservice `projet` pour récupérer les données du projet correspondant a l'id.**  
+
 
 ## Gestion des vulnérabilités
 
