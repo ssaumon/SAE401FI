@@ -27,6 +27,7 @@ services:
     networks:
       - internal_network
 
+
   vuln:
     build: 
       context: "./Microservice-vuln"
@@ -46,6 +47,7 @@ services:
       - vuln
     networks:
       - internal_network
+
 
   gestion_projet:
     build: 

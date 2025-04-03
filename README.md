@@ -39,7 +39,9 @@
 | **DELETE** | `Suppression_dependance_SBOM` | Suppression d’une dépendance dans un fichier SBOM | **200** : Dependance Deleted <br> **404** : Dependance Not Found <br> **404** : SBOM Not Found |
 | **DELETE** | `Suppression_SBOM` | Suppression d’un fichier SBOM | **200** : SBOM Deleted <br> **404** : SBOM Not Found |
 
+
 ## Voici l'organisation de la base de données.
+
 
 ### **base_de_donnees_sbom.json** 
 

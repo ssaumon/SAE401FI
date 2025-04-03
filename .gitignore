@@ -13,7 +13,6 @@ dist/
 
 # Fichiers de configuration locaux
 *.env
-
 # Fichiers spécifiques à l'IDE
 *.idea/
 *.vscode/
@@ -22,4 +21,7 @@ dist/
 gestion-des-utilisateurs/bin/
 gestion-des-utilisateurs/code/__pycache__/
 gestion-des-utilisateurs/code/logs.txt
+gestion-des-utilisateurs/code/*.json
+gestion-des-utilisateurs/*.json
 gestion-des-utilisateurs/note.txt
+

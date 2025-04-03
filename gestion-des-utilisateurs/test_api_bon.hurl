@@ -68,7 +68,7 @@ PUT http://localhost:5000/modify-permissions
 Content-Type: application/json
 
 {
-  "project_id": "1",
+  "project_id": "3",
   "email": "john.doe@example.com",
   "write": false,
   "read": true,
@@ -78,7 +78,7 @@ Content-Type: application/json
 HTTP/1.1 200
 
 # Test 8: Delete user permissions
-DELETE http://localhost:5000/delete-permissions?project_id=1&email=john.doe@example.com
+DELETE http://localhost:5000/delete-permissions?project_id=3&email=john.doe@example.com
 
 HTTP/1.1 200
 

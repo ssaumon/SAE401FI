@@ -42,15 +42,12 @@
         <tr>
             <td>{{ projet.nom }}</td>
             <td>{{ projet.description }}</td>
-            <td><a href="http://perdu.com" class="btn btn-info">
+            <td><a href="/rapport/{{projet.id}}" class="btn btn-info">
               Rapport {{ projet.id }}</a></td>
-
-
-
-            <td><a href="http://simon/sbom/{{ projet.id }}" class="btn btn-info" download="SBOM_Projet_{{ projet.id }}.json">
+            <td><a href="/sbom/{{projet.id}}" class="btn btn-info">
               SBOM {{ projet.id }}
             </a></td>
-            <td><a href="/projet/{{ projet.id }}" class="btn btn-info">Plus</a></td>
+            <td><a href="/projet/{{projet.id}}" class="btn btn-info">Plus</a></td>
         </tr>
     {% endfor %}
       </tbody>
@@ -59,13 +56,15 @@
   <br>
   <div class="container">
     <h1>Ajouter un projet :</h1>
-    <form method="POST" action="/projet/add">
+    <form method="POST" action="/projet/add"  enctype="multipart/form-data">
       <div class="mb-3 mt-3">
         <label class="form-label">Nom du projet:</label>
-        <input class="form-control" name="name">
+        <input class="form-control" name="name" required>
       </div>
       <label for="comment">Description:</label>
-      <textarea class="form-control" rows="5" name="description"></textarea>
+      <textarea class="form-control" rows="5" name="description" required></textarea>
+      <br>
+      <input type="file" name="json" required>
       <br>
       <button type="submit" class="btn btn-primary">Submit</button>
       </div>
