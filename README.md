@@ -2,14 +2,13 @@
 
 ## Identification des micro-services
 
-### Diagramme des communications :
+### Diagramme des communications
 
 ![Diagramme de communication](diag_com_general.png "Titre de l'image").
 
 ### Gestion des projets
 
 **Responsable : Paul HOFFBECK**  
-
 
 | HTTP Méthode | Action | Description | Codes |
 |-------------|--------|-------------|----------|
@@ -29,7 +28,6 @@
 | **GET** | Télécharger un SBOM | Récupère un fichier JSON du SBOM | 200 : Succès <br> 404 : SBOM non trouvé |
 | **GET** | Informations de vulnérabilité | Récupère un fichier JSON des vulnérabilités | 200 : Succès <br> 404 : Informations non trouvées |
 
-
 **Base de Données Projet :**
 
 ```json
@@ -40,22 +38,24 @@
 
 }
 ```
+
 ### **Cette API permet notamment :**  
+
 - Retourner une page de connexion
 - Retourner une page de gestion de projet centralisée
-    - Ajouter un projet
-    
-    - Afficher les détails des projets : SBOM, Rapport Vulnérabilité, etc
-    
-    - Lier un utilisateur à un projet en lui attribuant des permissions
-    
-    - Gérer les services d'authentification
+  - Ajouter un projet
+
+  - Afficher les détails des projets : SBOM, Rapport Vulnérabilité, etc
+
+  - Lier un utilisateur à un projet en lui attribuant des permissions
+
+  - Gérer les services d'authentification
 
 ### Intéraction avec tous les autres micro services
 
-Ce micro-service centrale est en contact avec tous les autres : 
+Ce micro-service centrale est en contact avec tous les autres :
 
-- **"import-sbom"** : Nous intéragissons avec lors de la création d'un projet ou nous lui envoyons un SBOM. 
+- **"import-sbom"** : Nous intéragissons avec lors de la création d'un projet ou nous lui envoyons un SBOM.
 
 - **"vuln"** : Nous intéragissons avec l'API pour que celle-ci nous retourne son fichier de vulnérabilité
 
@@ -64,9 +64,8 @@ Ce micro-service centrale est en contact avec tous les autres :
 - **"rapport"** : API utilisée pour importer les rapports
 
 - **"user"** : API utilisée pour l'enregistrement des utilisateurs, l'authentification, l'ajout de projet etc.
- 
 
-### Arborescence : 
+### Arborescence
 
 ```
 ├── Dockerfile
@@ -82,7 +81,6 @@ Ce micro-service centrale est en contact avec tous les autres :
     ├── login.html
     └── register.html
 ```
-
 
 ### Importation de SBOM  
 
@@ -175,6 +173,7 @@ code/
 ---
 
 ### **Cette API permet notamment :**  
+
 - traiter les SBOMs
 - de retourner les dependances d'un SBOM
 - de retourner un SBOM en fonction de son ID
@@ -182,11 +181,10 @@ code/
 ---
 
 ### **Interaction avec deux autres microservices**  
+
 L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
 
 1. **Récuperer le contenu de la base de donnée SBOM**  
-
-
 
 ## Rapports
 
@@ -219,21 +217,20 @@ code/
 ---
 
 ### **Interaction avec deux autres microservices**  
+
 L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
 
 1. **Consultation du microservice `vuln` pour récupérer les vulnérabilités associées a l'id**  
-     
+
 2. **Consultation du microservice `consult-sbom` pour récupérer le sbom correspondant a l'id.**  
 
-2. **Consultation du microservice `projet` pour récupérer les données du projet correspondant a l'id.**  
-
+3. **Consultation du microservice `projet` pour récupérer les données du projet correspondant a l'id.**  
 
 ## Gestion des vulnérabilités
 
-
 **Responsable : Killian CHESNOT**
-### Organisation du microservice vulnérabilité
 
+### Organisation du microservice vulnérabilité
 
 ```text
 code/
@@ -253,16 +250,16 @@ code/
 | **GET /Vulnerability** | `ListerAjouter()` | Affiche toutes les vulnérabilité | **200** : Succès <br> **500** : Erreur lors de la lecture du fichier JSON |
 | **POST /Vulnerability** | `ListerAjouter()` | Ajouter un ou plusieurs Vulnérabilités | **200** : Ajout Réussi <br> **400** : Données invalides ou champs manquants <br> **422** : L'ID existe déjà |
 | **PUT /Vulnerability** | `ListerAjouter(data)` | Modification d'une Vulnérabilité en récupérant automatiquement son ID|**200** : Mise à jour réussie. <br> **500** : Erreur de lecture de la base de données <br> **404** :  Aucune vulnérabilité avec cet ID |
-| **GET /Vulnerability/int:id_Vuln** | `rechSupModID(id_Vuln)` | Récupère les données d’une vulnérabilité par ID | **200** : Retourne la vulnérabilité correspondante <br> **404** : Aucune vulnérabilité avec cet ID <br> **500**: Erreur de lecture de la base de données| 
+| **GET /Vulnerability/int:id_Vuln** | `rechSupModID(id_Vuln)` | Récupère les données d’une vulnérabilité par ID | **200** : Retourne la vulnérabilité correspondante <br> **404** : Aucune vulnérabilité avec cet ID <br> **500**: Erreur de lecture de la base de données|
 | **DELETE /Vulnerability/int:id_Vuln** | `rechSupModID(id_Vuln)` | Supprime les données d’une vulnérabilité par ID | **200** : Suppression réussie <br> **500** : Vulnérabilité non supprimé |
 | **PUT /Vulnerability/int:id_Vuln** | `rechSupModID(id_Vuln)` | Modifie les données d’une vulnérabilité par son ID | **200** : Mise à jour réussie <br> **404** :  Aucune vulnérabilité avec cet ID <br> **500**: Erreur de lecture de la base de données |
 | **POST /Vulnerability/sbom** | `traitement()` | Récupère le Nom du Package et sa version, cela retourne les vulnérabilités associés | **200** :Retourne les vulnérabilités correspondant au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans l'entrée JSON |
 | **GET /Vulnerability/sbom/int:idSbom** | `getSbomTrait(idSbom)` | Reçois un ID SBOM et effectue une requête vers le Microservice SBOM pour retourner les vulnérabilités associés | **200** :Retourne les vulnérabilités associées au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans les données récupérées <br> **500**: Erreur de lecture de la base de données <br> **420**: Erreur de liaison du microservice |
 
-### Voici l'organisation de la base de données.
-
+### Voici l'organisation de la base de données
 
 #### **Vulnerability.json**  
+
 ```json
 {
     "id": 1,
@@ -289,6 +286,7 @@ code/
 ---
 
 ### **Interaction avec deux autres microservices**  
+
 L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
 
 1. **Récupération des vulnérabilités associées à un SBOM**  
@@ -298,7 +296,9 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 ### Améliorations Possibles
 
 1. Implémenter la branche feature dans le projet.
+
 - Ajouter une amélioration dans le code de la branche feature, en ne récupérant que les informations intéressantes.
+
 2. Commenter le code, pour plus de compréhension, lisibilité.
 3. Implémenter une base de données au lieu de fichiers JSON.
 4. Implémenter un système de log lors de la consultation, modification, suppression de vulnérabilité dans une base de données JSON. Les retourner lors de la construction du rapport PDF.

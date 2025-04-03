@@ -19,12 +19,21 @@ The application allows you to:
 ## Project Structure
 
 ```text
-code/
-├── app.py           # Main Flask application
-├── fonction.py      # Utility functions
-├── reset_app.py     # Data reset script
-├── user.json        # User data in json
-└── permission.json  # Perm data in json
+├── README.md            # readme specialiser gestion des user
+├── code
+│   ├── app.py           # Application Flask principale
+│   ├── fonction.py      # Fichier avec les functions  
+│   ├── reset_app.py     # Réinitialliser les json si illisible
+│   ├── user.json        # Données utillisateur en json
+│   └── permission.json  # Données permission en json
+├── docker-compose.yaml  # docker compose de test
+├── gestuser.Dockerfile  # dockerfile pour build 
+├── lunsh_test.sh        # example pour tester l'api user
+├── openapi.yaml         # contrat d'api user
+├── requirements.txt     # dependances python a installer
+├── test_api_bon.hurl
+├── test_api_errors.hurl
+└── test_api_vide.hurl
 ```
 
 ## Prerequisites
