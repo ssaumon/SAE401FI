@@ -1,4 +1,3 @@
-Voici une version mise à jour du README en prenant en compte l'ajout du nouveau point d'API `/Vulnerability/sbom/CVE` :
 
 ---
 
@@ -53,7 +52,7 @@ L'API va ensuite effectuer une requête vers l'API NVD en utilisant le nom du pa
     "InstalledVersion": "1.1.1"
 }
 ```
-
+# Voici à quoi ressemblerai la réponse de l'api tierce
 **Exemple de réponse JSON :**
 ```json
 {
@@ -300,6 +299,8 @@ L'API va ensuite effectuer une requête vers l'API NVD en utilisant le nom du pa
 
 Si une erreur survient lors de la requête à l'API NVD, un message d'erreur avec le code `505` sera renvoyé.
 
+L'avantage de cette nouvelle méthode, c'est qu'elle permet la recherche d'une vulnérabilité qui n'a pas le risque de ne pas être présente dans la base de données locales. Elle permet de ne pas avoir une base de données trop pleine et lourde. En cas de défaillance du microservice Base de Données, nous pouvons toujours effectuer des recherches qui seront à jour.
+
 ### Diagramme de la représentation du MicroService Vulnérabilité
 
 ![Représentation du MicroService Vulnérabilité](Exemple.jpg)
@@ -317,5 +318,3 @@ Si une erreur survient lors de la requête à l'API NVD, un message d'erreur ave
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
 
 ---
-
-Cette version mise à jour inclut la description du nouveau point d'API `/Vulnerability/sbom/CVE` pour récupérer les vulnérabilités via la NVD, ainsi que des informations supplémentaires sur son fonctionnement.
