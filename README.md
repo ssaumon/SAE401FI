@@ -161,7 +161,14 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
    - Le SBOM peut contenir un ou plusieurs packages (nom, version).  
 2. **Consultation du microservice `consult-sbom` pour récupérer les vulnérabilités associées.**  
 
+## Améliorations Possibles
 
+1. Implémenter la branche feature dans le projet.
+- Ajouter une amélioration dans le code de la branche feature, en ne récupérant que les informations intéressantes.
+2. Commenter le code, pour plus de compréhension, lisibilité.
+3. Implémenter une base de données au lieu de fichiers JSON.
+4. Implémenter un système de log lors de la consultation, modification, suppression de vulnérabilité dans une base de données JSON. Les retourner lors de la construction du rapport PDF.
+5. Implémenter du multi-thread dans le cas où plusieurs communications pourraient être en simultanées sur le microservice.
 
 ## Gestion des utilisateurs
 
