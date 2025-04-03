@@ -95,12 +95,38 @@
 
 **Responsable : Simon COLLET**  
 
+# Organisation du microservice consult-sbom
+
+```text
+code/
+├── consultation_sbom.py    # Application Flask principal
+├── Dockerfile          # Dockerfile pour conteneuriser l'application
+├── conception.md           # Documentation, explication de l'application
+├── requirements.txt    # les dépendance requise pour l'application
+└── contrat_dinterface_consultation_SBOM.yaml  # Contrat d'interface de l'application au format openAPI
+
+```
+
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
 | **GET** | `/sbom/<id>` | Récupère le fichier SBOM correspondant à `id` | **200** : OK <br> **404** : SBOM introuvable <br> **400** : Erreur import SBOM <br> |
 | **GET** | `/version/<id>` | Retourne les dépendances contenus dans le SBOM correspondant à `id` | **200** : OK **404** : SBOM introuvable <br> **400** : Erreur import SBOM <br> **402** SBOM mal formaté |
 
 ---
+
+---
+
+### **Cette API permet notamment :**  
+- traiter les SBOMs
+- de retourner les dependances d'un SBOM
+- de retourner un SBOM en fonction de son ID
+
+---
+
+### **Interaction avec deux autres microservices**  
+L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+
+1. **Récuperer le contenu de la base de donnée SBOM**  
 
 ## Rapports
 
