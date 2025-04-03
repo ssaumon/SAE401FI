@@ -11,14 +11,15 @@ def recup_sbom():
     r=requests.get("http://import-sbom:5000/sbom")
     if r.status_code==200:
         sboms = json.loads(r.text)
-    else: return "erreur import_sbom", 400
+        return 200
+    else: return 400
 
 
 
 
 @app.route("/version/<id>")
 def version(id):
-    if recup_sbom()[1]!=200:
+    if recup_sbom()!=200:
         return "erreur import_sbom", 400
     li=[]
     if id in sboms.keys():
@@ -32,11 +33,11 @@ def version(id):
                 else: return "SBOM mal formé", 402
             return li,200
         else: return "SBOM mal formé", 402
-    else: return "SBOM introuvable", 404
+    else: return f"SBOM {id} introuvable", 404
 
 @app.route("/sbom/<id>")
 def sbom(id):
-    if recup_sbom()[1]!=200:
+    if recup_sbom()!=200:
         return "erreur import_sbom", 400
     if id in sboms.keys():
         return sboms[id],200
