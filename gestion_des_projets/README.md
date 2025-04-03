@@ -17,13 +17,16 @@ Ce micro service est donc constitué des fichiers :
 - **Code python** : Ce fichier constitue la majeur partie du microservice. Il constitue la partie fonctionnelle de l'application
 - **Template** : Utilisées par le code python afin de créer des sites dynamiques
 
-# Diagramme de fonctionnement
+# Diagrammes de fonctionnement
 
-Voici maintenant le diagramme de fonctionnement de notre micro-service. Celui-ci illustrera le fonctionnement de notre micro service ainsi que ses nombreux liens avec les autres micro-services :
+Voici maintenant le diagramme de communication de notre micro-service avec les autres microservices : 
 
 ![Diagramme de communication](diag_com.png "Titre de l'image").
 
-Celui-ci est très dépendant des autres micro services
+Nous pouvons constater une très grande dépendance de notre service envers les autres. Le défis sera donc de rendre ce service utilisable même quand un micro-service ne fonctionne pas. Intéressons nous ensuite au système d'utilisateur. En effet, c'est la partie la plus complexe du projet :
+
+![Diagramme de utilisateur](diag_user.png "Titre de l'image").
+
 
 
 # DockerFile
@@ -64,10 +67,6 @@ Cette partie est identifiée par le tag **"user"**. Elle est composée de 5 mét
 - "/" : Méthode GET : Retourne la page d'authentification à l'API
 
 - "/login/login" : Méthode POST : Envoie les informations de connexion afin que l'utilisateur puisse répondre de son identité et ainsi utiliser l'API selon les droits lui étant attribués.
-
-
-
-
 
 
 - "/register" : Méthode GET :  Retourne la page HTML d'enregistrement d'un nouvel utilisateur
@@ -119,11 +118,24 @@ Ce contrat d'interface est par ailleurs consultable dans la branche. Il précise
 
 ## Liste des modules
 
+Voici la liste de toutes les bibliothèques utilisées par notre micro-service : 
+
+- Flask : Module Web Python :
+
+    - Flask : Utilisé pour configurer l'application en elle même
+    - request : Utilisé afin de récupérer les informations données en POST
+    - render_template : Utilisé afin de retourner des pages HTML dynamiques. Aussi très utile pour l'utilisation de Jinja
+    - redirect : Utilisé pour faire passer un utilisateur sur une URL précise
+    - send_file : Utilisé pour envoyer des fichiers aux autres micro-services et aux utilisateurs
+    
+- JSON : Module python pour manipuler des fichiers JSON avec python
+- Module requests : Module python pour effectuer des requêtes HTML (POST, GET, etc)
+
 ## Liste des méthodes du micro-service : 
 
 | Méthode                  | Fonctionnalité | Paramètres d'entrée | Sortie | Codes de sortie | Dépendances API |
-|--------------------------|---------------|----------------------|--------|----------------|----------------------------------|
-| `open_project_file` | Ouvre le fichier JSON des projets et le charge en mémoire. | Aucun | JSON des projets ou message d'erreur | `200`, `415` | Aucune |
+|--------------------------|---------------|----------------------|--------|----------------|------------------------|
+| `open_project_file` | Ouvre le fichier JSON des projets et le charge dans un dictionnaire. | Aucun | Dictionnaire des projets ou message d'erreur | `200`, `415` | Aucune |
 | `save_project_file(dico)` | Sauvegarde les projets dans le fichier JSON. | `dico` (dictionnaire des projets) | Message de succès ou d'erreur | `200`, `404`, `415` | Aucune |
 | `bienvenue()` | Affiche la page d'accueil avec les projets accessibles par l'utilisateur. | Aucun | Page HTML `index.html` ou redirection | `200`, `403` | Aucune |
 | `login()` | Affiche la page de connexion. | Aucun | Page HTML `login.html` | `200` | Aucune |
@@ -139,9 +151,36 @@ Ce contrat d'interface est par ailleurs consultable dans la branche. Il précise
 | `get_vulne(id)` | Télécharge les vulnérabilités d'un projet sous format JSON. | `id` (ID du projet) | Fichier JSON ou message d'erreur | `200`, `404` | `http://vuln:5000/Vulnerability/sbom/{id}` |
 | `enre()` | Affiche la page d'inscription. | Aucun | Page HTML `register.html` | `200` | Aucune |
 | `send_user()` | Enregistre un nouvel utilisateur. | Données du formulaire d'inscription | Redirection vers `/` ou message d'erreur | `302`, `513` | `http://user:5000/register` |
-| `logout()` | Déconnecte l'utilisateur en vidant ses données de session. | Aucun | Redirection vers `/` | `302` | Aucune |
+| `logout()` | Déconnecte l'utilisateur en supprimant ses données globales. | Aucun | Redirection vers `/` | `302` | Aucune |
+
+Nous constatons que l'ID est toujours utilisé afin de laisser notre micro-service le plus léger possible
 
 # Template
+
+Afin d'utiliser Flask mais surtout Jinja de manière optimale, nous utilisons des template HTML. Ces Templates sont des fichiers HTML dont les données sont modifiées dynamiquement grâce aux données envoyées par le code Flask. Nous utilisons 4 Templates différentes : 
+- **login.html** : Cette page est la page d'acceuil par défaut. Elle sert à la connexion des utilisateurs mais aussi à l'enregistrement de nouveaux utilisateurs. 
+
+- **index.html** : Cette page est la page qui est retournée à l'utilisateur après sa connexion. Elle affiche de manière dynamiques tous les projets qu'il a le droit de lire. Cette page fait office de hub ou il peut se déconnecter  
+
+- **details.html** : Cette page affiche les détails d'un projet quand l'utilisateur a les permissions de le faire (permissions read)
+
+- **register.html** : Page servant à l'enregistrement d'un nouveal utilisateur;
+
+
+# Base de donnée
+
+La base de donnée utilisateur est composée de d'un JSON de JSON possédant les particularités suivantes  :
+
+```
+{
+    "id":{
+        "id":str,
+        "description":str,
+        "nom":str
+    }
+}
+```
+Cela a pour avantage que l'API est relativement légère : toutes les autres données sont stockées dans les autres micro-services. La communication entre les différents autres services se feront grâce à l'ID du projet.
 
 
 # Améliorations possibles
@@ -154,68 +193,8 @@ Possibilité de modifier les utilisateurs
 
 Interface utilisateur
 
-# This is a Heading h1
-## This is a Heading h2
-###### This is a Heading h6
+Optimisation de la gestion des fichiers
 
-## Emphasis
+Optimisation de la suppression des permissions
 
-*This text will be italic*  
-_This will also be italic_
 
-**This text will be bold**  
-__This will also be bold__
-
-_You **can** combine them_
-
-## Lists
-
-### Unordered
-
-* Item 1
-* Item 2
-* Item 2a
-* Item 2b
-    * Item 3a
-    * Item 3b
-
-### Ordered
-
-1. Item 1
-2. Item 2
-3. Item 3
-    1. Item 3a
-    2. Item 3b
-
-## Images
-
-![This is an alt text.](/image/sample.webp "This is a sample image.")
-
-## Links
-
-You may be using [Markdown Live Preview](https://markdownlivepreview.com/).
-
-## Blockquotes
-
-> Markdown is a lightweight markup language with plain-text-formatting syntax, created in 2004 by John Gruber with Aaron Swartz.
->
->> Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-
-## Tables
-
-| Left columns  | Right columns |
-| ------------- |:-------------:|
-| left foo      | right foo     |
-| left bar      | right bar     |
-| left baz      | right baz     |
-
-## Blocks of code
-
-```
-let message = 'Hello world';
-alert(message);
-```
-
-## Inline code
-
-This web site is using `markedjs/marked`.
