@@ -245,15 +245,13 @@ code/
 1. Implémenter le hachage des mots de passe.
 2. Ajouter un système d'authentification JWT.
 3. Améliorer la validation des données.
-4. Ajouter des tests unitaires.
-5. Implémenter une base de données au lieu de fichiers JSON.
-6. Ajouter une documentation Swagger/OpenAPI.
-7. Implémenter un système de journalisation plus robuste.
-8. Ajouter une limitation de débit.
-9. Activer HTTPS par défaut.
-10. Ajouter une désinfection des entrées.
-11. Implémenter la gestion des sessions.
-12. Ajouter un versionnage de l'API.
+4. Implémenter une base de données au lieu de fichiers JSON.
+5. Implémenter un système de journalisation plus robuste.
+6. Ajouter une limitation de débit.
+7. Activer HTTPS par défaut.
+8. Ajouter une désinfection des entrées.
+9. Implémenter la gestion des sessions.
+10. Mettre toutes mes doc dans une seul langue.
 
 ## Ce que je peux faire mieux
 
