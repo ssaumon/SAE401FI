@@ -95,9 +95,13 @@ Ce micro-service centrale est en contact avec tous les autres :
 | **DELETE** | `Suppression_dependance_SBOM` | Suppression d’une dépendance dans un fichier SBOM | **200** : Dependance Deleted <br> **404** : Dependance Not Found <br> **404** : SBOM Not Found |
 | **DELETE** | `Suppression_SBOM` | Suppression d’un fichier SBOM | **200** : SBOM Deleted <br> **404** : SBOM Not Found |
 
-```
 
-**Base de Données SBOM :**
+## Voici l'organisation de la base de données.
+
+
+### **base_de_donnees_sbom.json** 
+
+```
 ```json
 {
  "bomFormat": "CycloneDX",
@@ -144,6 +148,21 @@ Ce micro-service centrale est en contact avec tous les autres :
  ]
 }
 ```
+---
+
+### **Cette API permet notamment :**  
+- D'ajouter un SBOM dans la base de données   
+- De lister tout les SBOMs.  
+- De modifier un élément d'un SBOM en renseignant son ID, la clé de la valuer à changer et la nouvelle valeur.
+- D'ajouter une dépendance à un SBOM en renqeignant son ID.
+- De supprimmer une dependance d'un SBOM par son ID et l'index de la dépendance dans la liste. 
+- De supprimmer un SBOM par leur ID. 
+
+---
+
+### **Interaction avec un autre microservice**  
+
+L'API interagit avec le microservice Consultation de SBOM pour permettre aux autres microservices de communiquer avec la base de données SBOMs, mais c'est le seul qui envoie des requêtes directs au microservice Importation de SBOM.
 
 ---
 
