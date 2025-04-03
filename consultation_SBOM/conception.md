@@ -17,6 +17,7 @@ La méthode `récup_sbom()` à pour but de mettre à jour la variable `sboms` qu
 
 ### version(id) : 
 
-La méthode `version(id)` est appelé lors d'une requête GET sur l'endpoint `/version/<id>`. Celle-ci à pour but de retourné toutes les dependences d'un sbom ainsi que leurs versions. Pour ce faire, nous commencons par mettre a jour notre variable `sboms`. Puis 
+La méthode `version(id)` est appelé lors d'une requête GET sur l'endpoint `/version/<id>`. Celle-ci à pour but de retourné toutes les dependences d'un sbom ainsi que leurs versions. Pour ce faire, nous commencons par mettre a jour notre variable `sboms`. Puis nous allons créer une liste de dictionnaire dans laquelle nous allons mettre les dictionnaires correspondants aux dépendances et leurs versions. Nous allons ensuite retourner cette liste.
 
 ### sbom(id) :
+La méthode `sbom(id)` est appelé lors d'une requête GET sur l'endpoint `/sbom/<id>`. Celle-ci à pour but de retourné le sbom correspondant à l'id passé en paramètre. Nous commençons par mettre à jour notre variable `sboms`. Puis nous regardons si il exite la clé `id` dans la liste des clés de la variable `sboms`. Si cette clé existe, nous retournons le SBOM correspondant au format JSON. 
