@@ -226,14 +226,10 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 
 ## Gestion des vulnérabilités
 
-<<<<<<< HEAD
+
 **Responsable : Killian CHESNOT**
 ### Organisation du microservice vulnérabilité
-=======
-**Responsable : Killian CHESNOT**  
 
-# Organisation du microservice vulnérabilité
->>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
 
 ```text
 code/
@@ -261,12 +257,8 @@ code/
 
 ### Voici l'organisation de la base de données.
 
-<<<<<<< HEAD
-#### **Vulnerability.json**  
-=======
-### **Vulnerability.json**  
 
->>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
+#### **Vulnerability.json**  
 ```json
 {
     "id": 1,
