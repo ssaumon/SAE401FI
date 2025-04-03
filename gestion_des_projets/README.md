@@ -134,24 +134,24 @@ Voici la liste de toutes les bibliothèques utilisées par notre micro-service :
 ## Liste des méthodes du micro-service : 
 
 | Méthode                  | Fonctionnalité | Paramètres d'entrée | Sortie | Codes de sortie | Dépendances API |
-|--------------------------|---------------|----------------------|--------|----------------|------------------------|
-| `open_project_file` | Ouvre le fichier JSON des projets et le charge dans un dictionnaire. | Aucun | Dictionnaire des projets ou message d'erreur | `200`, `415` | Aucune |
-| `save_project_file(dico)` | Sauvegarde les projets dans le fichier JSON. | `dico` (dictionnaire des projets) | Message de succès ou d'erreur | `200`, `404`, `415` | Aucune |
-| `bienvenue()` | Affiche la page d'accueil avec les projets accessibles par l'utilisateur. | Aucun | Page HTML `index.html` ou redirection | `200`, `403` | Aucune |
-| `login()` | Affiche la page de connexion. | Aucun | Page HTML `login.html` | `200` | Aucune |
-| `checklogin()` | Vérifie les identifiants et récupère les permissions utilisateur. | `mail`, `password` via POST | Redirection vers `/homepage` ou `/` | `302`, `403` | `http://user:5000/login`, `http://user:5000/user/{mail}`, `http://user:5000/permissions-by-email/{mail}` |
-| `get_project(id)` | Affiche les détails d'un projet si l'utilisateur a les droits de lecture. | `id` (ID du projet) | Page HTML `detail.html` ou message d'erreur | `200`, `404` | Aucune |
-| `get_json(id)` | Récupère les informations d’un projet sous format JSON. | `id` (ID du projet) | Données JSON du projet ou message d'erreur | `200`, `404` | Aucune |
-| `add_project()` | Ajoute un nouveau projet avec un fichier JSON et une description. | `name`, `json` (fichier), `description` | Redirection vers `/homepage` ou message d'erreur | `302`, `403`, `415`, `511`, `512`, `513` | `http://user:5000/add-permissions`, `http://import-sbom:5000/sbom` |
-| `update_project()` | Met à jour un projet si l'utilisateur a les droits d'écriture. | `id`, `name`, `description` via POST | Redirection vers `/homepage` ou message d'erreur | `302`, `403`, `404`, `513` | Aucune |
-| `remove_project(id)` | Supprime un projet si l'utilisateur a les droits d'administration. | `id` (ID du projet) | Redirection vers `/homepage` ou message d'erreur | `302`, `403`, `513` | `http://user:5000/permissions-by-project/{id}`, `http://user:5000/delete-permissions?project_id={id}&email={email}` |
-| `ajouter_user()` | Ajoute un utilisateur à un projet avec des permissions spécifiques. | `email`, `id` (ID projet), `permissions` | Redirection vers la page du projet ou erreur | `302`, `511` | `http://user:5000/add-permissions` |
-| `get_rapport(id)` | Télécharge un rapport PDF d'un projet. | `id` (ID du projet) | Fichier PDF ou message d'erreur | `200`, `404` | `http://rapport:5000/pdf/{id}` |
-| `get_sbom(id)` | Télécharge le fichier SBOM JSON d'un projet. | `id` (ID du projet) | Fichier JSON ou message d'erreur | `200`, `404` | `http://consult-sbom:5000/sbom/{id}` |
-| `get_vulne(id)` | Télécharge les vulnérabilités d'un projet sous format JSON. | `id` (ID du projet) | Fichier JSON ou message d'erreur | `200`, `404` | `http://vuln:5000/Vulnerability/sbom/{id}` |
-| `enre()` | Affiche la page d'inscription. | Aucun | Page HTML `register.html` | `200` | Aucune |
-| `send_user()` | Enregistre un nouvel utilisateur. | Données du formulaire d'inscription | Redirection vers `/` ou message d'erreur | `302`, `513` | `http://user:5000/register` |
-| `logout()` | Déconnecte l'utilisateur en supprimant ses données globales. | Aucun | Redirection vers `/` | `302` | Aucune |
+|--------------------------|---------------|----------------------|--------|----------------|----------------|
+| open_project_file | Ouvre le fichier JSON des projets et le charge dans un dictionnaire. | Aucun | Dictionnaire des projets ou message d'erreur | 200, 415 | Aucune |
+| save_project_file(dico) | Sauvegarde les projets dans le fichier JSON. | dico (dictionnaire des projets) | Message de succès ou d'erreur | 200, 404, 415 | Aucune |
+| bienvenue() | Affiche la page d'accueil avec les projets accessibles par l'utilisateur. | Aucun | Page HTML index.html ou redirection | 200, 403 | Aucune |
+| login() | Affiche la page de connexion. | Aucun | Page HTML login.html | 200 | Aucune |
+| checklogin() | Vérifie les identifiants et récupère les permissions utilisateur. | mail, password via POST | Redirection vers /homepage ou / | 302, 403 | http://user:5000/login, http://user:5000/user/{mail}, http://user:5000/permissions-by-email/{mail} |
+| get_project(id) | Affiche les détails d'un projet si l'utilisateur a les droits de lecture. | id (ID du projet) | Page HTML detail.html ou message d'erreur | 200, 404 | Aucune |
+| get_json(id) | Récupère les informations d’un projet sous format JSON. | id (ID du projet) | Données JSON du projet ou message d'erreur | 200, 404 | Aucune |
+| add_project() | Ajoute un nouveau projet avec un fichier JSON et une description. | name, json (fichier), description | Redirection vers /homepage ou message d'erreur | 302, 403, 415, 511, 512, 513 | http://user:5000/add-permissions, http://import-sbom:5000/sbom |
+| update_project() | Met à jour un projet si l'utilisateur a les droits d'écriture. | id, name, description via POST | Redirection vers /homepage ou message d'erreur | 302, 403, 404, 513 | Aucune |
+| remove_project(id) | Supprime un projet si l'utilisateur a les droits d'administration. | id (ID du projet) | Redirection vers /homepage ou message d'erreur | 302, 403, 513 | http://user:5000/permissions-by-project/{id}, http://user:5000/delete-permissions?project_id={id}&email={email} |
+| ajouter_user() | Ajoute un utilisateur à un projet avec des permissions spécifiques. | email, id (ID projet), permissions | Redirection vers la page du projet ou erreur | 302, 511 | http://user:5000/add-permissions |
+| get_rapport(id) | Télécharge un rapport PDF d'un projet. | id (ID du projet) | Fichier PDF ou message d'erreur | 200, 404 | http://rapport:5000/pdf/{id} |
+| get_sbom(id) | Télécharge le fichier SBOM JSON d'un projet. | id (ID du projet) | Fichier JSON ou message d'erreur | 200, 404 | http://consult-sbom:5000/sbom/{id} |
+| get_vulne(id) | Télécharge les vulnérabilités d'un projet sous format JSON. | id (ID du projet) | Fichier JSON ou message d'erreur | 200, 404 | http://vuln:5000/Vulnerability/sbom/{id} |
+| enre() | Affiche la page d'inscription. | Aucun | Page HTML register.html | 200 | Aucune |
+| send_user() | Enregistre un nouvel utilisateur. | Données du formulaire d'inscription | Redirection vers / ou message d'erreur | 302, 513 | http://user:5000/register |
+| logout() | Déconnecte l'utilisateur en supprimant ses données globales. | Aucun | Redirection vers / | 302 | Aucune |
 
 Nous constatons que l'ID est toujours utilisé afin de laisser notre micro-service le plus léger possible
 
@@ -187,7 +187,7 @@ Cela a pour avantage que l'API est relativement légère : toutes les autres don
  
 Liste visible des utilisateurs
 
-MAJ SBOM
+Possibilité de mise à jour SBOM
 
 Possibilité de modifier les utilisateurs
 
@@ -197,4 +197,7 @@ Optimisation de la gestion des fichiers
 
 Optimisation de la suppression des permissions
 
+Système d'alerte si vulnérabilitéd détectées
+
+Toutes ces modifications sont de plus rapidement mettable en place
 
