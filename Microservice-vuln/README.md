@@ -56,10 +56,10 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 
 ![Représentation du MicroService Vulnérabilité](Exemple.jpg)
 
-## Contributors
+## Contributeurs
 
 - FI
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for more details.
+Ce projet est protégé par une licence sous une licence MIT - voir ici [LICENSE](LICENSE) ce fichier pour voir plus.
