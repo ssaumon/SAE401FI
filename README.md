@@ -450,23 +450,92 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 ---
 
 ## Conteneurisation et orchestration
-
 **Responsable :** Tout le monde
 
-- Conteneurisation des microservices
-- Orchestration des conteneurs avec Kubernetes
-- Création et gestion des volumes pour les bases de données
-- Intégration continue et déploiement automatique
+La conteneurisation et l'orchestration sont deux étapes qui ont été faites de manières séparées. Ainsi, la responsabilité de la conteneurisation de chaque micro-srvice a été attribué à chaque responsable des micro-service. Elle a été faite par le biais de DockerFiles. Pour plus d'informations sur la conteneurisation des micro-services individuellement, se référer aux README individuels. 
 
----
+L'orchestration quant à elle a été gérée de manière collective : le projet possède un docker compose qui orchestre tous les containers. Nous pouvons nous intéresser à ce docker compose. Il est composé de plusieurs parties : 
+
+- La déclaration de deux réseau :
+
+```
+networks:
+  internal_network:
+    internal: true
+  external_network:
+```
+Ainsi, nous déclarons deux types de réseaux : un réseau interne qui servira à la communication inter service. Ceux-ci ne seront pas accessibles depuis l'extèrieur. Il est cependant aussi nécessaire de déclarer un autre réseau afin que le conteneur **gestion-des-projets** soit acessible depuis l'extèrieur. En effet, si nous lui attribuons un seul réseau interne, celui-ci ne sera pas accessible par l'extèrieur.
+
+- La déclaration des volumes correponsdant aux différentes bases de données : 
+
+```
+volumes:
+  gestion_projet:
+  vuln:
+  sbom:
+  user:
+```
+Ces volumes seront utiles pour stocker de façont permanentes les données des conteneurs ayant une base de donnée. Ainsi même si les conteneurs sont supprimés, ceux-ci auront leurs informations lors de la recréation.
+
+- Enfin, la création à proprement parlé des conteneurs. Ils ont globalement la même configuration entre eux mais certains ont des spécificités. Ils sont déclarés par la variable **service** : 
+
+```
+services:
+  user:
+    build:
+      context: "./gestion-des-utilisateurs"
+      dockerfile: gestuser.Dockerfile
+    container_name: user
+    networks:
+      - internal_network
+    volumes:
+      - user:/app
+
+```
+Nous construisons le conteneur à partir du DockerFile que les différents microservices ont créés. Nous spécifions aussi leurs noms afin qu'ils puissent communiquer en utilisant leurs noms et non leurs adresses IP qui peuvent être amenés à changer.
+
+Le service est interconnecté via un réseau interne, ce qui empêche des intrusions. Enfin, nous montons un dossier sur un volume afin de créer des données persistantes.
+
+Les conteneurs **consult-sbom**, **vuln**, **rapport** et **gestions** de projets dépendent d'autres conteneurs, nous leurs ajoutons donc un paramètre "depends-on":
+
+```
+  rapport:
+    build:
+      context: "./rapports"
+    container_name: rapport
+    depends_on:
+      - vuln
+    networks:
+      - internal_network
+```
+Ces dépendances permettent aux conteneurs de ne démarer que si les conteneurs précédents sont activés. Cela évite de la confusion et un plantage de l'orchestration. Voici le diagramme résumant les différentes dépendances : 
+
+![Diagramme de dependance](dependance.png "Titre de l'image").
+
+Nous pouvons constater que ces dépendances ont été fait de telle sorte que le service terminal n'est qu'une seule dépendance ou deux maximum mais pas 4 dépendances même si celu-ci dépends de beaucoup.
+
+Une fois cela fait, l'utilisateur n'a qu'a exécuter le docker compose pour lancer le micro-service
+
 
 ## Sécurité : Authentification et permissions
 
-- Gestion de l'authentification des utilisateurs
-- Implémentation de l’authentification par token JWT
-- Sécurisation des API avec des rôles et permissions spécifiques
-- Gestion des logs et des rapports de sécurité
+L'authentification est gérée dès le début : la page racine de notre API est une page de login. Aucune action n'est possible sans que l'utilisateur soit authentifié. Les exceptions sont pour la page login et la page d'enregistrement logiquement.
 
+Ainsi, lors de l'enregistrement de l'utilisateur, l'API **gestion-des-projets** envoit les informations nécessaires au service **user** pour vérifier si l'utilisateur n'existe pas déjà. Si l'utilisateur est nouveau, alors l'enregistrement se fait bien. 
+
+Pour la connexion, la procédure est la même a l'exception que l'API **user** renvoit les informations de l'utilisateur (mot de passe non compris) et les permissions qui lui sont associés. Si l'utilisateur n'est pas valide, l'API renvoit une erreur et est redirigé vers la page **login**. Nous avons ajouté une redirection indirecte en cas d'erreur. Ansi, les utilisateurs devront utiliser une souris afin d'être redirigé. Cela évitera qu'un utilisateur fasse un grand nombre de tentative dans un très court laps de temps.
+
+Une fois l'utilisateur connecté, il pourra voir la liste des projets lui étant autorisés. Ces autorisations sont attribuées par l'interface **plus** des projets.
+
+Ainsi, lors de la création du projet, le créateur a automatiquement les 3 droits suivants : 
+
+- **read** : Peux lire le projet et télécharger les rapports
+- **write** : Peux mettre à jour le projet
+- **admin** : Peux supprimer le projet ou ajouter des utilisateurs
+
+Ensuite, il peut ajouter des utilisateurs avec chacun des trois droits au choix. Le tri des permsissions se fait en amont : l'API ne retourne que les JSON avec les bons droits afin qu'aucun manipulation malicieuse ne soit faite. 
+
+Nous n'avons pas eu le temps de mettre en place les Token mais son développement a été initié par la branche **user**.
 ---
 
 ### Liens utiles
