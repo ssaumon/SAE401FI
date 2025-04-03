@@ -4,7 +4,7 @@
 
 ### Gestion des projets
 
-**Responsable : Paul HOFFBECK**
+**Responsable : Paul HOFFBECK**  
 
 | HTTP Méthode | Action | Description | Codes |  
 |-------------|--------|-------------|---------- |
@@ -28,7 +28,7 @@
 
 ### Importation de SBOM  
 
-**Responsable : Maxence DEBEAUVAIS**
+**Responsable : Maxence DEBEAUVAIS**  
 
 | HTTP Méthode | Action | Description | Codes |
 |-------------|--------|-------------|--------|
@@ -93,7 +93,19 @@
 
 ## Consultation de SBOM
 
-**Responsable : Simon COLLET**
+**Responsable : Simon COLLET**  
+
+# Organisation du microservice consult-sbom
+
+```text
+code/
+├── consultation_sbom.py    # Application Flask principal
+├── Dockerfile          # Dockerfile pour conteneuriser l'application
+├── conception.md           # Documentation, explication de l'application
+├── requirements.txt    # les dépendance requise pour l'application
+└── contrat_dinterface_consultation_SBOM.yaml  # Contrat d'interface de l'application au format openAPI
+
+```
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
@@ -102,9 +114,23 @@
 
 ---
 
+---
+
+### **Cette API permet notamment :**  
+- traiter les SBOMs
+- de retourner les dependances d'un SBOM
+- de retourner un SBOM en fonction de son ID
+
+---
+
+### **Interaction avec deux autres microservices**  
+L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+
+1. **Récuperer le contenu de la base de donnée SBOM**  
+
 ## Rapports
 
-**Responsable : Simon COLLET**
+**Responsable : Simon COLLET**  
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
@@ -114,8 +140,14 @@
 
 ## Gestion des vulnérabilités
 
+<<<<<<< HEAD
 **Responsable : Killian CHESNOT**
 ### Organisation du microservice vulnérabilité
+=======
+**Responsable : Killian CHESNOT**  
+
+# Organisation du microservice vulnérabilité
+>>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
 
 ```text
 code/
@@ -143,7 +175,12 @@ code/
 
 ### Voici l'organisation de la base de données.
 
+<<<<<<< HEAD
 #### **Vulnerability.json**  
+=======
+### **Vulnerability.json**  
+
+>>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
 ```json
 {
     "id": 1,
@@ -161,6 +198,7 @@ code/
 ---
 
 ### **Cette API permet notamment :**  
+
 - L'ajout de vulnérabilités, plusieurs à la fois.  
 - La suppression de vulnérabilités par leur ID.  
 - La liste de toutes les vulnérabilités ou d'une seule grâce à son ID.  
@@ -188,23 +226,33 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 
 **Responsable : Malo DURANTON**  
 
-## Project Structure
+### Structure du projet
 
 ```text
-code/
-├── app.py           # Main Flask application
-├── fonction.py      # Utility functions
-├── reset_app.py     # Data reset script
-├── user.json        # User data in json
-└── permission.json  # Perm data in json
+├── README.md            # readme specialiser gestion des user
+├── code
+│   ├── app.py           # Application Flask principale
+│   ├── fonction.py      # Fichier avec les functions  
+│   ├── reset_app.py     # Réinitialliser les json si illisible
+│   ├── user.json        # Données utillisateur en json
+│   └── permission.json  # Données permission en json
+├── docker-compose.yaml  # docker compose de test
+├── gestuser.Dockerfile  # dockerfile pour build 
+├── lunsh_test.sh        # example pour tester l'api user
+├── openapi.yaml         # contrat d'api user
+├── requirements.txt     # dependances python a installer
+├── test_api_bon.hurl
+├── test_api_errors.hurl
+└── test_api_vide.hurl
 ```
 
-## Prerequisites
+### Prérequis
 
 - Python 3.x
 - Flask
-- Docker and Docker Compose
-- Dependencies listed in `requirements.txt`
+- Docker et Docker Compose
+- Dependences listées dans `requirements.txt`
+- Internet
 
 ***Fonction utillisateur***
 
@@ -263,35 +311,35 @@ code/
 | **GET** | `Permissions by Project` | Récupérer les permissions utilisateur par projet | `project_id` (dans le chemin) | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour ce projet |
 | **GET** | `Permissions by Email` | Récupérer les permissions utilisateur par e-mail | `email` (dans le chemin) | **200** : Permissions récupérées avec succès <br> **400** : Requête invalide <br> **409** : Aucune permission trouvée pour cet utilisateur |
 
-## Détails du Code
+### Détails du Code
 
-### Fonctions Utilitaires (`fonction.py`)
+#### Fonctions Utilitaires (`fonction.py`)
 
-#### Opérations JSON
+##### Opérations JSON
 
 - `read_json(filename)`: Lit et valide le fichier JSON.
 - `write_json(filename, data)`: Écrit les données dans le fichier JSON.
 
-#### Fonctions de Gestion des Utilisateurs
+##### Fonctions de Gestion des Utilisateurs
 
 - `get_user_by_email(json_data, search_email)`: Retourne l'utilisateur par son email.
 - `modify_user_by_email(users, last_name, first_name, email, password, birth_date)`: Modifie les données de l'utilisateur.
 - `get_user_by_email(users, email)`: Retourne les données de l'utilisateur (sans mot de passe).
 - `delete_user_by_email(users, email)`: Retire l'utilisateur du système.
 
-#### Fonctions de Gestion des Permissions
+##### Fonctions de Gestion des Permissions
 
 - `get_permissions_by_project(json_perm, project_id)`: Obtient les permissions du projet.
 - `get_permissions_by_email(permissions_list, email)`: Obtient les permissions de l'utilisateur.
 - `get_perm_email_idproject(json_perm, email_id, project_id)`: Trouve une permission spécifique.
 
-### Réinitialisation de l'Application (`reset_app.py`)
+#### Réinitialisation de l'Application (`reset_app.py`)
 
 - Initialise les données par défaut dans les fichiers JSON.
 - Gère la création et la validation des fichiers.
 - Fournit des données par défaut pour les utilisateurs et les permissions.
 
-## Considérations de Sécurité
+### Considérations de Sécurité
 
 - Les mots de passe sont stockés en texte brut (à améliorer).
 - Pas de système de jetons JWT (à implémenter).
@@ -299,7 +347,7 @@ code/
 - Pas de limitation de débit implémentée.
 - Pas de HTTPS par défaut.
 
-## Améliorations Possibles
+### Améliorations Possibles user
 
 1. Implémenter le hachage des mots de passe.
 2. Ajouter un système d'authentification JWT.
@@ -310,9 +358,8 @@ code/
 7. Activer HTTPS par défaut.
 8. Ajouter une désinfection des entrées.
 9. Implémenter la gestion des sessions.
-10. Mettre toutes mes doc dans une seul langue.
 
-## Ce que je peux faire mieux
+### Ce que je peux faire mieux
 
 1. Mieux tester l'API.
 2. Standardiser les sorties des fonctions, toujours retourner `[]` pour les résultats vides.
