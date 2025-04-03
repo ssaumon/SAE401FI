@@ -4,7 +4,7 @@
 
 ### Gestion des projets
 
-**Responsable : Paul HOFFBECK**
+**Responsable : Paul HOFFBECK**  
 
 | HTTP Méthode | Action | Description | Codes |  
 |-------------|--------|-------------|---------- |
@@ -28,7 +28,7 @@
 
 ### Importation de SBOM  
 
-**Responsable : Maxence DEBEAUVAIS**
+**Responsable : Maxence DEBEAUVAIS**  
 
 | HTTP Méthode | Action | Description | Codes |
 |-------------|--------|-------------|--------|
@@ -93,7 +93,7 @@
 
 ## Consultation de SBOM
 
-**Responsable : Simon COLLET**
+**Responsable : Simon COLLET**  
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
@@ -104,7 +104,7 @@
 
 ## Rapports
 
-**Responsable : Simon COLLET**
+**Responsable : Simon COLLET**  
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
@@ -114,7 +114,7 @@
 
 ## Gestion des vulnérabilités
 
-**Responsable : Killian CHESNOT**
+**Responsable : Killian CHESNOT**  
 
 | API REST | Méthode | Description | Code |
 |----------|---------|-------------|-------------|
@@ -129,23 +129,24 @@
 
 **Responsable : Malo DURANTON**  
 
-## Project Structure
+## Structure du projet
 
 ```text
 code/
-├── app.py           # Main Flask application
-├── fonction.py      # Utility functions
-├── reset_app.py     # Data reset script
-├── user.json        # User data in json
-└── permission.json  # Perm data in json
+├── app.py           # Application Flask principale
+├── fonction.py      # Fichier avec les functions  
+├── reset_app.py     # Réinitialliser les json si illisible
+├── user.json        # Données utillisateur en json
+└── permission.json  # Données permission en json
 ```
 
-## Prerequisites
+## Prérequis
 
 - Python 3.x
 - Flask
-- Docker and Docker Compose
-- Dependencies listed in `requirements.txt`
+- Docker et Docker Compose
+- Dependences listées dans `requirements.txt`
+- Internet
 
 ***Fonction utillisateur***
 
