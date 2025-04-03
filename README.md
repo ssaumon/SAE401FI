@@ -2,6 +2,10 @@
 
 ## Identification des micro-services
 
+### Diagramme des communications :
+
+![Diagramme de communication](diag_com_general.png "Titre de l'image").
+
 ### Gestion des projets
 
 **Responsable : Paul HOFFBECK**  
