@@ -115,6 +115,20 @@
 ## Gestion des vulnérabilités
 
 **Responsable : Killian CHESNOT**
+# Organisation du microservice vulnérabilité
+
+```text
+code/
+├── Vulnerability.py    # Application Flask principal
+├── Vulnerability.json  # Base de données JSON des Vulnérabilités
+├── Dockerfile          # Dockerfile pour conteneuriser l'application
+├── Exemple.jpg         # Représentation de l'application
+├── LICENSE             # License
+├── README.md           # Documentation, explication de l'application
+├── requirements.txt    # les dépendance requise pour l'application
+├── Threat Processing API.postman_collection.json    # Collection d'une batterie de test, pour vérifier le fonctionnement de l'application
+└── Vulnerability.yaml  # Contrat d'interface de l'application au format openAPI
+```
 
 | API REST | Méthode | Description | Code |
 |----------|---------|-------------|-------------|
