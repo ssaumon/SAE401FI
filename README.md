@@ -199,9 +199,9 @@ code/
 
 ---
 
-### **Interaction avec deux autres microservices**  
+### **Interaction avec un autre microservices**  
 
-L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+L'API interagit avec un autre microservices :  
 
 1. **Récuperer le contenu de la base de donnée SBOM**  
 
@@ -235,9 +235,9 @@ code/
 
 ---
 
-### **Interaction avec deux autres microservices**  
+### **Interaction avec trois autres microservices**  
 
-L'API interagit avec deux autres microservices à l'aide de deux méthodes :  
+L'API interagit avec trois autres microservices :  
 
 1. **Consultation du microservice `vuln` pour récupérer les vulnérabilités associées a l'id**  
 
