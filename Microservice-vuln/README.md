@@ -2,10 +2,42 @@
 # Vulnerability MicroService
 
 # SAE401 - DevCloud - Document de Conception MicroService Vulnerability
+# *Responsable : Killian CHESNOT*
+## Installation et Configuration 
+**Pour installer l'application, voici les étapes :**
+1. git clone https://github.com/ssaumon/SAE401FI.git  
+2. cd SAE401FI  
+- Pour construire le conteneur:
+  dockerbuild -t vuln:latest .
+- Pour lancer le conteneur:
+  docker run -d -p 5000:5000 --name vuln vuln:latest
+- Pour arrêter
+  docker stop vuln-container
+  docker rm vuln-container
 
+### Organisation du microservice vulnérabilité
+
+```text
+code/
+├── Vulnerability.py    # Application Flask principal
+├── Vulnerability.json  # Base de données JSON des Vulnérabilités
+├── Dockerfile          # Dockerfile pour conteneuriser l'application
+├── Exemple.jpg         # Représentation de l'application
+├── LICENSE             # License
+├── README.md           # Documentation, explication de l'application
+├── requirements.txt    # les dépendance requise pour l'application
+├── Threat Processing API.postman_collection.json    # Collection d'une batterie de test, pour vérifier le fonctionnement de l'application
+└── Vulnerability.yaml  # Contrat d'interface de l'application au format openAPI
+```
+---
+
+## Batterie de tests
+**Tests à effectuer avec Postman**
+
+Comme mentionné précédemment, une batterie de tests au format JSON est disponible dans l'arborescence des fichiers. Vous pouvez l'importer directement dans Postman pour tester les différents endpoints à l'aide de tests unitaires. Cela vous permettra de vérifier le bon fonctionnement des méthodes HTTP décrites ci-dessous:
 
 ## Gestion des vulnérabilités
-**Responsable : Killian CHESNOT**
+
 
 | API REST | Méthode | Description | Code |
 |----------|---------|-------------|-------------|

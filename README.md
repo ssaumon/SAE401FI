@@ -115,7 +115,7 @@
 ## Gestion des vulnérabilités
 
 **Responsable : Killian CHESNOT**
-# Organisation du microservice vulnérabilité
+### Organisation du microservice vulnérabilité
 
 ```text
 code/
@@ -141,9 +141,9 @@ code/
 | **POST /Vulnerability/sbom** | `traitement()` | Récupère le Nom du Package et sa version, cela retourne les vulnérabilités associés | **200** :Retourne les vulnérabilités correspondant au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans l'entrée JSON |
 | **GET /Vulnerability/sbom/int:idSbom** | `getSbomTrait(idSbom)` | Reçois un ID SBOM et effectue une requête vers le Microservice SBOM pour retourner les vulnérabilités associés | **200** :Retourne les vulnérabilités associées au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans les données récupérées <br> **500**: Erreur de lecture de la base de données <br> **420**: Erreur de liaison du microservice |
 
-## Voici l'organisation de la base de données.
+### Voici l'organisation de la base de données.
 
-### **Vulnerability.json**  
+#### **Vulnerability.json**  
 ```json
 {
     "id": 1,
@@ -175,7 +175,7 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
    - Le SBOM peut contenir un ou plusieurs packages (nom, version).  
 2. **Consultation du microservice `consult-sbom` pour récupérer les vulnérabilités associées.**  
 
-## Améliorations Possibles
+### Améliorations Possibles
 
 1. Implémenter la branche feature dans le projet.
 - Ajouter une amélioration dans le code de la branche feature, en ne récupérant que les informations intéressantes.
