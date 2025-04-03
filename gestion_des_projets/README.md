@@ -6,6 +6,7 @@ Ce micro-service à pour but de rassembler toutes les fonctionnalités des autre
  
  -**Afficher** les données reçus par ces dernière pour que l'utilisateur aie une expèrience agréable
  
+> README grâce à https://markdownlivepreview.com/
  
 # Fichiers composant le micro-service
 
@@ -152,6 +153,8 @@ Voici la liste de toutes les bibliothèques utilisées par notre micro-service :
 | enre() | Affiche la page d'inscription. | Aucun | Page HTML register.html | 200 | Aucune |
 | send_user() | Enregistre un nouvel utilisateur. | Données du formulaire d'inscription | Redirection vers / ou message d'erreur | 302, 513 | http://user:5000/register |
 | logout() | Déconnecte l'utilisateur en supprimant ses données globales. | Aucun | Redirection vers / | 302 | Aucune |
+
+> Tableau généré avec le site https://www.tablesgenerator.com/markdown_tables
 
 Nous constatons que l'ID est toujours utilisé afin de laisser notre micro-service le plus léger possible
 

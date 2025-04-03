@@ -108,7 +108,6 @@ paths:
           description: Redirection vers la page de connexion
           
   
-  
   /homepage:
     get:
       tags:
@@ -256,6 +255,7 @@ paths:
           description: Projet non trouvé
         '513':
           description: Echec de la suppression
+
   /projet/projet/adduser:
     post:
       tags: 
@@ -286,6 +286,7 @@ paths:
           description: Redirection vers la page de détails du projet
         '511':
           description: Échec de l'ajout des permissions
+          
   /rapport/{id}:
     get:
       tags:
