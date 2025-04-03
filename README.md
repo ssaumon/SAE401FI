@@ -6,25 +6,79 @@
 
 **Responsable : Paul HOFFBECK**  
 
-| HTTP Méthode | Action | Description | Codes |  
-|-------------|--------|-------------|---------- |
-| `N/A` | Display | Regroupe les projets existants | N/A |
-| **POST** | `Create_Project` | Création d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
-| **PATCH** | `Update_Project` | Modification d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
-| **DELETE** | `Delete_Project` | Suppression d'un projet | **200** : OK <br> **403** : Permission refusée <br> **400** : BDD non trouvée |
+
+| HTTP Méthode | Action | Description | Codes |
+|-------------|--------|-------------|----------|
+| **GET** | Page de connexion | Affiche la page de connexion | 200 |
+| **POST** | Authentification utilisateur | Connecte un utilisateur | 302 : Succès, redirection <br> 403 : Échec de l'authentification |
+| **GET** | Page d'inscription | Affiche la page d'inscription | 200 |
+| **POST** | Enregistrement utilisateur | Crée un nouvel utilisateur | 302 : Succès, redirection <br> 513 : Échec de l'enregistrement |
+| **GET** | Déconnexion utilisateur | Déconnecte l'utilisateur et redirige | 302 |
+| **GET** | Liste des projets | Affiche la page d'accueil avec les projets | 200 : Succès <br> 403 : Non authentifié |
+| **GET** | Détails d'un projet | Affiche les détails d'un projet | 200 : Succès <br> 404 : Projet non trouvé |
+| **GET** | Données JSON d'un projet | Renvoie les données JSON du projet | 200 : Succès <br> 404 : Projet non trouvé |
+| **POST** | Ajouter un projet | Création d'un projet | 302 : Succès, redirection <br> 403 : Accès refusé <br> 415 : Format invalide <br> 511 : Échec des permissions <br> 512 : Échec import SBOM <br> 513 : Échec de la sauvegarde |
+| **PUT** | Modifier un projet | Mise à jour d'un projet | 302 : Succès, redirection <br> 403 : Accès refusé <br> 404 : Projet non trouvé <br> 513 : Échec de la sauvegarde |
+| **DELETE** | Supprimer un projet | Suppression d'un projet | 302 : Succès, redirection <br> 403 : Accès refusé <br> 404 : Projet non trouvé <br> 513 : Échec de la suppression |
+| **POST** | Ajouter un utilisateur à un projet | Ajoute un utilisateur avec des permissions | 302 : Succès, redirection <br> 511 : Échec des permissions |
+| **GET** | Télécharger un rapport | Récupère un fichier PDF du rapport | 200 : Succès <br> 404 : Rapport non trouvé |
+| **GET** | Télécharger un SBOM | Récupère un fichier JSON du SBOM | 200 : Succès <br> 404 : SBOM non trouvé |
+| **GET** | Informations de vulnérabilité | Récupère un fichier JSON des vulnérabilités | 200 : Succès <br> 404 : Informations non trouvées |
+
 
 **Base de Données Projet :**
 
 ```json
 {
-  "Nom du projet": "string",
-  "Utilisateurs autorisés": [
-    "user1",
-    "user2"]
+  "ID": "string",
+  "Nom du projet":string,
+  "Description":string
+
 }
 ```
+### **Cette API permet notamment :**  
+- Retourner une page de connexion
+- Retourner une page de gestion de projet centralisée
+    - Ajouter un projet
+    
+    - Afficher les détails des projets : SBOM, Rapport Vulnérabilité, etc
+    
+    - Lier un utilisateur à un projet en lui attribuant des permissions
+    
+    - Gérer les services d'authentification
 
----
+### Intéraction avec tous les autres micro services
+
+Ce micro-service centrale est en contact avec tous les autres : 
+
+- **"import-sbom"** : Nous intéragissons avec lors de la création d'un projet ou nous lui envoyons un SBOM. 
+
+- **"vuln"** : Nous intéragissons avec l'API pour que celle-ci nous retourne son fichier de vulnérabilité
+
+- **"consultation-sbom"** : Nous intéragissons avec celle-ci pour avoir toutes les informations relatives au SBOM. Cela nous permet d'éviter d'intéragir trop souvent avec le micro-service **import-sbom**.
+
+- **"rapport"** : API utilisée pour importer les rapports
+
+- **"user"** : API utilisée pour l'enregistrement des utilisateurs, l'authentification, l'ajout de projet etc.
+ 
+
+### Arborescence : 
+
+```
+├── Dockerfile
+├── README.md
+├── app.py
+├── diag_com.png
+├── diag_user.png
+├── openapi.yaml
+├── requirements.txt
+└── templates
+    ├── detail.html
+    ├── index.html
+    ├── login.html
+    └── register.html
+```
+
 
 ### Importation de SBOM  
 
@@ -172,9 +226,14 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 
 ## Gestion des vulnérabilités
 
+<<<<<<< HEAD
+**Responsable : Killian CHESNOT**
+### Organisation du microservice vulnérabilité
+=======
 **Responsable : Killian CHESNOT**  
 
 # Organisation du microservice vulnérabilité
+>>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
 
 ```text
 code/
@@ -200,10 +259,14 @@ code/
 | **POST /Vulnerability/sbom** | `traitement()` | Récupère le Nom du Package et sa version, cela retourne les vulnérabilités associés | **200** :Retourne les vulnérabilités correspondant au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans l'entrée JSON |
 | **GET /Vulnerability/sbom/int:idSbom** | `getSbomTrait(idSbom)` | Reçois un ID SBOM et effectue une requête vers le Microservice SBOM pour retourner les vulnérabilités associés | **200** :Retourne les vulnérabilités associées au SBOM <br> **404** :  Aucune vulnérabilité correspondante trouvée <br> **400** : Clés manquantes dans les données récupérées <br> **500**: Erreur de lecture de la base de données <br> **420**: Erreur de liaison du microservice |
 
-## Voici l'organisation de la base de données.
+### Voici l'organisation de la base de données.
 
+<<<<<<< HEAD
+#### **Vulnerability.json**  
+=======
 ### **Vulnerability.json**  
 
+>>>>>>> 815ccabcf63113c5e0030d060cc5b9f9d6f0805c
 ```json
 {
     "id": 1,
@@ -236,7 +299,7 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
    - Le SBOM peut contenir un ou plusieurs packages (nom, version).  
 2. **Consultation du microservice `consult-sbom` pour récupérer les vulnérabilités associées.**  
 
-## Améliorations Possibles
+### Améliorations Possibles
 
 1. Implémenter la branche feature dans le projet.
 - Ajouter une amélioration dans le code de la branche feature, en ne récupérant que les informations intéressantes.
