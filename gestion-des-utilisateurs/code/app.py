@@ -72,7 +72,7 @@ def register():
     birth_date = data['birth_date']
     
     if get_user_by_email(json_user, email) != []:
-        return jsonify({"message": "A user with this e-mail address already exists"}), 409
+        return jsonify({"message": "A user with this e-mail address already exists"}), 411
 
     js = {
         "last_name": last_name,

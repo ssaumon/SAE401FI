@@ -5,9 +5,9 @@ info:
   version: 1.0.0
 
 servers:
-- url: http://api.rt.lan/
+- url: https://api.rt.lan/
   description: Serveur principal
-- url: http://user:5000
+- url: http://user:5000/
   description: Serveur docker
 
 tags:
@@ -47,7 +47,7 @@ paths:
             application/json:
               example:
                 error: "Missing field : last_name"
-        '409':
+        '411':
           description: A user with this e-mail address already exists
           content:
             application/json:
