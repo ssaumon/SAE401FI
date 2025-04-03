@@ -8,16 +8,18 @@ sboms= {}
 
 def recup_sbom():
     global sboms
+
     sboms = json.loads(requests.get("http://import-sbom:5000/sbom").text)
-    #with open(Path.cwd().joinpath("consultation_SBOM\exemple_sbom.json")) as f:
-    #    sboms = json.load(f)
+
 
 
 
 @app.route("/version/<id>")
 def version(id):
-    recup_sbom()
+    if recup_sbom()[1]!=200:
+        return "erreur import_sbom", 400
     li=[]
+
     for el in sboms[id]["components"]:
         temp_dict={}
         temp_dict["InstalledVersion"]=el["version"]
@@ -30,6 +32,7 @@ def sbom(id):
     recup_sbom()
     return sboms[id]
     
+
 
 #app.run()
 

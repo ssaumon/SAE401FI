@@ -51,9 +51,7 @@ L'API interagit avec deux autres microservices à l'aide de deux méthodes :
 1. **Récupération des vulnérabilités associées à un SBOM**  
    - Le SBOM peut contenir un ou plusieurs packages (nom, version).  
 2. **Consultation du microservice `consult-sbom` pour récupérer les vulnérabilités associées.**  
-
-
-
+   - Les retourner au microservice `rapport` pour générer un rapport.
 ---
 
 ![Représentation du MicroService Vulnérabilité](Exemple.jpg)

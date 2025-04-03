@@ -97,8 +97,8 @@
 
 | Méthode | Requête | Description | Réponse |
 |---------|---------|-------------|----------|
-| **GET** | `consult_sbom(id)` | Récupère le fichier SBOM correspondant à `id` | **200** : OK <br> **404** : SBOM introuvable |
-| **GET** | `Import_perms(id_sbom, id_user)` | Retourne les permissions relatives à l’ID du SBOM pour un utilisateur donné | **200** : OK |
+| **GET** | `/sbom/<id>` | Récupère le fichier SBOM correspondant à `id` | **200** : OK <br> **404** : SBOM introuvable <br> **400** : Erreur import SBOM <br> |
+| **GET** | `/version/<id>` | Retourne les dépendances contenus dans le SBOM correspondant à `id` | **200** : OK **404** : SBOM introuvable <br> **400** : Erreur import SBOM <br> **402** SBOM mal formaté |
 
 ---
 
