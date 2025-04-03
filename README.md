@@ -251,7 +251,6 @@ code/
 7. Activer HTTPS par défaut.
 8. Ajouter une désinfection des entrées.
 9. Implémenter la gestion des sessions.
-10. Mettre toutes mes doc dans une seul langue.
 
 ## Ce que je peux faire mieux
 

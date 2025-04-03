@@ -85,7 +85,7 @@ The application uses three data files:
 - **Responses**:
   - `200 OK`: User successfully created
   - `400 Bad Request`: Missing field
-  - `409 Conflict`: User with this email already exists
+  - `411 Conflict`: User with this email already exists
   - `415 Unsupported Media Type`: Invalid content type, JSON expected
 
 #### User Login
@@ -287,13 +287,10 @@ The API will be available at `http://localhost:5000`
 3. Enhance data validation
 4. Add unit tests
 5. Implement a database instead of JSON files
-6. Add Swagger/OpenAPI documentation
-7. Implement a more robust logging system
-8. Add rate limiting
-9. Enable HTTPS by default
-10. Add input sanitization
-11. Implement session management
-12. Add API versioning
+6. Implement a more robust logging system
+7. Add rate limiting
+8. Add input sanitization
+9. Implement session management
 
 ## What can I do better
 
